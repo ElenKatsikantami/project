@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Project Delete {% endblock %}
+
+{% load static %}
+
+{% load widget_tweaks %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+{{ form.media }}
+
+<div class="col-md-8 col-12 mr-auto ml-auto">
+    <div class="row">
+        <div class="col-md-12">
+            <form id="TypeValidation" class="form-horizontal" action="" method="post" novalidate="novalidate"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card ">
+                    <div class="card-header card-header-rose card-header-text">
+                        <div class="card-text">
+                            <h4 class="card-title">Delete</h4>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        {% for message in messages %}
+                        <div class="alert messages {{ messsage.tags }} control-label col-lg-12">
+                            <p class="{{ message.tags }}">{{ message }}</p>
+                        </div>
+                        {% endfor %}
+
+                        {% for error in form.non_field_errors %}
+                        <div class="form-group has-error">{{ error }}</div>
+                        {% endfor %}
+
+                        {% for field in form %}
+                        <div class="row">
+                            {% for error in field.errors %}
+                            <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
+                            {% endfor %}
+                            <label class="col-sm-3 col-form-label">{{ field.label_tag }}</label>
+                            <div class="col-sm-9">
+                                <div class="form-group bmd-form-group">
+                                    {{ field | add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                    <div class="card-footer ml-auto mr-auto">
+                        <h4 class="card-title">Are you sure? Do you want to delete?</h4>
+                    </div>
+                    <div class="card-footer ml-auto mr-auto">
+                        <button type="submit" class="btn btn-rose">Delete</button>
+                        <a class="btn btn-success" onclick='window.location.href="{% url 'user_list' %}"' style="color:#ffffff ;">Cancel</a>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

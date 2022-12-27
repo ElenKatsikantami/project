@@ -1,0 +1,148 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-warning card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">content_copy</i>
+        </div>
+        <p class="card-category">Project</p>
+        <h3 class="card-title">1
+        </h3>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons text-danger">add</i>
+          <a href="{% url 'add-project' %}">Add project</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-success card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">store</i>
+        </div>
+        <p class="card-category">Bore Hole</p>
+        <h3 class="card-title">25</h3>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons text-danger">assignment</i>
+          <a href="{% url 'project' %}">Projects</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-danger card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons">info_outline</i>
+        </div>
+        <p class="card-category">Max Depth</p>
+        <h3 class="card-title">75</h3>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons text-danger">assignment</i>
+          <a href="{% url 'project' %}">Projects</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon">
+          <i class="material-icons"></i>
+        </div>
+        <p class="card-category">location</p>
+        <h3 class="card-title">+2</h3>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons text-danger">assignment</i>
+          <a href="{% url 'project' %}">Projects</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  {% if projects %}
+  {% for project in projects %}
+  <div class="col-md-4">
+    <div class="card card-product" data-count="2">
+      <div class="card-header card-header-image" data-header-animation="true">
+        <a href="#pablo">
+          {% if project.thumnail %}
+          <img class="img" src= "{{ project.thumnail.url }}" >
+          {% else %}
+          <img class="img" src= "/static/assets/img/city.jpg" >
+          {% endif %}
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="card-actions text-center">
+          <button type="button" class="btn btn-danger btn-link fix-broken-card">
+            <i class="material-icons">build</i> Fix Header!
+          </button>
+          <button type="button" class="btn btn-default btn-link" rel="tooltip" data-placement="bottom" title=""
+            data-original-title="View" onclick='window.location.href="{% url 'project-details' project.id %}"'>
+            <i class="material-icons">art_track</i>
+          </button>
+          <button type="button" class="btn btn-success btn-link" rel="tooltip" data-placement="bottom" title=""
+            data-original-title="Edit" onclick='window.location.href="{% url 'edit-project' project.id %}"'>
+            <i class="material-icons">edit</i>
+          </button>
+          <button type="button" class="btn btn-danger btn-link" rel="tooltip" data-placement="bottom" title=""
+            data-original-title="Remove" onclick='window.location.href="{% url 'delete-project' project.id %}"'>
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+        <h4 class="card-title">
+          <a href="#pablo">{{ project.name }}</a>
+        </h4>
+        <div class="card-description">
+          {{ project.summery }}
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="price">
+          No of Boreholes : {{ project.number_of_bore_home }}<br>
+          Max Exploration Depth : {{ project.max_depth }}<br>
+          <p class="card-category"><i class="material-icons">place</i> {{ project.location }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- <script>
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    md.initDashboardPageCharts();
+
+  });
+</script> -->
+
+{% endblock javascripts %}

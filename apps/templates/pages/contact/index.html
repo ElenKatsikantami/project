@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Projects {% endblock %}
+
+{% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="col-md-8 col-12 mr-auto ml-auto">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header card-header-rose card-header-text">
+          <div class="card-text">
+            <h4 class="card-title">Contact Table</h4>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>message</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contact in contacts %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.phone }}</td>
+                    <td>{{ contact.message }}</td>
+                    <td class="text-center">
+                      <a href="{% url 'delete-contact' contact.id %}" class="btn del-user">
+                        <i class="material-icons">close</i>
+                    </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

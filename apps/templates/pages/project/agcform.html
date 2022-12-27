@@ -1,0 +1,177 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Add Project {% endblock %}
+
+{% load static %}
+
+{% load widget_tweaks %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+{{ form.media }}
+
+<div class="col-md-8 col-12 mr-auto ml-auto">
+    <div class="row">
+        <div class="col-md-12">
+            <form id="TypeValidation" class="form-horizontal" action="" method="post" novalidate="novalidate"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card ">
+                    <div class="card-header card-header-rose card-header-text">
+                        <div class="card-text">
+                            <h4 class="card-title">Project {% if '/project/ags/add' in request.path %}AGS {% endif %}Form</h4>
+                        </div>
+                    </div>
+                    <div class="card-body ">
+                        {% for message in messages %}
+                        <div class="alert alert-rose">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="material-icons">close</i>
+                            </button>
+                            <span>
+                                <b> Warning - </b> {{ message }}</span>
+                        </div>
+
+                        {% endfor %}
+
+                        {% for error in form.non_field_errors %}
+                        <div class="form-group has-error">{{ error }}</div>
+                        {% endfor %}
+
+                        {% for field in form %}
+                        <div class="row">
+                            {% for error in field.errors %}
+                            <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
+                            {% endfor %}
+                            <label class="col-sm-3 col-form-label">{{ field.label_tag }}</label>
+                            <div class="col-sm-9">
+                                <div class="form-group bmd-form-group">
+                                    {{ field | add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer ml-auto mr-auto">
+                        <button type="submit" class="btn btn-rose">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 ml-auto mr-auto">
+        <div class="card card-signup">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 ml-auto">
+                        <div class="info info-horizontal">
+                            <div class="description">
+                                <h4 class="info-title">Whats is AGS4 ?</h4>
+                                <p class="description">
+                                    AGS4 is a standard for data exchange in GeoTechnical Engineering, and compises
+                                    of two part:
+                                <ol>
+                                    <li>The text file format for sharing data between companies/projects - for
+                                        machine 2 machine exchange</li>
+                                    <li>And a data dictionary used for the exchange of GeoTechnical data - for
+                                        GeoTechnical engineer stuff</li>
+                                </ol>
+
+                                </p>
+                            </div>
+                        </div>
+                        <div class="info info-horizontal">
+                            <div class="description">
+                                <h4 class="info-title">File Format</h4>
+                                <p class="description">
+                                    The first column are the DATA DESCRIPTORS, and basically describe what the row’s
+                                    data means:
+
+                                <ol>
+                                    <li>GROUP - indicates a new group (spreadsheet tab)</li>
+                                    <li>HEADING - the column headings for this group (column in a tab)</li>
+                                    <li>UNIT - the units for the columns, is there is one</li>
+                                    <li>TYPE - the column type, eg X for text or 2DP for two decimal places (the
+                                        column
+                                        formatting)</li>
+                                    <li>DATA - one or more data rows conforming to the TYPE (the lines of data after
+                                        fixed header)</li>
+                                    <li>The HEADING, UNIT and TYPE are coolectively called the HEADER and define the
+                                        column ? (to check)</li>
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 ml-auto mr-auto">
+        <div class="card">
+            <div class="card-header card-header-icon card-header-rose">
+                <h4 class="card-title ">AGS 4 supported Data Format</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    Document Title
+                                </th>
+                                <th>
+                                    Download Link
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Sample One
+                                </td>
+                                <td>
+                                    <button class="btn btn-success">Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Sample Two
+                                </td>
+                                <td>
+                                    <button class="btn btn-success">Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Sample Two
+                                </td>
+                                <td>
+                                    <button class="btn btn-success">Download</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Sample Two
+                                </td>
+                                <td>
+                                    <button class="btn btn-success">Download</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

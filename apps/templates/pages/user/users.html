@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Page User {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="col-md-8 col-12 mr-auto ml-auto">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header card-header-rose card-header-text">
+          <div class="card-text">
+            <h4 class="card-title">User Table</h4>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover">
+            <thead class="">
+              <tr>
+                <th>ID</th>
+                <th>user Name</th>
+                <th>Active</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in object_list %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.is_active }}</td>
+                    <td class="text-center">
+                      <a href="{% url 'edit-user' user.username %}"class='btn edit-user' style="margin:4px ;">
+                        <i class="material-icons">edit</i>
+                      <a href="{% url 'delete-user' user.username %}" class="btn del-user">
+                        <i class="material-icons">close</i>
+                    </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

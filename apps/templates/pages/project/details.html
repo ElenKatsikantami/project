@@ -1,0 +1,305 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} project Details {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<!-- Link to Leaflet Stylesheet-->
+<link rel="stylesheet" href="/static/assets/css/leaflet/leaflet.css" />
+<link rel="stylesheet" href="/static/assets/css/leaflet/easy-button.css" />
+<link rel='stylesheet' href='/static/assets/css/leaflet/leaflet.fullscreen.css' />
+<link rel="stylesheet" href="/static/assets/css/leaflet/L.Control.Locate.min.css" />
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div id="detail-map" style="min-height:57vh;  max-height: 57vh;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card ">
+      <!-- <a class="nav-link" href="{% url 'add-project-ags' project.id %}" style="display: inline; float: right;">
+        <i class="material-icons">add</i> Add AGS file
+      </a> -->
+      <div class="table-responsive" style="min-height:15vh;  max-height: 18vh;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">AGS File</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ags in agsfile %}
+            <tr>
+              <td class="text-center">{{ forloop.counter }} </td>
+              <td class="text-center">{{ ags.name }}</td>
+              </td>
+              <td class="td-actions text-center">
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'edit-project-ags' ags.id %}"'>
+                  <i class="material-icons">edit</i>
+                </button>
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'delete-project-ags' ags.id %}"'>
+                  <i class="material-icons">close</i>
+                </button>
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="/media/{{ ags.path }}"'>
+                  <i class="material-icons">download</i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card" >
+      <div class="card-body">
+        <div class="table-responsive" style="min-height:35vh;  max-height: 37vh;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="text-center">#</th>
+                <th>AGS File</th>
+                <th>LOCA_ID</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>LOCA_TYPE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for hole in holetable %}
+              <tr>
+                <td class="text-center">{{ forloop.counter }} </td>
+                <!-- <td>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" value="" checked="">
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                </td> -->
+                <td>{{ hole.ags }}</td>
+                <td>{{ hole.LOCA_ID }}</td>
+                <td>{{ hole.longitude }}</td>
+                <td>{{ hole.latitude }}</td>
+                <td>{{ hole.LOCA_TYPE }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="form-group bmd-form-group is-filled">
+          <select class="form-control datepicker" id="select-ags-file">
+            {% for ags in agsfile %}
+            <option value="{{ ags.id }}">{{ ags.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="col-md-2">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="form-group bmd-form-group is-filled">
+          <select class="form-control datepicker" id="select-variable-type">
+            <option value="{{ ags.id }}">Factual</option>
+            <option value="{{ ags.id }}">Interperted</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="col-md-3">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="form-group bmd-form-group is-filled">
+          <select class="form-control datepicker" id="select-variable-first">
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="form-group bmd-form-group is-filled">
+          <select class="form-control datepicker" id="select-variable-second">
+            <option value="Elevation">Elevation</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="form-group bmd-form-group is-filled">
+          <select class="form-control datepicker" id="select-chart">
+            <option value="Scatter">By Bore Hole</option>
+            <option value="Scatter">By Machine Type</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="card ">
+      <div class="card-body ">
+        <div class="form-group bmd-form-group is-filled">
+          <select class="form-control datepicker" id="select-chart">
+            <option value="Scatter">Scatter plot</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div class="input-group no-border">
+          <button class="btn btn-primary" id="drawChart-first-apply"><i class="material-icons">draw</i> Draw</button>
+        </div>
+        <div id="drawChart-first"></div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div class="input-group no-border">
+          <button class="btn btn-primary" id="drawChart-second-apply"><i class="material-icons">draw</i> Draw</button>
+        </div>
+        <div id="drawChart-second"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div class="input-group no-border">
+          <button class="btn btn-primary" id="drawChart-third-apply"><i class="material-icons">draw</i> Draw</button>
+        </div>
+        <div id="drawChart-third"></div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div class="input-group no-border">
+          <button class="btn btn-primary" id="drawChart-fourth-apply"><i class="material-icons">draw</i> Draw</button>
+        </div>
+        <div id="drawChart-fourth"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- IMPORT all JS FILES -->
+<!-- Link to leaflet javascript library-->
+<script src="/static/assets/js/core/jquery-3.6.0.min.js"></script>
+<script src="/static/assets/js/core/leaflet/leaflet.js"></script>
+<script src="/static/assets/js/core/leaflet/easy-button.js"></script>
+<script src='/static/assets/js/core/leaflet/Leaflet.fullscreen.min.js'></script>
+<script src="/static/assets/js/core/leaflet/leaflet.ajax.min.js"></script>
+<script src="/static/assets/js/core/leaflet/L.Control.Locate.min.js"></script>
+<script src="/static/assets/js/core/highchart/highcharts.js"></script>
+<script src="/static/assets/js/core/highchart/exporting.js"></script>
+<script src="/static/assets/js/core/highchart/export-data.js"></script>
+<script src="/static/assets/js/core/highchart/accessibility.js"></script>
+<script src="/static/custom/js/chartData.js"></script>
+<script src="/static/custom/js/chart.js"></script>
+
+<script type="text/javascript">
+  var headings = '{{headings|safe}}';
+  var holes = '{{hole|safe}}';
+
+  var headings = JSON.parse(headings);
+  var hole_data = JSON.parse(holes);
+  var hole_list = []
+  for (var key in hole_data){
+      hole_list.push(key);
+        }
+ var headings_factual = headings.factual
+  $('#select-variable-first').empty()
+  for (i = 0; i < headings_factual.length; i++) {
+    $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
+  }
+
+  $('#drawChart-first-apply').click(function () {
+      userChartDrawFunction("drawChart-first");
+    });
+    $('#drawChart-second-apply').click(function () {
+      userChartDrawFunction("drawChart-second");
+    });
+    $('#drawChart-third-apply').click(function () {
+      userChartDrawFunction("drawChart-third");
+    });
+    $('#drawChart-fourth-apply').click(function () {
+      userChartDrawFunction("drawChart-fourth");
+    });
+
+    function userChartDrawFunction(chartDiv) {
+      var ags = $('#select-ags-file').val();
+      var ags_text = $( "#select-ags-file option:selected" ).text();
+      var v1 = $('#select-variable-first').val();
+      var v2 = $('#select-variable-second').val();
+      var chart = $('#select-chart').val();
+
+      var dataRequest = {
+        ags: ags,
+        v1: v1,
+        v2: v2,
+        chart:chart
+      };
+      $.get("{% url 'ajax-chart-project' %}", dataRequest).done(function (data) {
+          var data = data.chart_data;
+          console.log(chartDiv)
+          var arranged_data = genericScatterPlotData(data)
+          yaxis = v1.split("Vs")[0];
+          genericScatterPlot(arranged_data, chartDiv, v1+" vs "+v2, "Derived from "+ags_text, yaxis, 'Elevation (MSL)',)
+      });
+      
+    };
+
+</script>
+
+<script src="/static/custom/js/map.js"></script>
+
+
+
+{% endblock javascripts %}
