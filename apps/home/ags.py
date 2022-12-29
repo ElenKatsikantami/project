@@ -61,7 +61,6 @@ class AGS:
     def ags_to_dataframe(self):
         """convert ags to dictionary"""
         tables, headings = {}, {}
-        print(self.ags_version)
         if self.ags_version is not None:
             if self.ags_version == 'ags4':
                 tables, headings = AGS4.AGS4_to_dataframe(self.ags_file)

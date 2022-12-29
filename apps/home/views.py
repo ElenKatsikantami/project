@@ -127,7 +127,9 @@ class projectDetails(LoginRequiredMixin, TemplateView):
                 ags_file_path = os.path.join(
                     settings.MEDIA_ROOT, str(ags.ags_file))
                 ags_class = AGS(ags_file=ags_file_path)
-                tables, _ = ags_class.ags_to_dataframe()
+                tables, headings = ags_class.ags_to_dataframe()
+                util_class = util(tables=tables)
+                chart_list['factual']  = util_class.get_chart_list_base_on_ags(headings)
                 context["headings"] = json.dumps(chart_list)
                 region = " ".join(tables["PROJ"]["PROJ_LOC"])
                 proj_code = ags_class.get_proj_code(region=region)
@@ -136,7 +138,6 @@ class projectDetails(LoginRequiredMixin, TemplateView):
                     loca = tables['HOLE']
                 if ags_class.ags_version == 'ags4':
                     loca = tables['LOCA']
-                util_class = util(tables=tables)
                 util_class.get_geojson(
                     loca, ags, proj_code_to_wgs, holetable, geojson)
 
@@ -246,7 +247,6 @@ class UserChartAjaxApi(View):
         v1 = self.request.GET.get('v1')
         v2 = self.request.GET.get('v2')
         chart = self.request.GET.get('chart')
-        print(v1)
         try:
             agsfile = ProjectAGS.objects.filter(id=ags_id)
             for ags in agsfile:

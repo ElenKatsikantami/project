@@ -51,7 +51,6 @@ function genericScatterPlot(data, div_id, chart_title, chart_sub_title, xAxisTit
             }
         },
         yAxis: {
-            min: 0,
             title: {
                 enabled: true,
                 text: yAxisTitle
