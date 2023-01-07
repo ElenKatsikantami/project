@@ -4,7 +4,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Field",
         "unit":"%",
-        "column":"CORE_PREC",
+        "column":["CORE_PREC"],
         "heading":"CORE",
         "elevation":"CORE_TOP"
     },
@@ -13,7 +13,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Field",
         "unit":"%",
-        "column":"CORE_PREC",
+        "column":["CORE_PREC"],
         "heading":"CORE",
         "elevation":"CORE_TOP"
     },
@@ -22,7 +22,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Field",
         "unit":"",
-        "column":"CORE_RQD",
+        "column":["CORE_RQD"],
         "heading":"CORE",
         "elevation":"CORE_TOP"
     },
@@ -31,16 +31,17 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Field",
         "unit":"",
-        "column":"ISPT_NVAL",
+        "column":["ISPT_NPEN","ISPT_NVAL"],
         "heading":"ISPT",
-        "elevation":"ISPT_TOP"
+        "elevation":"ISPT_TOP",
+        "column_max_value":450
     },
     "CL":{
         "description":"Chloride Content of Soil",
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"GCHM_RESL",
+        "column":["GCHM_RESL"],
         "heading":"GCHM",
         "elevation":"ISPT_TOP"
     },
@@ -49,7 +50,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"GCHM_RESL",
+        "column":["GCHM_RESL"],
         "heading":"GCHM",
         "elevation":"ISPT_TOP"
     },
@@ -58,7 +59,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"GCHM_RESL",
+        "column":["GCHM_RESL"],
         "heading":"GCHM",
         "elevation":"ISPT_TOP"
     },
@@ -67,7 +68,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"LLPL_LL",
+        "column":["LLPL_LL"],
         "heading":"LLPL",
         "elevation":"ISPT_TOP"
     },
@@ -76,7 +77,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"LLPL_PL",
+        "column":["LLPL_PL"],
         "heading":"LLPL",
         "elevation":"ISPT_TOP"
     },
@@ -85,7 +86,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"LLPL_PI",
+        "column":["LLPL_PI"],
         "heading":"LLPL",
         "elevation":"ISPT_TOP"
     },
@@ -94,7 +95,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"%",
-        "column":"LNMC_MC",
+        "column":["LNMC_MC"],
         "heading":"LNMC",
         "elevation":"ISPT_TOP"
     },
@@ -103,7 +104,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Mg/m3",
-        "column":"LPDN_PDEN",
+        "column":["LPDN_PDEN"],
         "heading":"LPDN",
         "elevation":"ISPT_TOP"
     },
@@ -112,7 +113,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Kg/m3",
-        "column":"RDEN_BDEN",
+        "column":["RDEN_BDEN"],
         "heading":"RDEN",
         "elevation":"ISPT_TOP"
     },
@@ -121,7 +122,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"RELD_DMAX",
+        "column":["RELD_DMAX"],
         "heading":"RELD",
         "elevation":"ISPT_TOP"
     },
@@ -130,7 +131,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"RELD_DMIN",
+        "column":["RELD_DMIN"],
         "heading":"RELD",
         "elevation":"ISPT_TOP"
     },
@@ -139,7 +140,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"",
-        "column":"RUCS_MC",
+        "column":["RUCS_MC"],
         "heading":"RUCS",
         "elevation":"ISPT_TOP"
     },
@@ -148,7 +149,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Mpa",
-        "column":"RUCS_UCS",
+        "column":["RUCS_UCS"],
         "heading":"RUCS",
         "elevation":"ISPT_TOP"
     },
@@ -157,7 +158,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Phi",
-        "column":"SHBG_PHI",
+        "column":["SHBG_PHI"],
         "heading":"SHBG",
         "elevation":"ISPT_TOP"
     },
@@ -166,7 +167,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Phi",
-        "column":"SHBG_RPHI",
+        "column":["SHBG_RPHI"],
         "heading":"SHBG",
         "elevation":"ISPT_TOP"
     },
@@ -175,7 +176,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Mpa",
-        "column":"SHBG_PCOH",
+        "column":["SHBG_PCOH"],
         "heading":"SHBG",
         "elevation":"ISPT_TOP"
     },
@@ -184,7 +185,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"Mpa",
-        "column":"SHBG_RCOH",
+        "column":["SHBG_RCOH"],
         "heading":"SHBG",
         "elevation":"ISPT_TOP"
     },
@@ -193,7 +194,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"mm",
-        "column":"GRAT_SIZE",
+        "column":["GRAT_SIZE"],
         "heading":"GRAT",
         "elevation":"ISPT_TOP"
     },
@@ -202,7 +203,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"%",
-        "column":"LLPL_425",
+        "column":["LLPL_425"],
         "heading":"LLPL",
         "elevation":"ISPT_TOP"
     },
@@ -211,7 +212,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"%",
-        "column":"GRAG_GRAV",
+        "column":["GRAG_GRAV"],
         "heading":"GRAV",
         "elevation":"ISPT_TOP"
     }

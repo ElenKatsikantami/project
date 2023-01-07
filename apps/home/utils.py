@@ -52,145 +52,6 @@ class util:
             print(str(exp))
         return True
 
-    def get_NSPT(self):
-        """get the NSPT"""
-        nspt_data, nspt_value = {}, []
-        try:
-            elevations = re.findall("\w+_LOCZ|\w+_GL", " ".join(self.tables['LOCA'].columns))
-            df_ispt = self.tables['ISPT']
-            for heading in self.heading_to_remove:
-                df_ispt = df_ispt[df_ispt["HEADING"] != heading]
-            for column in df_ispt.columns:
-                df_ispt[column] = pd.to_numeric(
-                    df_ispt[column], errors='ignore')
-            if df_ispt["ISPT_NVAL"].dtype == "O":
-                df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()] = \
-                    df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()].apply(
-                    lambda x: x.split("/")[0]).copy()
-            df_ispt["ISPT_NVAL"] = pd.to_numeric(df_ispt["ISPT_NVAL"])
-            df_ispt["sum"] = df_ispt[["ISPT_PEN3", "ISPT_PEN4",
-                                          "ISPT_PEN5", "ISPT_PEN6"]].sum(axis=1).replace(0, 300)
-            df_ispt["corrected"] = list(map(lambda x, y: 120 if (
-                    x*300/y) >= 120 else int(np.ceil((x*300/y))), df_ispt["ISPT_NVAL"], df_ispt["sum"]))
-            df_ispt["ISPT_NVAL"] = list(
-                    map(lambda x, y: y if x == 50 else x, df_ispt["ISPT_NVAL"], df_ispt["corrected"]))
-            df_interpretation = df_ispt.copy(
-                )[["LOCA_ID", "ISPT_TOP", "ISPT_NVAL", "ISPT_TYPE"]]
-            loca_copy = self.tables['LOCA'].copy()[["LOCA_ID"]+[elevations[1]]]
-            df_merg = df_interpretation.merge(
-                    loca_copy, on='LOCA_ID', how='left')
-            for column in df_merg.columns:
-                df_merg[column] = pd.to_numeric(
-                        df_merg[column], errors='ignore')
-            df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg["ISPT_TOP"]
-            loca_ids = df_merg.LOCA_ID.unique().tolist()
-            for lid in loca_ids:
-                nspt_value_outer = []
-                for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
-                    nspt_value_inner = []
-                    nspt_value_inner.append(round(row["ISPT_NVAL"],4))
-                    nspt_value_inner.append(round(row["Elevation"],4))
-                    nspt_value_outer.append(nspt_value_inner)
-                nspt_value.append(nspt_value_outer)
-            nspt_data['value'] = nspt_value
-            nspt_data['category'] = loca_ids
-        except Exception as exp:
-            print(str(exp))
-        return nspt_data
-
-    def get_EMOD(self):
-        """get the NSPT"""
-        nspt_data, nspt_value = {}, []
-        try:
-            elevations = re.findall("\w+_LOCZ|\w+_GL", " ".join(self.tables['LOCA'].columns))
-            df_ispt = self.tables['ISPT']
-            for heading in self.heading_to_remove:
-                df_ispt = df_ispt[df_ispt["HEADING"] != heading]
-            for column in df_ispt.columns:
-                df_ispt[column] = pd.to_numeric(
-                    df_ispt[column], errors='ignore')
-            if df_ispt["ISPT_NVAL"].dtype == "O":
-                df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()] = \
-                    df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()].apply(
-                    lambda x: x.split("/")[0]).copy()
-            df_ispt["ISPT_NVAL"] = pd.to_numeric(df_ispt["ISPT_NVAL"])
-            df_ispt["sum"] = df_ispt[["ISPT_PEN3", "ISPT_PEN4",
-                                          "ISPT_PEN5", "ISPT_PEN6"]].sum(axis=1).replace(0, 300)
-            df_ispt["corrected"] = list(map(lambda x, y: 120 if (
-                    x*300/y) >= 120 else int(np.ceil((x*300/y))), df_ispt["ISPT_NVAL"], df_ispt["sum"]))
-            df_ispt["ISPT_NVAL"] = list(
-                    map(lambda x, y: y if x == 50 else x, df_ispt["ISPT_NVAL"], df_ispt["corrected"]))
-            df_interpretation = df_ispt.copy(
-                )[["LOCA_ID", "ISPT_TOP", "ISPT_NVAL", "ISPT_TYPE"]]
-            loca_copy = self.tables['LOCA'].copy()[["LOCA_ID"]+[elevations[1]]]
-            df_merg = df_interpretation.merge(
-                    loca_copy, on='LOCA_ID', how='left')
-            for column in df_merg.columns:
-                df_merg[column] = pd.to_numeric(
-                        df_merg[column], errors='ignore')
-            df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg["ISPT_TOP"]
-            loca_ids = df_merg.LOCA_ID.unique().tolist()
-            for lid in loca_ids:
-                nspt_value_outer = []
-                for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
-                    nspt_value_inner = []
-                    nspt_value_inner.append(round(1.5*row["ISPT_NVAL"],4))
-                    nspt_value_inner.append(round(row["Elevation"],4))
-                    nspt_value_outer.append(nspt_value_inner)
-                nspt_value.append(nspt_value_outer)
-            nspt_data['value'] = nspt_value
-            nspt_data['category'] = loca_ids
-        except Exception as exp:
-            print(str(exp))
-        return nspt_data
-
-    def get_Friction_Angle(self):
-        """get the NSPT"""
-        nspt_data, nspt_value = {}, []
-        try:
-            elevations = re.findall("\w+_LOCZ|\w+_GL", " ".join(self.tables['LOCA'].columns))
-            df_ispt = self.tables['ISPT']
-            for heading in self.heading_to_remove:
-                df_ispt = df_ispt[df_ispt["HEADING"] != heading]
-            for column in df_ispt.columns:
-                df_ispt[column] = pd.to_numeric(
-                    df_ispt[column], errors='ignore')
-            if df_ispt["ISPT_NVAL"].dtype == "O":
-                df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()] = \
-                    df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()].apply(
-                    lambda x: x.split("/")[0]).copy()
-            df_ispt["ISPT_NVAL"] = pd.to_numeric(df_ispt["ISPT_NVAL"])
-            df_ispt["sum"] = df_ispt[["ISPT_PEN3", "ISPT_PEN4",
-                                          "ISPT_PEN5", "ISPT_PEN6"]].sum(axis=1).replace(0, 300)
-            df_ispt["corrected"] = list(map(lambda x, y: 120 if (
-                    x*300/y) >= 120 else int(np.ceil((x*300/y))), df_ispt["ISPT_NVAL"], df_ispt["sum"]))
-            df_ispt["ISPT_NVAL"] = list(
-                    map(lambda x, y: y if x == 50 else x, df_ispt["ISPT_NVAL"], df_ispt["corrected"]))
-            df_interpretation = df_ispt.copy(
-                )[["LOCA_ID", "ISPT_TOP", "ISPT_NVAL", "ISPT_TYPE"]]
-            loca_copy = self.tables['LOCA'].copy()[["LOCA_ID"]+[elevations[1]]]
-            df_merg = df_interpretation.merge(
-                    loca_copy, on='LOCA_ID', how='left')
-            for column in df_merg.columns:
-                df_merg[column] = pd.to_numeric(
-                        df_merg[column], errors='ignore')
-            df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg["ISPT_TOP"]
-            loca_ids = df_merg.LOCA_ID.unique().tolist()
-            for lid in loca_ids:
-                nspt_value_outer = []
-                for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
-                    nspt_value_inner = []
-                    friction_angle = np.floor(27.1+(0.3*row["ISPT_NVAL"])-(0.00054*(row["ISPT_NVAL"]**2)))
-                    nspt_value_inner.append(round(friction_angle,4))
-                    nspt_value_inner.append(round(row["Elevation"],4))
-                    nspt_value_outer.append(nspt_value_inner)
-                nspt_value.append(nspt_value_outer)
-            nspt_data['value'] = nspt_value
-            nspt_data['category'] = loca_ids
-        except Exception as exp:
-            print(str(exp))
-        return nspt_data
-
     def _get_elevation(self):
         """get the elevation"""
         try:
@@ -199,6 +60,26 @@ class util:
         except Exception as exp:
             print(str(exp))
         return loca_copy
+
+    def _column_max_value(self,nspt):
+        try:
+            if not nspt[0] or not nspt[1]:
+                return nspt[0]
+            try:
+                nval,npen= int(nspt[0]),int(nspt[1])
+            except Exception as exp:
+                print(exp)
+                return nspt[0]
+            if npen == 450:
+                return nval
+            elif npen < 450:
+                nval_update = (nval*300)/abs(npen-150)
+                return 100 if nval_update>100 or nval_update<0 else int(nval_update)
+            else:
+                return nval
+        except Exception as exp:
+            print('error is here')
+            print(str(exp))
 
     def get_factual_chart_data(self,variable_one, variable_two='Elevation'):
         """get the chart data for factual"""
@@ -210,7 +91,8 @@ class util:
             if variable_two == "Elevation":
                 df_elevation = self._get_elevation()
             data_frame = self.tables[v_ref['heading']]
-            req_column_list = ["LOCA_ID",v_ref['column']]
+            column_name = v_ref['column'][-1]
+            req_column_list = ["LOCA_ID",column_name]
             for req_column in data_frame.columns:
                 if any(x in req_column for x in possible_value):
                     req_column_list.append(req_column)
@@ -219,22 +101,24 @@ class util:
             for col in data_frame.columns:
                 data_frame[col] = pd.to_numeric(
                     data_frame[col], errors='ignore')
-            if data_frame[v_ref['column']].dtype == "O":
-                data_frame[v_ref['column']][~data_frame[v_ref['column']].str.isalnum()] = \
-                    data_frame[v_ref['column']][~data_frame[v_ref['column']].str.isalnum()].apply(
+            if variable_one == 'N SPT':
+                extra_col = v_ref['column'][0]
+                data_frame[column_name] = data_frame[[column_name,extra_col]].apply(self._column_max_value,axis=1)
+                print(data_frame[column_name])
+            if data_frame[column_name].dtype == "O":
+                data_frame[column_name][~data_frame[column_name].str.isalnum()] = \
+                    data_frame[column_name][~data_frame[column_name].str.isalnum()].apply(
                     lambda x: x.split("/")[0]).copy()
-            df_interpretation = data_frame.copy()[req_column_list]
-            df_interpretation = df_interpretation[(df_interpretation[v_ref['column']].astype(str).str.contains('|'.join(null_values))==False)]
-            df_interpretation[v_ref['column']] = df_interpretation[v_ref['column']].astype(str).str.replace('\W', '', regex=True)
+            df_interpretation = data_frame.copy()[req_column_list] 
+            df_interpretation = df_interpretation[(df_interpretation[column_name].astype(str).str.contains('|'.join(null_values))==False)]
             df_merg = df_interpretation.merge(
                     df_elevation, on='LOCA_ID', how='left')
             loca_ids = df_merg.LOCA_ID.unique().tolist()
             for column in df_merg.columns:
-                if column in [v_ref['column'],'LOCA_LOCZ']:
+                if column in [column_name,'LOCA_LOCZ']:
                     df_merg[column] = pd.to_numeric(df_merg[column], errors='coerce')
             df_merg = df_merg.dropna()
             depth = None
-            print(df_merg)
             for req_column in df_merg.columns:
                 if possible_value[0] in req_column:
                     print('dept')
@@ -256,12 +140,12 @@ class util:
                     df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg[depth]
             else:
                 df_merg["Elevation"] = df_merg["LOCA_LOCZ"]
-            # print(df_merg)
+            print(df_merg)
             for lid in loca_ids:
                 value_outer = []
                 for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
                     value_inner = []
-                    value_inner.append(round(row[v_ref['column']],4))
+                    value_inner.append(round(row[column_name],4))
                     value_inner.append(round(row["Elevation"],4))
                     value_outer.append(value_inner)
                 value.append(value_outer)
