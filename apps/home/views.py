@@ -256,7 +256,10 @@ class UserChartAjaxApi(View):
                 ags_class = AGS(ags_file=ags_file_path)
                 tables, _ = ags_class.ags_to_dataframe()
                 util_class = util(tables=tables)
-                result = util_class.get_factual_chart_data(v1,variable_two=v2, class_type=classtype)
+                if v1 == 'Particle Size':
+                    result = util_class.get_factual_chart_partical(v1)
+                else:
+                    result = util_class.get_factual_chart_data(v1,variable_two=v2, class_type=classtype)
             response_data = {'chart_data': result}
             return HttpResponse(json.dumps(response_data), content_type='application/json')
         except Exception as exp:

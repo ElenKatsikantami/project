@@ -204,3 +204,37 @@ class util:
         except Exception as exp:
             print(str(exp))
         return variable_list
+
+    def get_factual_chart_partical(self,variable_one):
+        """get the chart data for factual"""
+        data, value = {}, []
+        req_column_list = ["LOCA_ID"]
+        try:
+            v_ref = self._get_reference(variable_one)
+            data_frame = self.tables[v_ref['heading']]
+            columns = v_ref['column']
+            for column in columns:
+                req_column_list.append(column)
+            for heading in self.heading_to_remove:
+                data_frame = data_frame[data_frame["HEADING"] != heading]
+            for col in data_frame.columns:
+                data_frame[col] = pd.to_numeric(
+                    data_frame[col], errors='ignore')
+            for column_name in columns:
+                if data_frame[column_name].dtype == "O":
+                    data_frame[column_name][~data_frame[column_name].str.isalnum()] = \
+                        data_frame[column_name][~data_frame[column_name].str.isalnum()].apply(
+                        lambda x: x.split("/")[0]).copy()
+            df_merg = data_frame.copy()[req_column_list]
+            for column in df_merg.columns:
+                if column in columns:
+                    df_merg[column] = pd.to_numeric(df_merg[column], errors='coerce')
+            df_merg = df_merg.dropna()
+            print(df_merg)
+            data['value'] = value
+            data['category'] = 'loca_ids'
+        except Exception as exp:
+            print('error')
+            print(str(exp))
+        return data
+

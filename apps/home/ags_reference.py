@@ -194,7 +194,7 @@ ags_reference={
         "category":"Factual",
         "Sub_category":"Lab",
         "unit":"mm",
-        "column":["GRAT_SIZE"],
+        "column":["SPEC_DPTH","GRAT_SIZE","GRAT_PERP"],
         "heading":"GRAT",
         "elevation":"ISPT_TOP"
     },
