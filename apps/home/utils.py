@@ -52,11 +52,11 @@ class util:
             print(str(exp))
         return True
 
-    def _get_elevation(self):
+    def _get_elevation(self,class_type):
         """get the elevation"""
         try:
             elevations = re.findall("\w+_LOCZ|\w+_GL", " ".join(self.tables['LOCA'].columns))
-            loca_copy = self.tables['LOCA'].copy()[["LOCA_ID"]+[elevations[1]]]
+            loca_copy = self.tables['LOCA'].copy()[["LOCA_ID"]+[elevations[1]]+['LOCA_TYPE']]
         except Exception as exp:
             print(str(exp))
         return loca_copy
@@ -81,15 +81,16 @@ class util:
             print('error is here')
             print(str(exp))
 
-    def get_factual_chart_data(self,variable_one, variable_two='Elevation'):
+    def get_factual_chart_data(self,variable_one, variable_two='Elevation', class_type='borehole'):
         """get the chart data for factual"""
         data, value = {}, []
         possible_value = ['_DEPT','_BASE','_TOP']
         null_values = ['NP','np']
+        print(class_type)
         try:
             v_ref = self._get_reference(variable_one)
             if variable_two == "Elevation":
-                df_elevation = self._get_elevation()
+                df_elevation = self._get_elevation(class_type)
             data_frame = self.tables[v_ref['heading']]
             column_name = v_ref['column'][-1]
             req_column_list = ["LOCA_ID",column_name]
@@ -140,17 +141,42 @@ class util:
                     df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg[depth]
             else:
                 df_merg["Elevation"] = df_merg["LOCA_LOCZ"]
-            print(df_merg)
-            for lid in loca_ids:
-                value_outer = []
-                for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
-                    value_inner = []
-                    value_inner.append(round(row[column_name],4))
-                    value_inner.append(round(row["Elevation"],4))
-                    value_outer.append(value_inner)
-                value.append(value_outer)
-            data['value'] = value
-            data['category'] = loca_ids
+            if class_type == 'machine':
+                loca_ids = df_merg.LOCA_TYPE.unique().tolist()
+                for lid in loca_ids:
+                    value_outer = []
+                    for _, row in df_merg[df_merg['LOCA_TYPE'] == lid].iterrows():
+                        value_inner = []
+                        value_inner.append(round(row[column_name],4))
+                        value_inner.append(round(row["Elevation"],4))
+                        value_outer.append(value_inner)
+                    value.append(value_outer)
+                data['value'] = value
+                data['category'] = loca_ids
+            elif class_type == 'borehole':
+                for lid in loca_ids:
+                    value_outer = []
+                    for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
+                        value_inner = []
+                        value_inner.append(round(row[column_name],4))
+                        value_inner.append(round(row["Elevation"],4))
+                        value_outer.append(value_inner)
+                    value.append(value_outer)
+                data['value'] = value
+                data['category'] = loca_ids
+            elif class_type == 'boreholeandmachine':
+                df_merg['mcahine_type_borehole'] = df_merg['LOCA_ID'].astype(str) +"("+ df_merg["LOCA_TYPE"]+")"
+                loca_ids = df_merg.mcahine_type_borehole.unique().tolist()
+                for lid in loca_ids:
+                    value_outer = []
+                    for _, row in df_merg[df_merg['mcahine_type_borehole'] == lid].iterrows():
+                        value_inner = []
+                        value_inner.append(round(row[column_name],4))
+                        value_inner.append(round(row["Elevation"],4))
+                        value_outer.append(value_inner)
+                    value.append(value_outer)
+                data['value'] = value
+                data['category'] = loca_ids
         except Exception as exp:
             print('error')
             print(str(exp))
@@ -164,6 +190,17 @@ class util:
                 chart_heading.append(ags_reference[chart_variable]['heading'])
             column_list = [x for x in chart_heading if x in headings]
             variable_list = [x for x in [*ags_reference]if ags_reference[x]['heading'] in column_list]
+        except Exception as exp:
+            print(str(exp))
+        return variable_list
+
+    def get_borehole_list_base_on_ags(self):
+        """Filter out the ags variable base on ags"""
+        try:
+            loca_copy = self.tables['LOCA']
+            for heading in self.heading_to_remove:
+                loca_copy = loca_copy[loca_copy["HEADING"] != heading]
+            variable_list = loca_copy.LOCA_ID.unique().tolist()
         except Exception as exp:
             print(str(exp))
         return variable_list

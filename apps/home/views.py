@@ -246,6 +246,7 @@ class UserChartAjaxApi(View):
         ags_id = self.request.GET.get('ags')
         v1 = self.request.GET.get('v1')
         v2 = self.request.GET.get('v2')
+        classtype = self.request.GET.get('classtype')
         chart = self.request.GET.get('chart')
         try:
             agsfile = ProjectAGS.objects.filter(id=ags_id)
@@ -255,15 +256,29 @@ class UserChartAjaxApi(View):
                 ags_class = AGS(ags_file=ags_file_path)
                 tables, _ = ags_class.ags_to_dataframe()
                 util_class = util(tables=tables)
-                result = util_class.get_factual_chart_data(v1)
-                # if 'N SPT' in v1:
-                #     result = util_class.get_NSPT()
-                # if 'EMOD' in v1:
-                #     result = util_class.get_EMOD()
-                # if 'Frictional Angle' in v1:
-                #     result = util_class.get_Friction_Angle()
+                result = util_class.get_factual_chart_data(v1,variable_two=v2, class_type=classtype)
             response_data = {'chart_data': result}
             return HttpResponse(json.dumps(response_data), content_type='application/json')
         except Exception as exp:
             response_data = {'chart_data': 'False'}
+            return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+class borehole(View):
+    """user based chart"""
+
+    def get(self, request):
+        ags_id = self.request.GET.get('ags')
+        try:
+            agsfile = ProjectAGS.objects.filter(id=ags_id)
+            for ags in agsfile:
+                ags_file_path = os.path.join(
+                    settings.MEDIA_ROOT, str(ags.ags_file))
+                ags_class = AGS(ags_file=ags_file_path)
+                tables, _ = ags_class.ags_to_dataframe()
+                util_class = util(tables=tables)
+                result = util_class.get_borehole_list_base_on_ags()
+            response_data = {'boreholes': result}
+            return HttpResponse(json.dumps(response_data), content_type='application/json')
+        except Exception as exp:
+            response_data = {'boreholes': 'False'}
             return HttpResponse(json.dumps(response_data), content_type='application/json')

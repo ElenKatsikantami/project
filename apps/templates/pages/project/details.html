@@ -63,7 +63,7 @@
         </table>
       </div>
     </div>
-    <div class="card" >
+    <div class="card">
       <div class="card-body">
         <div class="table-responsive" style="min-height:35vh;  max-height: 37vh;">
           <table class="table table-striped">
@@ -156,9 +156,10 @@
     <div class="card ">
       <div class="card-body ">
         <div class="form-group bmd-form-group is-filled">
-          <select class="form-control datepicker" id="select-chart">
-            <option value="Scatter">By Bore Hole</option>
-            <option value="Scatter">By Machine Type</option>
+          <select class="form-control datepicker" id="select-class-type">
+            <option value="borehole">By Bore Hole</option>
+            <option value="machine">By Machine Type</option>
+            <option value="boreholeandmachine">By Bore Hole and Machine Type</option>
           </select>
         </div>
       </div>
@@ -251,50 +252,98 @@
   var headings = JSON.parse(headings);
   var hole_data = JSON.parse(holes);
   var hole_list = []
-  for (var key in hole_data){
-      hole_list.push(key);
-        }
- var headings_factual = headings.factual
+  for (var key in hole_data) {
+    hole_list.push(key);
+  }
+  var headings_factual = headings.factual
   $('#select-variable-first').empty()
   for (i = 0; i < headings_factual.length; i++) {
     $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
   }
 
-  $('#drawChart-first-apply').click(function () {
-      userChartDrawFunction("drawChart-first");
-    });
-    $('#drawChart-second-apply').click(function () {
-      userChartDrawFunction("drawChart-second");
-    });
-    $('#drawChart-third-apply').click(function () {
-      userChartDrawFunction("drawChart-third");
-    });
-    $('#drawChart-fourth-apply').click(function () {
-      userChartDrawFunction("drawChart-fourth");
-    });
+  $('#select-variable-first').on('change', function () {
+    $('#select-variable-second').empty()
+    $('#select-class-type').empty()
+    if ($('#select-variable-first').val() == 'Particle Size') {
+      $('#select-variable-second').append($('<option>', { value: 'Percentage Passing (%)', text: 'Percentage Passing (%)' }));
+      get_borhole_list()
+    }
+    else{
+      $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
+        general_key = ['By Bore Hole','By Machine Type','By Bore Hole and Machine Type']
+        general_value = ['borehole','machine','boreholeandmachine']
+        for (i = 0; i < general_value.length; i++) {
+          $('#select-class-type').append($('<option>', { value: general_value[i], text: general_key[i] }));
+        } 
+    }
+  });
 
-    function userChartDrawFunction(chartDiv) {
-      var ags = $('#select-ags-file').val();
-      var ags_text = $( "#select-ags-file option:selected" ).text();
-      var v1 = $('#select-variable-first').val();
-      var v2 = $('#select-variable-second').val();
-      var chart = $('#select-chart').val();
-
-      var dataRequest = {
-        ags: ags,
-        v1: v1,
-        v2: v2,
-        chart:chart
-      };
-      $.get("{% url 'ajax-chart-project' %}", dataRequest).done(function (data) {
-          var data = data.chart_data;
-          console.log(chartDiv)
-          var arranged_data = genericScatterPlotData(data)
-          yaxis = v1.split("Vs")[0];
-          genericScatterPlot(arranged_data, chartDiv, v1+" vs "+v2, "Derived from "+ags_text, yaxis, 'Elevation (MSL)',)
+  $('#select-ags-file').on('change', function () {
+    $('#select-variable-first').empty()
+    $('#select-variable-second').empty()
+    $('#select-class-type').empty()
+    for (i = 0; i < headings_factual.length; i++) {
+      $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
+    }
+    $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
+    general_key = ['By Bore Hole','By Machine Type','By Bore Hole and Machine Type']
+    general_value = ['borehole','machine','boreholeandmachine']
+    for (i = 0; i < general_value.length; i++) {
+          $('#select-class-type').append($('<option>', { value: general_value[i], text: general_key[i] }));
+        } 
       });
-      
+
+  $('#drawChart-first-apply').click(function () {
+    userChartDrawFunction("drawChart-first");
+  });
+  $('#drawChart-second-apply').click(function () {
+    userChartDrawFunction("drawChart-second");
+  });
+  $('#drawChart-third-apply').click(function () {
+    userChartDrawFunction("drawChart-third");
+  });
+  $('#drawChart-fourth-apply').click(function () {
+    userChartDrawFunction("drawChart-fourth");
+  });
+
+  function userChartDrawFunction(chartDiv) {
+    var ags = $('#select-ags-file').val();
+    var ags_text = $("#select-ags-file option:selected").text();
+    var v1 = $('#select-variable-first').val();
+    var v2 = $('#select-variable-second').val();
+    var classtype = $('#select-class-type').val();
+    var chart = $('#select-chart').val();
+
+    var dataRequest = {
+      ags: ags,
+      v1: v1,
+      v2: v2,
+      classtype: classtype,
+      chart: chart
     };
+    $.get("{% url 'ajax-chart-project' %}", dataRequest).done(function (data) {
+      var data = data.chart_data;
+      console.log(chartDiv)
+      var arranged_data = genericScatterPlotData(data)
+      yaxis = v1.split("Vs")[0];
+      genericScatterPlot(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text, yaxis, 'Elevation (MSL)',)
+    });
+  };
+
+  function get_borhole_list(){
+    var ags = $('#select-ags-file').val();
+
+    var dataRequest = {
+      ags: ags
+    };
+    $.get("{% url 'ajax-chart-borehole' %}", dataRequest).done(function (data) {
+      console.log(data.boreholes.length)
+      for (i = 0; i < data.boreholes.length; i++) {
+        console.log(data.boreholes[i])
+          $('#select-class-type').append($('<option>', { value: data.boreholes[i], text: data.boreholes[i] }));
+        }
+    });
+  };
 
 </script>
 

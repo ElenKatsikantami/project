@@ -26,11 +26,13 @@ urlpatterns = [
 
     #user urls
     path('profile', views.userprofile.as_view(), name="profile"),
-    
+
     #contact urls
     path('contact', views.contact.as_view(), name="contact"),
     path('contact/delete/<id>', views.DeleteContact.as_view(), name="delete-contact"),
-    
+
+    # chart
+    path('project/detail/borehole', views.borehole.as_view(), name='ajax-chart-borehole'),
     path('project/detail/ajax-chart', views.UserChartAjaxApi.as_view(), name='ajax-chart-project'),
 
 ]
