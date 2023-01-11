@@ -19,7 +19,6 @@ function genericlineData(data) {
     var series = [];
     for (j = 0; j < categories.length; j++) {
         var data_i = {
-            type: 'scatter',
             name: categories[j],
             data: data_list[j],
         };

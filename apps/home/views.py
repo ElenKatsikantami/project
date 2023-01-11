@@ -256,8 +256,9 @@ class UserChartAjaxApi(View):
                 ags_class = AGS(ags_file=ags_file_path)
                 tables, _ = ags_class.ags_to_dataframe()
                 util_class = util(tables=tables)
+                # import pdb; pdb.set_trace() #breakpoint  c n s q l
                 if v1 == 'Particle Size':
-                    result = util_class.get_factual_chart_partical(v1)
+                    result = util_class.get_factual_chart_partical(v1,classtype)
                 else:
                     result = util_class.get_factual_chart_data(v1,variable_two=v2, class_type=classtype)
             response_data = {'chart_data': result}

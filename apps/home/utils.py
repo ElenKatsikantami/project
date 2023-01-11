@@ -205,7 +205,7 @@ class util:
             print(str(exp))
         return variable_list
 
-    def get_factual_chart_partical(self,variable_one):
+    def get_factual_chart_partical(self,variable_one, LOCA_ID):
         """get the chart data for factual"""
         data, value = {}, []
         req_column_list = ["LOCA_ID"]
@@ -226,13 +226,25 @@ class util:
                         data_frame[column_name][~data_frame[column_name].str.isalnum()].apply(
                         lambda x: x.split("/")[0]).copy()
             df_merg = data_frame.copy()[req_column_list]
+            df_merg = df_merg.loc[df_merg['LOCA_ID'] == LOCA_ID]
             for column in df_merg.columns:
                 if column in columns:
                     df_merg[column] = pd.to_numeric(df_merg[column], errors='coerce')
             df_merg = df_merg.dropna()
             print(df_merg)
-            data['value'] = value
-            data['category'] = 'loca_ids'
+            category = df_merg.SPEC_DPTH.unique().tolist()
+            value_main = []
+            for spec in category:
+                value_outer = []
+                for _, row in df_merg[df_merg['SPEC_DPTH'] == spec].iterrows():
+                    value_inner = []
+                    value_inner.append(round(row[columns[1]],4))
+                    value_inner.append(round(row[columns[2]],4))
+                    value_outer.append(value_inner)
+                value_main.append(value_outer)
+            print(value_main)
+            data['value'] = value_main
+            data['category'] = category
         except Exception as exp:
             print('error')
             print(str(exp))

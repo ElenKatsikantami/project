@@ -111,13 +111,7 @@ function genericLineChart(data, div_id, chart_title, chart_sub_title, xAxisTitle
             itemMarginBottom: 3
         },
         colors: ['#234a83', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
-        series: [{
-            name: 'Tokyo',
-            data: [[1.5,7], [2.3,9], [4.2,5.6]]
-        }, {
-            name: 'New York',
-            data: [[0.8,9], [2.1,6.3], [5.0, 10.1]]
-        }],
+        series:data,
         exporting: exportContextMenu
       });
     

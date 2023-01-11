@@ -326,7 +326,7 @@
       yaxis = v1.split("Vs")[0];
       if(v1=='Particle Size'){
         var arranged_data = genericlineData(data)
-        genericLineChart(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text, yaxis, v2)
+        genericLineChart(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text+ " for " +classtype, 'SIZE', 'PERP')
       }
       else{
         var arranged_data = genericScatterPlotData(data)
