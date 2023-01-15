@@ -207,7 +207,7 @@ class util:
 
     def get_factual_chart_partical(self,variable_one, LOCA_ID):
         """get the chart data for factual"""
-        data, value = {}, []
+        data = {}
         req_column_list = ["LOCA_ID"]
         try:
             v_ref = self._get_reference(variable_one)
@@ -231,7 +231,6 @@ class util:
                 if column in columns:
                     df_merg[column] = pd.to_numeric(df_merg[column], errors='coerce')
             df_merg = df_merg.dropna()
-            print(df_merg)
             category = df_merg.SPEC_DPTH.unique().tolist()
             value_main = []
             for spec in category:
@@ -242,11 +241,9 @@ class util:
                     value_inner.append(round(row[columns[2]],4))
                     value_outer.append(value_inner)
                 value_main.append(value_outer)
-            print(value_main)
             data['value'] = value_main
             data['category'] = category
         except Exception as exp:
             print('error')
             print(str(exp))
         return data
-
