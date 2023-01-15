@@ -85,9 +85,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'geodatabase',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': 'geodata2221',
         'HOST': 'localhost',
-        'PORT': 'geodata2221',
+        'PORT': '5432',
         #  'OPTIONS': {
         #     'options': '-c search_path=boundary'
         # }
