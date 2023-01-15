@@ -87,7 +87,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': '12345',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': 'geodata2221',
         #  'OPTIONS': {
         #     'options': '-c search_path=boundary'
         # }
