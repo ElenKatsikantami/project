@@ -65,7 +65,8 @@ function genericScatterPlot(data, div_id, chart_title, chart_sub_title, xAxisTit
             align: 'right',
             verticalAlign: 'top',
             itemMarginTop: 3,
-            itemMarginBottom: 3
+            itemMarginBottom: 3,
+            itemWidth: 180,
         },
         colors: ['#234a83', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
         series: data,

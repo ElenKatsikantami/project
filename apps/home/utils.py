@@ -1,5 +1,5 @@
 import re
-import pyproj
+import math
 import pandas as pd
 import numpy as np
 from . ags_reference import ags_reference
@@ -29,10 +29,11 @@ class util:
         coordinate_fields = ["LOCA_LOCX",
                              "LOCA_LOCY", "HOLE_LOCX", "HOLE_LOCY"]
         try:
+            # import pdb; pdb.set_trace() #breakpoint  c n s q l
             coordinates_columns = [
                 i for i in loca.columns if i in coordinate_fields]
             for heading in self.heading_to_remove:
-                loca = loca[loca["HEADING"] != heading]
+                loca = loca[loca["HEADING_x"] != heading]
             loca = loca[(loca[coordinates_columns[0]].str.len() != 0)]
             loca["latitude"], loca["longitude"] = proj_code_to_wgs.transform(pd.to_numeric(
                 loca[coordinates_columns[0]]), pd.to_numeric(loca[coordinates_columns[1]]))
@@ -46,22 +47,29 @@ class util:
                 hole_dict['LOCA_ID'] = row['LOCA_ID']
                 hole_dict['longitude'] = round(float(row['longitude']), 4)
                 hole_dict['latitude'] = round(float(row['latitude']), 4)
-                hole_dict['LOCA_TYPE'] = row['LOCA_TYPE']
+                hole_dict['LOCA_GL'] = row['LOCA_GL']
+                hole_dict['MOND_RDNG'] = row['MOND_RDNG']
                 holetable.append(hole_dict)
         except Exception as exp:
             print(str(exp))
         return True
 
-    def _get_elevation(self,class_type):
+    def _get_elevation(self):
         """get the elevation"""
         try:
             elevations = re.findall("\w+_LOCZ|\w+_GL", " ".join(self.tables['LOCA'].columns))
-            loca_copy = self.tables['LOCA'].copy()[["LOCA_ID"]+[elevations[1]]+['LOCA_TYPE']]
+            # import pdb; pdb.set_trace() #breakpoint  c n s q l
+            df_loca = self.tables['LOCA']
+            df_hdph = self.tables['HDPH']
+            df_loca = df_loca.merge(
+                    df_hdph, on='LOCA_ID', how='left')
+            loca_copy = df_loca.copy()[["LOCA_ID"]+[elevations[1]]+['HDPH_EXC']]
         except Exception as exp:
             print(str(exp))
         return loca_copy
 
     def _column_max_value(self,nspt):
+        std_nval = 100
         try:
             if not nspt[0] or not nspt[1]:
                 return nspt[0]
@@ -74,7 +82,7 @@ class util:
                 return nval
             elif npen < 450:
                 nval_update = (nval*300)/abs(npen-150)
-                return 100 if nval_update>100 or nval_update<0 else int(nval_update)
+                return 100 if nval_update>std_nval or nval_update<0 else int(nval_update)
             else:
                 return nval
         except Exception as exp:
@@ -90,7 +98,7 @@ class util:
         try:
             v_ref = self._get_reference(variable_one)
             if variable_two == "Elevation":
-                df_elevation = self._get_elevation(class_type)
+                df_elevation = self._get_elevation()
             data_frame = self.tables[v_ref['heading']]
             column_name = v_ref['column'][-1]
             req_column_list = ["LOCA_ID",column_name]
@@ -142,10 +150,10 @@ class util:
             else:
                 df_merg["Elevation"] = df_merg["LOCA_LOCZ"]
             if class_type == 'machine':
-                loca_ids = df_merg.LOCA_TYPE.unique().tolist()
+                loca_ids = df_merg.HDPH_EXC.unique().tolist()
                 for lid in loca_ids:
                     value_outer = []
-                    for _, row in df_merg[df_merg['LOCA_TYPE'] == lid].iterrows():
+                    for _, row in df_merg[df_merg['HDPH_EXC'] == lid].iterrows():
                         value_inner = []
                         value_inner.append(round(row[column_name],4))
                         value_inner.append(round(row["Elevation"],4))
@@ -165,7 +173,7 @@ class util:
                 data['value'] = value
                 data['category'] = loca_ids
             elif class_type == 'boreholeandmachine':
-                df_merg['mcahine_type_borehole'] = df_merg['LOCA_ID'].astype(str) +"("+ df_merg["LOCA_TYPE"]+")"
+                df_merg['mcahine_type_borehole'] = df_merg['LOCA_ID'].astype(str) +"("+ df_merg["HDPH_EXC"]+")"
                 loca_ids = df_merg.mcahine_type_borehole.unique().tolist()
                 for lid in loca_ids:
                     value_outer = []
@@ -237,7 +245,7 @@ class util:
                 value_outer = []
                 for _, row in df_merg[df_merg['SPEC_DPTH'] == spec].iterrows():
                     value_inner = []
-                    value_inner.append(round(row[columns[1]],4))
+                    value_inner.append(round(math.log10(row[columns[1]]),4))
                     value_inner.append(round(row[columns[2]],4))
                     value_outer.append(value_inner)
                 value_main.append(value_outer)

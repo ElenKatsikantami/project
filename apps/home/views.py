@@ -137,10 +137,13 @@ class projectDetails(LoginRequiredMixin, TemplateView):
                 if ags_class.ags_version == 'ags3':
                     loca = tables['HOLE']
                 if ags_class.ags_version == 'ags4':
-                    loca = tables['LOCA']
+                    # import pdb; pdb.set_trace() #breakpoint  c n s q l
+                    df_loca = tables['LOCA']
+                    df_mond = tables['MOND']
+                    loca = df_loca.merge(
+                            df_mond, on='LOCA_ID', how='left')
                 util_class.get_geojson(
                     loca, ags, proj_code_to_wgs, holetable, geojson)
-
             except Exception as exp:
                 print(str(exp))
             if tables:
