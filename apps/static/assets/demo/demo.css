@@ -59,3 +59,25 @@
   height: calc(100vh - 70px);
   margin-top: 70px;
 }
+
+.form-group input[type=file]::file-selector-button{
+  background-color: #352229;
+  border-color: #352229;
+  color:#ffffff;
+  border-radius: 5px;
+}
+
+.alert.alert-danger {
+  background-color: #352229;
+  color: #ffffff;
+}
+
+.alert.alert-success {
+  background-color: #352229;
+  color: #ffffff;
+}
+
+.alert {
+  padding: 10px 10px;
+  line-height: 20px;
+}

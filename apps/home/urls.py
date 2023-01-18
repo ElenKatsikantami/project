@@ -34,5 +34,8 @@ urlpatterns = [
     # chart
     path('project/detail/borehole', views.borehole.as_view(), name='ajax-chart-borehole'),
     path('project/detail/ajax-chart', views.UserChartAjaxApi.as_view(), name='ajax-chart-project'),
+    
+    #success
+    path('success', views.success.as_view(), name="success"),
 
 ]

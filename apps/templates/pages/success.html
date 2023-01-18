@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Add Project {% endblock %}
+
+{% load static %}
+
+{% load widget_tweaks %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+{{ form.media }}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card ">
+            <div class="card-body text-center">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}"
+                    role="alert">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

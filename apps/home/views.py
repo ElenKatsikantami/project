@@ -21,7 +21,6 @@ chart_list = {
         'N SPT Vs Elevation'
         ]}
 
-
 class landing(CreateView):
     """landing class"""
     template_name = "pages/landing.html"
@@ -38,7 +37,6 @@ class landing(CreateView):
             self.request, 'Contact request success. Will be in touch soon')
         return redirect(reverse("landing"))
 
-
 class index(LoginRequiredMixin, TemplateView):
     """Index class"""
     template_name = "pages/index.html"
@@ -49,7 +47,6 @@ class index(LoginRequiredMixin, TemplateView):
         context["projects"] = ProjectTable.objects.filter(
             is_deleted=False).order_by('id')
         return context
-
 
 class project(LoginRequiredMixin, TemplateView):
     """Project Class"""
@@ -62,7 +59,6 @@ class project(LoginRequiredMixin, TemplateView):
             is_deleted=False).order_by('id')
         return context
 
-
 class AddProject(LoginRequiredMixin, CreateView):
     """add project"""
     template_name = 'pages/project/form.html'
@@ -72,12 +68,13 @@ class AddProject(LoginRequiredMixin, CreateView):
         project_form = form.save(commit=False)  # the bet isn't saved just yet
         project_form.owner = self.request.user  # you add the user here
         project_form.save()
-        return redirect(reverse("project"))
+        messages.success(
+            self.request, 'Project added successfully.')
+        return redirect(reverse("success"))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
 
 class EditProject(LoginRequiredMixin, UpdateView):
     template_name = 'pages/project/form.html'
@@ -85,7 +82,9 @@ class EditProject(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save(commit=True)
-        return redirect(reverse("project"))
+        messages.success(
+            self.request, 'Project Edited successfully.')
+        return redirect(reverse("success"))
 
     def get_object(self):
         return get_object_or_404(ProjectTable, pk=self.kwargs["id"])
@@ -93,7 +92,6 @@ class EditProject(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
 
 class DeleteProject(LoginRequiredMixin, DeleteView):
     model = ProjectTable
@@ -106,7 +104,6 @@ class DeleteProject(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
 
 class projectDetails(LoginRequiredMixin, TemplateView):
     """Project Class"""
@@ -160,7 +157,6 @@ class projectDetails(LoginRequiredMixin, TemplateView):
         context["nspt"] = json.dumps(nspt)
         return context
 
-
 class AddProjectAGS(LoginRequiredMixin, CreateView):
     """add project"""
     template_name = 'pages/project/agcform.html'
@@ -171,12 +167,13 @@ class AddProjectAGS(LoginRequiredMixin, CreateView):
         project_ags_form = form.save(commit=False)
         project_ags_form.project = ProjectTable(id=self.kwargs["id"])
         project_ags_form.save()
-        return redirect(reverse("project"))
+        messages.success(
+            self.request, 'AGS file added successfully.')
+        return redirect(reverse("success"))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
 
 class EditProjectAGS(LoginRequiredMixin, UpdateView):
     template_name = 'pages/project/form.html'
@@ -184,7 +181,9 @@ class EditProjectAGS(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save(commit=True)
-        return redirect(reverse("project"))
+        messages.success(
+            self.request, 'Project AGS file edited successfully.')
+        return redirect(reverse("success"))
 
     def get_object(self):
         return get_object_or_404(ProjectAGS, pk=self.kwargs["id"])
@@ -192,7 +191,6 @@ class EditProjectAGS(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
 
 class DeleteProjectAGS(LoginRequiredMixin, DeleteView):
     model = ProjectTable
@@ -206,7 +204,6 @@ class DeleteProjectAGS(LoginRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         return context
 
-
 class userprofile(LoginRequiredMixin, TemplateView):
     """Project Class"""
     template_name = "pages/user/profile.html"
@@ -215,7 +212,6 @@ class userprofile(LoginRequiredMixin, TemplateView):
         """"get context data"""
         context = super().get_context_data(**kwargs)
         return context
-
 
 class contact(LoginRequiredMixin, TemplateView):
     """contact Class"""
@@ -228,7 +224,6 @@ class contact(LoginRequiredMixin, TemplateView):
             is_deleted=False).order_by('id')
         return context
 
-
 class DeleteContact(LoginRequiredMixin, DeleteView):
     model = ContactTable
     success_url = "/contact"
@@ -240,7 +235,6 @@ class DeleteContact(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
 
 class UserChartAjaxApi(View):
     """user based chart"""
@@ -289,3 +283,12 @@ class borehole(View):
         except Exception as exp:
             response_data = {'boreholes': 'False'}
             return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+class success(LoginRequiredMixin, TemplateView):
+    """success class"""
+    template_name = "pages/success.html"
+    
+    def get_context_data(self, **kwargs):
+        """get context data"""
+        context = super().get_context_data(**kwargs)
+        return context

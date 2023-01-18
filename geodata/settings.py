@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'geodatabase',
         'USER': 'postgres',
-        'PASSWORD': 'geodata2221',
+        'PASSWORD': '12345',
         'HOST': 'localhost',
         'PORT': '5432',
         #  'OPTIONS': {

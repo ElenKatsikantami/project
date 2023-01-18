@@ -15,7 +15,7 @@
   <div class="col-md-3">
     <div class="card card-product" data-count="2">
       <div class="card-header card-header-image" data-header-animation="true">
-        <a href="#pablo">
+        <a href="{% url 'project-details' project.id %}">
           {% if project.thumnail %}
           <img class="img" src= "{{ project.thumnail.url }}" >
           {% else %}
@@ -42,8 +42,11 @@
           </button>
         </div>
         <h4 class="card-title">
-          <a href="#pablo">{{ project.name }}</a>
+          <a href="{% url 'project-details' project.id %}">{{ project.name }}</a>
         </h4>
+        <h6>
+          Geo Database Management
+        </h6>
         <div class="card-description">
           {{ project.summery }}
         </div>
