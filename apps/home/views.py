@@ -256,6 +256,8 @@ class UserChartAjaxApi(View):
                 # import pdb; pdb.set_trace() #breakpoint  c n s q l
                 if v1 == 'Particle Size':
                     result = util_class.get_factual_chart_partical(v1,classtype)
+                elif v1 == 'Water Level':
+                    result = util_class.get_factual_chart_waterlevel(v2)
                 else:
                     result = util_class.get_factual_chart_data(v1,variable_two=v2, class_type=classtype)
             response_data = {'chart_data': result}
@@ -291,4 +293,15 @@ class success(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         """get context data"""
         context = super().get_context_data(**kwargs)
+        return context
+
+class ProjectProfile(LoginRequiredMixin, TemplateView):
+    """Project Class"""
+    template_name = "pages/profile/index.html"
+
+    def get_context_data(self, **kwargs):
+        """"get context data"""
+        context = super().get_context_data(**kwargs)
+        context["projects"] = ProjectTable.objects.filter(
+            is_deleted=False).order_by('id')
         return context

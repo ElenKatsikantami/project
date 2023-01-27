@@ -1,11 +1,14 @@
 """Models for project"""
 
 import os
+from django.contrib.auth.models import Group
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.core.validators import FileExtensionValidator
+
 
 # Create your models here.
 class ProjectTable(models.Model):
@@ -84,6 +87,17 @@ class ContactTable(models.Model):
     phone = models.CharField(max_length=15, null=True)
     message = models.TextField()
     is_deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Projectprofile(models.Model):
+    "project profile"
+    project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
+    group = models.ForeignKey(Group,on_delete = models.CASCADE, null=True)
+    name = models.CharField(max_length=200)
+    chart = JSONField()
 
     def __str__(self):
         return self.name

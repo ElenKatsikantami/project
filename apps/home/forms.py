@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import filesizeformat
 from django.conf import settings
-from .models import ProjectTable,ProjectAGS,ContactTable
+from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile
 
 
 class ProjectForm(forms.ModelForm):
@@ -56,4 +56,18 @@ class ContactForm(forms.ModelForm):
                   "email": "Email",
                   "phone": "Phone",
                   "message": "Message",
+                  }
+        
+
+class ProfileForm(forms.ModelForm):
+    """form for contact"""
+
+    class Meta:
+        """Meta"""
+        model = Projectprofile
+        fields = ("name","group","chart")
+        labels = {
+                  "name": "Name",
+                  "group": "Group",
+                  "chart": "Charts"
                   }

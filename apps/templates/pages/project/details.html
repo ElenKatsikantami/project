@@ -18,7 +18,7 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-body ">
-        <div id="detail-map" style="min-height:57vh;  max-height: 57vh;">
+        <div id="detail-map" style="min-height:57vh;  max-height: 57vh; z-index: 0;">
         </div>
       </div>
     </div>
@@ -74,8 +74,8 @@
                 <th>LOCA_ID</th>
                 <th>Longitude</th>
                 <th>Latitude</th>
-                <th>LOCA_GL</th>
-                <th>MOND_RDNG</th>
+                <th>Existing GL</th>
+                <th>Water Level</th>
               </tr>
             </thead>
             <tbody>
@@ -107,6 +107,7 @@
     </div>
   </div>
 </div>
+
 <div class="row">
   <div class="col-md-3">
     <div class="card ">
@@ -121,18 +122,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-2">
-    <div class="card ">
-      <div class="card-body ">
-        <div class="form-group bmd-form-group is-filled">
-          <select class="form-control datepicker" id="select-variable-type">
-            <option value="{{ ags.id }}">Factual</option>
-            <option value="{{ ags.id }}">Interperted</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <div class="col-md-3">
     <div class="card ">
       <div class="card-body ">
@@ -178,56 +167,10 @@
       </div>
     </div>
   </div>
-
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <div class="card resizable-content">
-      <div class="card-body">
-        <div class="input-group no-border">
-          <button class="btn btn-primary" id="drawChart-first-apply"><i class="material-icons">draw</i> Draw</button>
-        </div>
-        <div id="drawChart-first" style="width:100%; height: 90%;"></div>
-
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card resizable-content">
-      <div class="card-body ">
-        <div class="input-group no-border">
-          <button class="btn btn-primary" id="drawChart-second-apply"><i class="material-icons">draw</i> Draw</button>
-        </div>
-        <div id="drawChart-second" style="width:100%; height: 90%;"></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <div class="card resizable-content">
-      <div class="card-body ">
-        <div class="input-group no-border">
-          <button class="btn btn-primary" id="drawChart-third-apply"><i class="material-icons">draw</i> Draw</button>
-        </div>
-        <div id="drawChart-third" style="width:100%; height: 90%;"></div>
-
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card resizable-content">
-      <div class="card-body ">
-        <div class="input-group no-border">
-          <button class="btn btn-primary" id="drawChart-fourth-apply"><i class="material-icons">draw</i> Draw</button>
-        </div>
-        <div id="drawChart-fourth" style="width:100%; height: 90%;"></div>
-      </div>
-    </div>
-  </div>
 </div>
 
-
+{% include 'includes/charts.html' %}
+{% include 'includes/profileform.html' %}
 
 {% endblock content %}
 
@@ -266,9 +209,20 @@
   $('#select-variable-first').on('change', function () {
     $('#select-variable-second').empty()
     $('#select-class-type').empty()
+    $('#select-chart').empty()
     if ($('#select-variable-first').val() == 'Particle Size') {
       $('#select-variable-second').append($('<option>', { value: 'Percentage Passing (%)', text: 'Percentage Passing (%)' }));
       get_borhole_list()
+      $('#select-chart').append($('<option>', { value: 'Line Chart', text: 'Line chart' }));
+    }
+    else if ($('#select-variable-first').val() == 'Water Level') {
+      $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
+        general_key = ['By Bore Hole','By Machine Type','By Bore Hole and Machine Type']
+        general_value = ['borehole','machine','boreholeandmachine']
+        for (i = 0; i < general_value.length; i++) {
+          $('#select-class-type').append($('<option>', { value: general_value[i], text: general_key[i] }));
+        }
+        $('#select-chart').append($('<option>', { value: 'barchart', text: 'Barchart' }));
     }
     else{
       $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
@@ -277,6 +231,7 @@
         for (i = 0; i < general_value.length; i++) {
           $('#select-class-type').append($('<option>', { value: general_value[i], text: general_key[i] }));
         } 
+        $('#select-chart').append($('<option>', { value: 'scatter plot', text: 'Scatter plot' }));
     }
   });
 
@@ -294,6 +249,16 @@
           $('#select-class-type').append($('<option>', { value: general_value[i], text: general_key[i] }));
         } 
       });
+  
+  var chartCounter = 6
+  $('#extra-chart').click(function () {
+    id = '#'+chartCounter.toString()+'chart'
+    if(chartCounter == 12){
+      $('#extra-chart').addClass('hide');
+    }
+    $(id).removeClass('hide');
+    chartCounter = chartCounter+2
+  });
 
   $('#drawChart-first-apply').click(function () {
     userChartDrawFunction("drawChart-first");
@@ -308,14 +273,53 @@
     userChartDrawFunction("drawChart-fourth");
   });
 
+  $('#drawChart-five-apply').click(function () {
+    userChartDrawFunction("drawChart-five");
+  });
+  $('#drawChart-six-apply').click(function () {
+    userChartDrawFunction("drawChart-six");
+  });
+  $('#drawChart-seven-apply').click(function () {
+    userChartDrawFunction("drawChart-seven");
+  });
+  $('#drawChart-eight-apply').click(function () {
+    userChartDrawFunction("drawChart-eight");
+  });
+
+  $('#drawChart-nine-apply').click(function () {
+    userChartDrawFunction("drawChart-nine");
+  });
+  $('#drawChart-ten-apply').click(function () {
+    userChartDrawFunction("drawChart-ten");
+  });
+  $('#drawChart-eleven-apply').click(function () {
+    userChartDrawFunction("drawChart-eleven");
+  });
+  $('#drawChart-twel-apply').click(function () {
+    userChartDrawFunction("drawChart-twel");
+  });
+
+  $('#saveprofile').click(function () {
+    alert('yes')
+  });
+
+  var chartdict = {};
+  
   function userChartDrawFunction(chartDiv) {
+    var chartinnerdict = {};
     var ags = $('#select-ags-file').val();
     var ags_text = $("#select-ags-file option:selected").text();
     var v1 = $('#select-variable-first').val();
     var v2 = $('#select-variable-second').val();
     var classtype = $('#select-class-type').val();
     var chart = $('#select-chart').val();
-
+    chartinnerdict['ags'] = ags
+    chartinnerdict['v1'] = v1
+    chartinnerdict['v2'] = v2
+    chartinnerdict['classtype'] = classtype
+    chartinnerdict['chart'] = chart
+    chartdict[chartDiv] = chartinnerdict
+    console.log(chartdict)
     var dataRequest = {
       ags: ags,
       v1: v1,
@@ -329,6 +333,11 @@
       if(v1=='Particle Size'){
         var arranged_data = genericlineData(data)
         genericLineChart(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text+ " for " +classtype, 'SIZE', 'PERP')
+      }
+      else if(v1== 'Water Level'){
+        // var arranged_data = genericlineData(data)
+        console.log(data)
+        genericBarChart(data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text, 'Bore Hole', 'Elevation (MSL)')
       }
       else{
         var arranged_data = genericScatterPlotData(data)
@@ -352,7 +361,37 @@
     });
   };
 
+
 </script>
+
+<script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("myBtn");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+  </script>
+
 
 <script src="/static/custom/js/map.js"></script>
 

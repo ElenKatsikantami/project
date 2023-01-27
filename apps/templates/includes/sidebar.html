@@ -15,6 +15,12 @@
           <p>Project</p>
         </a>
       </li>
+      <li class="nav-item {% if '/profiles' in request.path %} active {% endif %}">
+        <a class="nav-link" href="{% url 'profiles' %}">
+          <i class="material-icons">contacts</i>
+          <p>Profile</p>
+        </a>
+      </li>
       {% if request.user.is_superuser %}
       <li class="nav-item {% if '/user' in request.path %} active {% endif %}">
         <a class="nav-link" href="{% url 'user_list' %}">

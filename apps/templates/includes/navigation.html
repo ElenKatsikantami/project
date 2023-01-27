@@ -21,6 +21,7 @@
       {% if '/project/details/' in request.path %}
       <div class="input-group no-border">
         <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"'><i class="material-icons">add</i> Add AGS</button>
+        <button id="myBtn" class="btn btn-primary" style = 'margin-left: 1%;'><i class="material-icons">save</i> Save as profile</button>
       </div>
       {% endif %}
       {% if request.user.is_authenticated %}

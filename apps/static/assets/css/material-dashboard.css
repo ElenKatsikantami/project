@@ -22,7 +22,7 @@
   box-sizing: border-box; }
 
 html {
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -34,7 +34,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -138,7 +138,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-size: 1em; }
 
 pre {
@@ -330,7 +330,7 @@ template {
   box-sizing: border-box; }
 
 html {
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -342,7 +342,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -446,7 +446,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-size: 1em; }
 
 pre {
@@ -706,7 +706,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: "geomanistregular"; }
+  font-family: "Raleway", sans-serif; }
 
 code {
   font-size: 87.5%;
@@ -4041,7 +4041,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4126,7 +4126,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -9563,7 +9563,7 @@ html * {
   -moz-osx-font-smoothing: grayscale; }
 
 body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
-  font-family: "geomanistregular";
+  font-family: "Raleway", sans-serif;
   font-weight: 300;
   line-height: 1.5em; }
 
@@ -11274,7 +11274,7 @@ legend {
   border-bottom: 0; }
 
 .serif-font {
-  font-family: "geomanistregular"; }
+  font-family: "Raleway", sans-serif; }
 
 * {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);

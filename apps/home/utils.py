@@ -198,6 +198,8 @@ class util:
                 chart_heading.append(ags_reference[chart_variable]['heading'])
             column_list = [x for x in chart_heading if x in headings]
             variable_list = [x for x in [*ags_reference]if ags_reference[x]['heading'] in column_list]
+            variable_list.append('Water Level')
+            print(variable_list)
         except Exception as exp:
             print(str(exp))
         return variable_list
@@ -251,6 +253,47 @@ class util:
                 value_main.append(value_outer)
             data['value'] = value_main
             data['category'] = category
+        except Exception as exp:
+            print('error')
+            print(str(exp))
+        return data
+
+    def get_factual_chart_waterlevel(self,variable_two):
+        """get the chart data for factual"""
+        data = {}
+        req_column_list = ["LOCA_ID","LOCA_LOCZ","MOND_RDNG"]
+        try:
+            df_loca = self.tables['LOCA']
+            df_mond = self.tables['MOND']
+            if variable_two == "Elevation":
+                df_loca = self._get_elevation()
+            data_frame = df_loca.merge(df_mond, on='LOCA_ID', how='left')
+            for heading in self.heading_to_remove:
+                data_frame = data_frame[data_frame["HEADING"] != heading]
+            for col in data_frame.columns:
+                data_frame[col] = pd.to_numeric(
+                    data_frame[col], errors='ignore')
+            df_merg = data_frame.copy()[req_column_list]
+            df_merg = df_merg.dropna()
+            df_merg["MOND_RDNG"] = df_merg["LOCA_LOCZ"]-df_merg["MOND_RDNG"]
+            category = df_merg.LOCA_ID.unique().tolist()
+            columns = df_merg.columns
+            req_value,dvalue = [],{}
+            value_waterlevel = []
+            value_elevation = []
+            for spec in category:
+                for _, row in df_merg[df_merg['LOCA_ID'] == spec].iterrows():
+                    value_waterlevel.append(round(row[columns[2]],4))
+                    value_elevation.append(round(row[columns[1]],4))
+            dvalue['name'] =' Water Level'
+            dvalue['data'] = value_waterlevel
+            req_value.append(dvalue)
+            dvalue = {}
+            dvalue['name'] =' Elevation'
+            dvalue['data'] = value_elevation
+            req_value.append(dvalue)
+            data['value'] = req_value
+            data['categories'] = category
         except Exception as exp:
             print('error')
             print(str(exp))

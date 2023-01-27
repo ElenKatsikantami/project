@@ -37,5 +37,8 @@ urlpatterns = [
     
     #success
     path('success', views.success.as_view(), name="success"),
+    
+    # profile
+    path('profiles', views.ProjectProfile.as_view(), name="profiles"),
 
 ]
