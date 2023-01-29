@@ -1,0 +1,251 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} project Details {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<!-- Link to Leaflet Stylesheet-->
+<link rel="stylesheet" href="/static/assets/css/leaflet/leaflet.css" />
+<link rel="stylesheet" href="/static/assets/css/leaflet/easy-button.css" />
+<link rel='stylesheet' href='/static/assets/css/leaflet/leaflet.fullscreen.css' />
+<link rel="stylesheet" href="/static/assets/css/leaflet/L.Control.Locate.min.css" />
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+<div id="content">
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div id="detail-map" style="min-height:57vh;  max-height: 57vh; z-index: 0;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card ">
+      <!-- <a class="nav-link" href="{% url 'add-project-ags' project.id %}" style="display: inline; float: right;">
+        <i class="material-icons">add</i> Add AGS file
+      </a> -->
+      <div class="table-responsive" style="min-height:15vh;  max-height: 18vh;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">AGS File</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ags in agsfile %}
+            <tr>
+              <td class="text-center">{{ forloop.counter }} </td>
+              <td class="text-center">{{ ags.name }}</td>
+              </td>
+              <td class="td-actions text-center">
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="/media/{{ ags.path }}"'>
+                  <i class="material-icons">download</i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive" style="min-height:35vh;  max-height: 37vh;">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="text-center">#</th>
+                <th>AGS File</th>
+                <th>LOCA_ID</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Existing GL</th>
+                <th>Water Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for hole in holetable %}
+              <tr>
+                <td class="text-center">{{ forloop.counter }} </td>
+                <!-- <td>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" type="checkbox" value="" checked="">
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
+                </td> -->
+                <td>{{ hole.ags }}</td>
+                <td>{{ hole.LOCA_ID }}</td>
+                <td>{{ hole.longitude }}</td>
+                <td>{{ hole.latitude }}</td>
+                <td>{{ hole.LOCA_GL }}</td>
+                <td>{{ hole.MOND_RDNG }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'includes/chartsprofile.html' %}
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<!-- IMPORT all JS FILES -->
+<!-- Link to leaflet javascript library-->
+<script src="/static/assets/js/core/jquery-3.6.0.min.js"></script>
+<script src="/static/assets/js/core/leaflet/leaflet.js"></script>
+<script src="/static/assets/js/core/leaflet/easy-button.js"></script>
+<script src='/static/assets/js/core/leaflet/Leaflet.fullscreen.min.js'></script>
+<script src="/static/assets/js/core/leaflet/leaflet.ajax.min.js"></script>
+<script src="/static/assets/js/core/leaflet/L.Control.Locate.min.js"></script>
+<script src="/static/assets/js/core/highchart/highcharts.js"></script>
+<script src="/static/assets/js/core/highchart/exporting.js"></script>
+<script src="/static/assets/js/core/highchart/export-data.js"></script>
+<script src="/static/assets/js/core/highchart/accessibility.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+<script src="/static/assets/js/plugins/bootbox.min.js"></script>
+<script src="/static/custom/js/main.js"></script>
+<script src="/static/custom/js/chartData.js"></script>
+<script src="/static/custom/js/chart.js"></script>
+
+<script type="text/javascript">
+  var headings = '{{headings|safe}}';
+  var holes = '{{hole|safe}}';
+  var projectname = '{{ project.name|safe }}'
+  var projectid = '{{ project.id|safe }}'
+
+  // charts
+  var chartlist = '{{ chartlist|safe }}'
+  var chartjson = '{{ chartjson|safe }}'
+  var chartlist = JSON.parse(chartlist);
+  var chartjson = JSON.parse(chartjson);
+
+  var headings = JSON.parse(headings);
+  var hole_data = JSON.parse(holes);
+
+  var hole_list = []
+  for (var key in hole_data) {
+    hole_list.push(key);
+  }
+  var headings_factual = headings.factual
+  chartdiv = ['drawChart-first','drawChart-second','drawChart-third',
+              'drawChart-fourth','drawChart-five','drawChart-six',
+              'drawChart-seven','drawChart-eight','drawChart-nine',
+              'drawChart-ten','drawChart-eleven','drawChart-twel']
+  for (i = 0; i < chartlist.length; i++) {
+      chartnumber = i+2
+      id = '#'+chartnumber.toString()+'chart'
+      $(id).removeClass('hide');
+      chartvalues = chartjson[chartlist[i]]
+      userChartDrawFunction(chartdiv[i],chartvalues.ags,chartvalues.v1,chartvalues.v2,chartvalues.classtype,chartvalues.chart,chartvalues.ags_text);
+    } 
+  var chartdict = {};
+  
+  function userChartDrawFunction(chartDiv,ags,v1,v2,classtype,chart,ags_text) {
+    var dataRequest = {
+      ags: ags,
+      v1: v1,
+      v2: v2,
+      classtype: classtype,
+      chart: chart
+    };
+    $.get("{% url 'ajax-chart-project' %}", dataRequest).done(function (data) {
+      var data = data.chart_data;
+      yaxis = v1.split("Vs")[0];
+      if(v1=='Particle Size'){
+        var arranged_data = genericlineData(data)
+        genericLineChart(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text+ " for " +classtype, 'SIZE', 'PERP')
+      }
+      else if(v1== 'Water Level'){
+        // var arranged_data = genericlineData(data)
+        console.log(data)
+        genericBarChart(data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text, 'Bore Hole', 'Elevation (MSL)')
+      }
+      else{
+        var arranged_data = genericScatterPlotData(data)
+        genericScatterPlot(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text, yaxis, 'Elevation (MSL)',)
+      }
+    });
+  };
+
+  function get_borhole_list(){
+    var ags = $('#select-ags-file').val();
+
+    var dataRequest = {
+      ags: ags
+    };
+    $.get("{% url 'ajax-chart-borehole' %}", dataRequest).done(function (data) {
+      console.log(data.boreholes.length)
+      for (i = 0; i < data.boreholes.length; i++) {
+        console.log(data.boreholes[i])
+          $('#select-class-type').append($('<option>', { value: data.boreholes[i], text: data.boreholes[i] }));
+        }
+    });
+  };
+
+</script>
+<script src="/static/custom/js/map.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.58/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.58/vfs_fonts.js"></script>
+
+<script>
+  function downloadPDF() {
+    // get div content
+    const content = document.getElementById("content").innerHTML;
+
+    // create canvas image of the chart
+    const canvas = document.getElementById("drawChart-first");
+    const canvasImg = canvas.toDataURL("image/png");
+
+    // create PDF document definition
+    const documentDefinition = {
+      content: [
+        { text: "Map and Chart", style: "header" },
+        {
+          image: canvasImg,
+          width: 500,
+          height: 300
+        },
+        {
+          text: "Map",
+          style: "subheader"
+        },
+        {
+          html: content
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true
+        },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          margin: [0, 10, 0, 5]
+        }
+      }
+    };
+
+    pdfMake.createPdf(documentDefinition).download("map-and-chart.pdf");
+  }
+</script>
+{% endblock javascripts %}
+
+

@@ -24,6 +24,11 @@
         <button id="myBtn" class="btn btn-primary" style = 'margin-left: 1%;'><i class="material-icons">save</i> Save as profile</button>
       </div>
       {% endif %}
+      {% if '/profiles/details/' in request.path %}
+      <div class="input-group no-border">
+        <!-- <button class="btn btn-primary" onclick="downloadPDF()"><i class="material-icons">download</i> Download as PDF</button> -->
+      </div>
+      {% endif %}
       {% if request.user.is_authenticated %}
       <ul class="navbar-nav">
         <li class="nav-item dropdown">

@@ -13,38 +13,40 @@
             </div>
             <div class="card-body ">
                 <form class="form-horizontal" id="profile-form">
+                    {% csrf_token %}
                     <div class="row">
                         <label class="col-md-3 col-form-label">Name</label>
                         <div class="col-md-9">
                             <div class="form-group has-default bmd-form-group is-filled">
-                                <input type="text" name="name" value="Name" class="form-control">
+                                <input type="text" name="name" class="form-control">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-md-3 col-form-label">Share</label>
+                        <!-- <label class="col-md-3 col-form-label">Project</label> -->
                         <div class="col-md-9">
                             <div class="form-group bmd-form-group is-filled">
-                                <input type="text"name="share" value="share" class="form-control">
+                                <!-- <input type="text" name="projectdisplay" class="form-control" id="profileprojectname" disabled="disabled"> -->
+                                <input type="hidden" name="project" class="form-control" id="profileprojectid">
                             </div>
                         </div>
                     </div>
-                </form>
-                <form action="#" id="contact-form">
-                    {% csrf_token %}
-                    <input type="text" name="name" value="Name " onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
-                    <input type="email" name="email" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
-                    <input type="text" name="phone" value="Phone" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Phone';}" required="">
-                    <textarea type="text" name="message" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Special Instruction/Comments...';}" required="">Special Instruction/Comments...</textarea>
-                    <input type="submit" value="Send">
-                </form>
-            </div>
-            <div class="card-footer ">
-                <div class="row">
-                    <div class="col-md-9">
-                        <button type="submit" class="btn btn-fill btn-rose">Save</button>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group bmd-form-group is-filled">
+                                <input type="hidden"name="group" class="form-control">
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group bmd-form-group is-filled">
+                                <input type="hidden"  name="chart" class="form-control" id="profilechartlist">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-fill btn-rose" style="float: right;">Save</button>
+                </form>
             </div>
         </div>
     </div>

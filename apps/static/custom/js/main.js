@@ -5,13 +5,13 @@ $(document).ready(function () {
         rules: {
             name: {
                 required: true,
-                minlength: 2
+                minlength: 4
             }
         },
         messages: {
             name: {
-                required: "Name must be there",
-                minlength: "your name must consist of at least 2 characters"
+                required: "Profile name must be there",
+                minlength: "Profile name must consist of at least 4 characters"
             }
         },
         submitHandler: function (form) {
@@ -20,19 +20,13 @@ $(document).ready(function () {
                 url: '/profileform',
                 data: $(form).serialize(),
                 success: function (data, status) {
-                    $("#contact-form").trigger('reset');
-                    bootbox.alert({
-                        message: data.message,
-                    });
+                    var message = data.message
+                    modal.style.display = "None";
+                    alert('Profile added successfully');
                 },
                 error: function () {
-                    bootbox.alert({
-                        message: data.message,
-                        size: 'small'
-                    });
-                    // $('#contact-form').fadeTo( "slow", 0.15, function() {
-                    // 	$('#error').fadeIn();
-                    // });
+                    $modal.style.display = "None";
+                    alert('Profile added Failed');
                 }
             });
         }

@@ -34,11 +34,14 @@ urlpatterns = [
     # chart
     path('project/detail/borehole', views.borehole.as_view(), name='ajax-chart-borehole'),
     path('project/detail/ajax-chart', views.UserChartAjaxApi.as_view(), name='ajax-chart-project'),
-    
+
     #success
     path('success', views.success.as_view(), name="success"),
-    
+
     # profile
     path('profiles', views.ProjectProfile.as_view(), name="profiles"),
+    path('profileform', views.ProjectProfileForm, name="profileform"),
+    path('profiles/delete/<id>', views.DeleteProfile.as_view(), name="delete-profile"),
+    path('profiles/details/<id>/<pid>', views.profileDetails.as_view(), name="profile-details"),
 
 ]

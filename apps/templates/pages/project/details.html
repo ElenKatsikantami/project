@@ -187,12 +187,19 @@
 <script src="/static/assets/js/core/highchart/exporting.js"></script>
 <script src="/static/assets/js/core/highchart/export-data.js"></script>
 <script src="/static/assets/js/core/highchart/accessibility.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+<script src="/static/assets/js/plugins/bootbox.min.js"></script>
+<script src="/static/custom/js/main.js"></script>
 <script src="/static/custom/js/chartData.js"></script>
 <script src="/static/custom/js/chart.js"></script>
 
 <script type="text/javascript">
   var headings = '{{headings|safe}}';
   var holes = '{{hole|safe}}';
+  var projectname = '{{ project.name|safe }}'
+  var projectid = '{{ project.id|safe }}'
+
+  console.log(projectid)
 
   var headings = JSON.parse(headings);
   var hole_data = JSON.parse(holes);
@@ -299,10 +306,6 @@
     userChartDrawFunction("drawChart-twel");
   });
 
-  $('#saveprofile').click(function () {
-    alert('yes')
-  });
-
   var chartdict = {};
   
   function userChartDrawFunction(chartDiv) {
@@ -318,6 +321,7 @@
     chartinnerdict['v2'] = v2
     chartinnerdict['classtype'] = classtype
     chartinnerdict['chart'] = chart
+    chartinnerdict['ags_text'] = ags_text
     chartdict[chartDiv] = chartinnerdict
     console.log(chartdict)
     var dataRequest = {
@@ -361,7 +365,6 @@
     });
   };
 
-
 </script>
 
 <script>
@@ -377,6 +380,10 @@
   // When the user clicks the button, open the modal 
   btn.onclick = function() {
     modal.style.display = "block";
+    console.log(chartdict)
+    $("#profilechartlist").val(JSON.stringify(chartdict, null, 2));
+    $("#profileprojectname").val(projectname);
+    $("#profileprojectid").val(projectid);
   }
   
   // When the user clicks on <span> (x), close the modal
