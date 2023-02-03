@@ -26,7 +26,8 @@
       {% endif %}
       {% if '/profiles/details/' in request.path %}
       <div class="input-group no-border">
-        <!-- <button class="btn btn-primary" onclick="downloadPDF()"><i class="material-icons">download</i> Download as PDF</button> -->
+        <button class="btn btn-primary" onclick="profile_edit();"><i class="material-icons">edit</i> Enable Edit</button>
+        <button id="myBtn" class="btn btn-primary hide" style = 'margin-left: 1%;'><i class="material-icons">save</i> Save</button>
       </div>
       {% endif %}
       {% if request.user.is_authenticated %}

@@ -15,19 +15,12 @@
   </title>
   
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-  <!--     Fonts and icons     -->
   <link rel="stylesheet" href="/static/assets/font/Geomanist-Light-Webfont/geomanist-light-webfont.ttf" />
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"> -->
   
-
-  <!-- Specific Page CSS goes HERE  -->
   
   {% block stylesheets %}{% endblock stylesheets %}
-  
-  <!-- CSS Files -->
   <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
-  <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="/static/assets/demo/demo.css" rel="stylesheet" />
 
   
@@ -35,28 +28,14 @@
 
 <body class="">
   <div class="wrapper ">
-
-    <!-- {% include 'includes/sidebar.html' %} -->
-
     <div class="main-panel">
-
-      <!-- {% include 'includes/navigation.html' %} -->
-
-      <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-
           {% block content %}{% endblock content %}
-
         </div>
       </div>
-
-      <!-- {% include 'includes/footer.html' %} -->
-
     </div>
   </div>
-
-  <!-- {% include 'includes/fixed-plugin.html' %} -->
   
   {% block javascripts %}{% endblock javascripts %}
 
@@ -64,8 +43,6 @@
 
   {% include 'includes/scripts-sidebar.html' %}
   
-  <!-- Specific Page JS goes HERE  -->
-  
-  
+ 
 </body>
 </html>

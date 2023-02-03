@@ -1,7 +1,7 @@
 /*
 
 =========================================================
-* AppSeed - Simple SCSS compiler via Gulp
+* Geodata - Simple SCSS compiler via Gulp
 =========================================================
 
 */

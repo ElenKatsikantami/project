@@ -1,9 +1,6 @@
 import os
 import json
-import re
 import pyproj
-import pandas as pd
-import numpy as np
 from django.shortcuts import get_object_or_404, redirect, reverse, HttpResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
@@ -54,9 +51,10 @@ class project(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         """"get context data"""
+        user = self.request.user
         context = super().get_context_data(**kwargs)
         context["projects"] = ProjectTable.objects.filter(
-            is_deleted=False).order_by('id')
+            is_deleted=False).order_by('id').filter(owner=user)
         return context
 
 class AddProject(LoginRequiredMixin, CreateView):
@@ -302,7 +300,8 @@ class ProjectProfile(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         """"get context data"""
         context = super().get_context_data(**kwargs)
-        context["profiles"] = Projectprofile.objects.order_by('id')
+        user = self.request.user
+        context["profiles"] = Projectprofile.objects.order_by('id').filter(project__owner=user)
         return context
 
 def ProjectProfileForm(request):

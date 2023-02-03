@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Copyright (c) 2019 - present AppSeed.us
+Copyright (c) 2019 - present Geodata.us
 """
 
 import os

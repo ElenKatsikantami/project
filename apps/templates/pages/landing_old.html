@@ -1,0 +1,241 @@
+{% extends "layouts/base-landing.html" %}
+
+{% block title %} Landing {% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="banner">
+  <div class="header">
+    <div class="container">
+      <div class="header-left">
+        <div class="w3layouts-logo">
+          <h1>
+            <a href="{% url 'landing' %}"><span></span> ORYCTA</a>
+          </h1>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="w3-header-bottom">
+          <div class="top-nav">
+            <nav class="navbar navbar-default">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                  data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                  <li><a class="active" href="{% url 'login' %}">Login</a></li>
+                </ul>
+                <div class="clearfix"> </div>
+              </div>
+            </nav>
+          </div>
+
+          <div class="clearfix"> </div>
+        </div>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+  <div class="w3layouts-banner-slider">
+    <div class="container">
+      <div class="slider">
+        <div class="callbacks_container">
+          <ul class="rslides callbacks callbacks1" id="slider4">
+            <li>
+              <div class="agileits-banner-info">
+                <h6>ORYCTA</h6>
+                <h3>Dcode</h3>
+                <p>In depth analysis of geotechnical data focusing on valuable, project specific insights. Turn geotechnical risk
+                  into a unique competitive advantage.</p>
+                <div class="w3-button">
+                  <!-- <a href="single.html">More</a> -->
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="agileits-banner-info">
+                <h6>ORYCTA</h6>
+                <h3>Manage</h3>
+                <p>In depth analysis of geotechnical data focusing on valuable, project specific insights. Turn geotechnical risk
+                  into a unique competitive advantage.</p>
+                <div class="w3-button">
+                  <!-- <a href="single.html">More</a> -->
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <script src="/static/assets/landing/js/responsiveslides.min.js"></script>
+        <script>
+          // You can also use "$(window).load(function() {"
+          $(function () {
+            // Slideshow 4
+            $("#slider4").responsiveSlides({
+              auto: true,
+              pager: true,
+              nav: true,
+              speed: 500,
+              namespace: "callbacks",
+              before: function () {
+                $('.events').append("<li>before event fired.</li>");
+              },
+              after: function () {
+                $('.events').append("<li>after event fired.</li>");
+              }
+            });
+
+          });
+        </script>
+        <!--banner Slider starts Here-->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="welcome">
+  <div class="container">
+    <div class="w3l-heading">
+      <h3>Welcome</h3>
+    </div>
+    <div class="w3-welcome-grids">
+      <div class="col-md-7 w3-welcome-left">
+        <h5>Information into knowledge.</h5>
+        <p>In depth analysis of geotechnical data focusing on valuable, project specific insights.
+          Interpretation made easy so that you can draw meaningful decisions and turn geotechnical risk
+          into a unique competitive advantage.
+        </p>
+        <p>
+          Decode. Manage. Store. Share.</p>
+        <div class="w3l-button">
+          <a href="{% url 'project' %}"> <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Geo-data Platform</a>
+        </div>
+      </div>
+      <div class="col-md-5 w3ls-welcome-img1">
+        <img src="/static/assets/landing/images/2.jpg" alt="" />
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+  </div>
+</div>
+<div class="services">
+  <div class="container">
+    <div class="w3l-heading">
+      <h3>Services</h3>
+    </div>
+    <div class="agileits-services">
+      <div class="services-right-grids">
+        <div class="col-sm-4 services-right-grid">
+          <div class="services-icon hvr-radial-in">
+            <i class="fa fa-anchor" aria-hidden="true"></i>
+          </div>
+          <div class="services-icon-info">
+            <h5>Phasellus suscipit</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed orci enim, posuere sed
+              tincidunt et, pellentesque eget mi.</p>
+          </div>
+        </div>
+        <div class="col-sm-4 services-right-grid">
+          <div class="services-icon hvr-radial-in">
+            <i class="fa fa-comment" aria-hidden="true"></i>
+          </div>
+          <div class="services-icon-info">
+            <h5>Phasellus suscipit</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed orci enim, posuere sed
+              tincidunt et, pellentesque eget mi.</p>
+          </div>
+        </div>
+        <div class="col-sm-4 services-right-grid">
+          <div class="services-icon hvr-radial-in">
+            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+          </div>
+          <div class="services-icon-info">
+            <h5>Phasellus suscipit</h5>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed orci enim, posuere sed
+              tincidunt et, pellentesque eget mi.</p>
+          </div>
+        </div>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="welcome">
+  <div class="container">
+    <div class="agile-contact-form">
+      <div class="col-md-6 contact-form-left">
+        <div class="w3layouts-contact-form-top">
+          <h3>Get in touch</h3>
+          <p>Pellentesque eget mi nec est tincidunt accumsan. Proin fermentum dignissim justo, vel euismod
+            justo sodales vel. In non condimentum mauris. Maecenas condimentum interdum lacus, ac varius
+            nisl dignissim ac. Vestibulum euismod est risus, quis convallis nisi tincidunt eget. Sed
+            ultricies congue lacus at fringilla.</p>
+        </div>
+        <div class="agileits-contact-address">
+          <ul>
+            <li><i class="fa fa-phone" aria-hidden="true"></i> <span>+1 234 567 8901</span></li>
+            <li><i class="fa fa-phone fa-envelope" aria-hidden="true"></i> <span><a
+                  href="mailto:example@email.com">mail@example.com</a></span></li>
+            <li><i class="fa fa-map-marker" aria-hidden="true"></i> <span>Eiusmod Tempor inclore
+                Place,Kingsport 56777.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 contact-form-right">
+        <div class="contact-form-top">
+          <h3>Send us a message</h3>
+        </div>
+        {{ form.media }}
+        <div class="agileinfo-contact-form-grid">
+          <form id="TypeValidation" class="form-horizontal" action="" method="post" novalidate="novalidate" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card ">
+                <div class="card-body ">
+                    {% for message in messages %}
+                    <div class="alert messages {{ messsage.tags }} control-label col-lg-12">
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    </div>
+                    {% endfor %}
+
+                    {% for error in form.non_field_errors %}
+                    <div class="form-group has-error">{{ error }}</div>
+                    {% endfor %}
+
+                    {% for field in form %}
+                    <div class="row">
+                        {% for error in field.errors %}
+                        <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
+                        {% endfor %}
+                        <label class="col-sm-3 col-form-label">{{ field.label_tag }}</label>
+                        <div class="col-sm-9">
+                            <div class="bmd-form-group">
+                                {{ field }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="">
+                    <button type="submit" class="btn" style="float: right;">Submit</button>
+                </div>
+            </div>
+        </form>
+        </div>
+      </div>
+      <div class="clearfix"> </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}

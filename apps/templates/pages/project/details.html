@@ -82,16 +82,6 @@
               {% for hole in holetable %}
               <tr>
                 <td class="text-center">{{ forloop.counter }} </td>
-                <!-- <td>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox" value="" checked="">
-                      <span class="form-check-sign">
-                        <span class="check"></span>
-                      </span>
-                    </label>
-                  </div>
-                </td> -->
                 <td>{{ hole.ags }}</td>
                 <td>{{ hole.LOCA_ID }}</td>
                 <td>{{ hole.longitude }}</td>
@@ -138,6 +128,7 @@
         <div class="form-group bmd-form-group is-filled">
           <select class="form-control datepicker" id="select-variable-second">
             <option value="Elevation">Elevation</option>
+            <option value="Depth">Depth</option>
           </select>
         </div>
       </div>
@@ -171,7 +162,6 @@
 
 {% include 'includes/charts.html' %}
 {% include 'includes/profileform.html' %}
-
 {% endblock content %}
 
 {% block javascripts %}
@@ -198,8 +188,6 @@
   var holes = '{{hole|safe}}';
   var projectname = '{{ project.name|safe }}'
   var projectid = '{{ project.id|safe }}'
-
-  console.log(projectid)
 
   var headings = JSON.parse(headings);
   var hole_data = JSON.parse(holes);
@@ -233,6 +221,7 @@
     }
     else{
       $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
+        $('#select-variable-second').append($('<option>', { value: 'Depth', text: 'Depth' }));
         general_key = ['By Bore Hole','By Machine Type','By Bore Hole and Machine Type']
         general_value = ['borehole','machine','boreholeandmachine']
         for (i = 0; i < general_value.length; i++) {
@@ -250,6 +239,7 @@
       $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
     }
     $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
+    $('#select-variable-second').append($('<option>', { value: 'Depth', text: 'Depth' }));
     general_key = ['By Bore Hole','By Machine Type','By Bore Hole and Machine Type']
     general_value = ['borehole','machine','boreholeandmachine']
     for (i = 0; i < general_value.length; i++) {
@@ -323,7 +313,6 @@
     chartinnerdict['chart'] = chart
     chartinnerdict['ags_text'] = ags_text
     chartdict[chartDiv] = chartinnerdict
-    console.log(chartdict)
     var dataRequest = {
       ags: ags,
       v1: v1,
@@ -339,8 +328,6 @@
         genericLineChart(arranged_data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text+ " for " +classtype, 'SIZE', 'PERP')
       }
       else if(v1== 'Water Level'){
-        // var arranged_data = genericlineData(data)
-        console.log(data)
         genericBarChart(data, chartDiv, v1 + " vs " + v2, "Derived from " + ags_text, 'Bore Hole', 'Elevation (MSL)')
       }
       else{
@@ -357,9 +344,7 @@
       ags: ags
     };
     $.get("{% url 'ajax-chart-borehole' %}", dataRequest).done(function (data) {
-      console.log(data.boreholes.length)
       for (i = 0; i < data.boreholes.length; i++) {
-        console.log(data.boreholes[i])
           $('#select-class-type').append($('<option>', { value: data.boreholes[i], text: data.boreholes[i] }));
         }
     });
@@ -380,7 +365,6 @@
   // When the user clicks the button, open the modal 
   btn.onclick = function() {
     modal.style.display = "block";
-    console.log(chartdict)
     $("#profilechartlist").val(JSON.stringify(chartdict, null, 2));
     $("#profileprojectname").val(projectname);
     $("#profileprojectid").val(projectid);

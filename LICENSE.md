@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2019 - present Creative-Tim / ** AppSeed [App Generator](https://appseed.us)**
+Copyright (c) 2019 - present Creative-Tim / ** Geodata [App Generator](https://Geodata.us)**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

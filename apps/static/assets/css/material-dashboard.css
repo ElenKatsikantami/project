@@ -11564,7 +11564,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
       z-index: 1;
       margin-left: 15px;
       margin-right: 15px;
-      margin-top: -30px;
+      margin-top: 0;
       border-radius: 6px; }
       .card .card-header.card-header-image img {
         width: 100%;
@@ -11574,7 +11574,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
         max-height: 20vw;
         min-height: 13vw;
         max-width: 25vw;
-        min-width: 17.5vw; }
+        min-width: 16vw; }
       .card .card-header.card-header-image .card-title {
         position: absolute;
         bottom: 15px;

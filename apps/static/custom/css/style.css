@@ -159,3 +159,31 @@ label.col-md-3.col-form-label {
 label#name-error {
   color: #342229;
 }
+
+.hide{
+  display: None;
+}
+
+@media print{
+  head {
+    display: None;
+  }
+  .agstable {
+    display: None;
+  }
+  .navbar {
+    display: None;
+  }
+  .sidebar {
+    display: None;
+  }
+  .footer{
+    display: none;
+  }
+  *{
+    display: block;
+    width: max-content;
+    height: max-content;
+    overflow: unset;
+  }
+}

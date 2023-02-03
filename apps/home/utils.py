@@ -23,7 +23,7 @@ class util:
                 return False
         except Exception as exp:
             print(str(exp))
-    
+
     def get_geojson(self, loca, ags, proj_code_to_wgs, holetable, geojson):
         """get the geojson"""
         coordinate_fields = ["LOCA_LOCX",
@@ -97,8 +97,7 @@ class util:
         print(class_type)
         try:
             v_ref = self._get_reference(variable_one)
-            if variable_two == "Elevation":
-                df_elevation = self._get_elevation()
+            df_elevation = self._get_elevation()
             data_frame = self.tables[v_ref['heading']]
             column_name = v_ref['column'][-1]
             req_column_list = ["LOCA_ID",column_name]
@@ -130,23 +129,27 @@ class util:
             depth = None
             for req_column in df_merg.columns:
                 if possible_value[0] in req_column:
-                    print('dept')
                     depth = req_column
                     break
                 elif possible_value[2] in req_column:
-                    print('top')
                     base = [color for color in df_merg.columns if possible_value[1] in color]
                     if base:
                         depth = [req_column,base[0]]
                     else:
                         depth = req_column
             if depth:
-                if isinstance(depth,list):
-                    print('mean')
-                    df_merg["mean"] = df_merg[depth].mean(axis=1)
-                    df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg["mean"]
-                else:
-                    df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg[depth]
+                if variable_two == "Elevation":
+                    if isinstance(depth,list):
+                        df_merg["mean"] = df_merg[depth].mean(axis=1)
+                        df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg["mean"]
+                    else:
+                        df_merg["Elevation"] = df_merg["LOCA_LOCZ"]-df_merg[depth]
+                if variable_two == "Depth":
+                    if isinstance(depth,list):
+                        df_merg["mean"] = df_merg[depth].mean(axis=1)
+                        df_merg["Elevation"] = df_merg["mean"]
+                    else:
+                        df_merg["Elevation"] = df_merg[depth]
             else:
                 df_merg["Elevation"] = df_merg["LOCA_LOCZ"]
             if class_type == 'machine':
