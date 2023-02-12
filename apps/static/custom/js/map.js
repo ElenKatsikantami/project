@@ -103,7 +103,7 @@ for (var i = 0; i < hole_list.length; i++) {
 
 // Adding Layer control
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-console.log(arrayOfMarkers)
+// console.log(arrayOfMarkers)
 var bounds = new L.LatLngBounds(arrayOfMarkers);
 map.fitBounds(bounds);
 // Home buttom

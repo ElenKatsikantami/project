@@ -4,6 +4,7 @@ import pyproj
 from django.shortcuts import get_object_or_404, redirect, reverse, HttpResponse, Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, View
 from django.contrib import messages
 from . ags import AGS
@@ -68,7 +69,7 @@ class AddProject(LoginRequiredMixin, CreateView):
         project_form.save()
         messages.success(
             self.request, 'Project added successfully.')
-        return redirect(reverse("success"))
+        return HttpResponseRedirect(reverse('project-success', kwargs={'id':1}))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,7 +83,7 @@ class EditProject(LoginRequiredMixin, UpdateView):
         form.save(commit=True)
         messages.success(
             self.request, 'Project Edited successfully.')
-        return redirect(reverse("success"))
+        return HttpResponseRedirect(reverse('project-success', kwargs={'id':1}))
 
     def get_object(self):
         return get_object_or_404(ProjectTable, pk=self.kwargs["id"])
@@ -167,7 +168,7 @@ class AddProjectAGS(LoginRequiredMixin, CreateView):
         project_ags_form.save()
         messages.success(
             self.request, 'AGS file added successfully.')
-        return redirect(reverse("success"))
+        return HttpResponseRedirect(reverse('ags-success', kwargs={'id':self.kwargs["id"]}))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -291,6 +292,7 @@ class success(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         """get context data"""
         context = super().get_context_data(**kwargs)
+        context["project"] = self.kwargs["id"]
         return context
 
 class ProjectProfile(LoginRequiredMixin, TemplateView):
@@ -325,7 +327,7 @@ def ProjectProfileForm(request):
 
 class DeleteProfile(LoginRequiredMixin, DeleteView):
     model = ProjectTable
-    success_url = "/profiles"
+    success_url = "/project/profiles"
     template_name = "pages/profile/delete.html"
 
     def get_object(self):
@@ -392,4 +394,13 @@ class profileDetails(LoginRequiredMixin, TemplateView):
         context["hole"] = json.dumps(geojson_collection)
         context["holetable"] = holetable
         context["nspt"] = json.dumps(nspt)
+        return context
+
+class tools(LoginRequiredMixin, TemplateView):
+    """tools Class"""
+    template_name = "pages/tool/details.html"
+
+    def get_context_data(self, **kwargs):
+        """"get context data"""
+        context = super().get_context_data(**kwargs)
         return context

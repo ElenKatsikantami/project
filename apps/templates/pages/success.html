@@ -19,8 +19,17 @@
             <div class="card-body text-center">
                 {% if messages %}
                 {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}"
-                    role="alert">{{ message }}</div>
+                <p>{{ message }}</p>
+
+                <br>
+                {% if '/project' in request.path %}
+                    <button class="btn btn-primary" onclick='window.location.href="{% url 'project' %}"' style = 'margin: 0 3%;'><i
+                            class="material-icons" >content_paste</i> Back</button>
+                {% endif %}
+                {% if '/ags' in request.path %}
+                    <button class="btn btn-primary" onclick='window.location.href="{% url 'project-details' project %}"' style = 'margin: 0 3%;'><i
+                                class="material-icons" >content_paste</i> Back</button>
+                {% endif %}
                 {% endfor %}
                 {% endif %}
             </div>

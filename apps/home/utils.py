@@ -153,13 +153,17 @@ class util:
             else:
                 df_merg["Elevation"] = df_merg["LOCA_LOCZ"]
             if class_type == 'machine':
-                loca_ids = df_merg.HDPH_EXC.unique().tolist()
+                loca_ids = sorted(df_merg.HDPH_EXC.unique().tolist())
+                # import pdb; pdb.set_trace() #breakpoint  c n s q l
                 for lid in loca_ids:
                     value_outer = []
                     for _, row in df_merg[df_merg['HDPH_EXC'] == lid].iterrows():
                         value_inner = []
                         value_inner.append(round(row[column_name],4))
-                        value_inner.append(round(row["Elevation"],4))
+                        if variable_two == "Depth":
+                            value_inner.append(round(-abs(row["Elevation"]),4))
+                        else:
+                            value_inner.append(round(row["Elevation"],4))
                         value_outer.append(value_inner)
                     value.append(value_outer)
                 data['value'] = value
@@ -170,20 +174,26 @@ class util:
                     for _, row in df_merg[df_merg['LOCA_ID'] == lid].iterrows():
                         value_inner = []
                         value_inner.append(round(row[column_name],4))
-                        value_inner.append(round(row["Elevation"],4))
+                        if variable_two == "Depth":
+                            value_inner.append(round(-abs(row["Elevation"]),4))
+                        else:
+                            value_inner.append(round(row["Elevation"],4))
                         value_outer.append(value_inner)
                     value.append(value_outer)
                 data['value'] = value
                 data['category'] = loca_ids
             elif class_type == 'boreholeandmachine':
                 df_merg['mcahine_type_borehole'] = df_merg['LOCA_ID'].astype(str) +"("+ df_merg["HDPH_EXC"]+")"
-                loca_ids = df_merg.mcahine_type_borehole.unique().tolist()
+                loca_ids = sorted(df_merg.mcahine_type_borehole.unique().tolist())
                 for lid in loca_ids:
                     value_outer = []
                     for _, row in df_merg[df_merg['mcahine_type_borehole'] == lid].iterrows():
                         value_inner = []
                         value_inner.append(round(row[column_name],4))
-                        value_inner.append(round(row["Elevation"],4))
+                        if variable_two == "Depth":
+                            value_inner.append(round(-abs(row["Elevation"]),4))
+                        else:
+                            value_inner.append(round(row["Elevation"],4))
                         value_outer.append(value_inner)
                     value.append(value_outer)
                 data['value'] = value

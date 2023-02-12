@@ -32,16 +32,20 @@ urlpatterns = [
     path('contact/delete/<id>', views.DeleteContact.as_view(), name="delete-contact"),
 
     # chart
-    path('project/detail/borehole', views.borehole.as_view(), name='ajax-chart-borehole'),
-    path('project/detail/ajax-chart', views.UserChartAjaxApi.as_view(), name='ajax-chart-project'),
+    path('project/borehole', views.borehole.as_view(), name='ajax-chart-borehole'),
+    path('project/ajax-chart', views.UserChartAjaxApi.as_view(), name='ajax-chart-project'),
 
     #success
-    path('success', views.success.as_view(), name="success"),
+    path('project/success/<id>', views.success.as_view(), name="project-success"),
+    path('ags/success/<id>', views.success.as_view(), name="ags-success"),
 
     # profile
-    path('profiles', views.ProjectProfile.as_view(), name="profiles"),
-    path('profileform', views.ProjectProfileForm, name="profileform"),
-    path('profiles/delete/<id>', views.DeleteProfile.as_view(), name="delete-profile"),
-    path('profiles/details/<id>/<pid>', views.profileDetails.as_view(), name="profile-details"),
+    path('project/profiles', views.ProjectProfile.as_view(), name="profiles"),
+    path('project/profileform', views.ProjectProfileForm, name="profileform"),
+    path('project/profiles/delete/<id>', views.DeleteProfile.as_view(), name="delete-profile"),
+    path('project/profiles/details/<id>/<pid>', views.profileDetails.as_view(), name="profile-details"),
+
+    # profile
+    path('tools', views.tools.as_view(), name="tools"),
 
 ]

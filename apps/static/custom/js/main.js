@@ -17,7 +17,7 @@ $(document).ready(function () {
         submitHandler: function (form) {
             $.ajax({
                 type: "POST",
-                url: '/profileform',
+                url: '/project/profileform',
                 data: $(form).serialize(),
                 success: function (data, status) {
                     var message = data.message

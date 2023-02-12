@@ -6,47 +6,94 @@
   </div>
   <div class="sidebar-wrapper">
     <ul class="nav">
-      
       {% if request.user.is_authenticated %}
-      
-      <li class="nav-item {% if '/project' in request.path %} active {% endif %}">
-        <a class="nav-link" href="{% url 'project' %}">
-          <i class="material-icons">content_paste</i>
-          <p>Project</p>
+      <li class="nav-item {% if '/project' in request.path %}active{% endif %}">
+        <a class="nav-link" data-toggle="collapse" href="#project">
+          <i class="material-icons">apps</i>
+          <p> Projects
+            <b class="caret"></b>
+          </p>
         </a>
+        <div class="collapse" id="project">
+          <ul class="nav">
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'project' %}">
+                <i class="material-icons">content_paste</i>
+                <p>Project</p>
+              </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'profiles' %}">
+                <i class="material-icons">contacts</i>
+                <p>Profile</p>
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
-      <li class="nav-item {% if '/profiles' in request.path %} active {% endif %}">
-        <a class="nav-link" href="{% url 'profiles' %}">
-          <i class="material-icons">contacts</i>
-          <p>Profile</p>
+      <li class="nav-item {% if '/tools' in request.path %}active{% endif %}">
+        <a class="nav-link" data-toggle="collapse" href="#tools">
+          <i class="material-icons">widgets</i>
+          <p> Tools
+            <b class="caret"></b>
+          </p>
         </a>
+        <div class="collapse" id="tools">
+          <ul class="nav">
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'tools' %}">
+                <i class="material-icons">content_paste</i>
+                <p>Tools</p>
+              </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'tools' %}">
+                <i class="material-icons">contacts</i>
+                <p>Profile</p>
+              </a>
+            </li>
+          </ul>
+        </div>
       </li>
-      {% if request.user.is_superuser %}
-      <li class="nav-item {% if '/user' in request.path %} active {% endif %}">
-        <a class="nav-link" href="{% url 'user_list' %}">
+      <li class="nav-item {% if '/user' in request.path %}active{% endif %}">
+        <a class="nav-link" data-toggle="collapse" href="#users">
           <i class="material-icons">person</i>
-          <p>Users</p>
+          <p> User
+            <b class="caret"></b>
+          </p>
         </a>
+        <div class="collapse" id="users">
+          <ul class="nav">
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'user_list' %}">
+                <i class="material-icons">person</i>
+                <p>Users</p>
+              </a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'profiles' %}">
+                <i class="material-icons">contacts</i>
+                <p>Rules</p>
+              </a>
+            </li>
+            {% if request.user.is_superuser %}
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'contact' %}">
+                <i class="material-icons">phone</i>
+                <p>Contact</p>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
       </li>
-
-      <li class="nav-item {% if '/contact' in request.path %} active {% endif %}">
-        <a class="nav-link" href="{% url 'contact' %}">
-          <i class="material-icons">phone</i>
-          <p>Contact</p>
-        </a>
-      </li>
-      {% endif %}
-      
-
       {% else %}
-
       <li class="nav-item {% if request.path == '/accounts/login' %} active {% endif %}">
         <a class="nav-link" href="{% url 'login' %}">
           <i class="material-icons">directions_run</i>
           <p>Log In</p>
         </a>
       </li>
-
       {% endif %}
     </ul>
   </div>

@@ -4,7 +4,6 @@ Copyright (c) 2019 - present Geodata.us
 """
 
 import os
-from decouple import config
 from unipath import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -12,10 +11,10 @@ BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
+SECRET_KEY = 'orycta2023SecrectkeyNikos'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # load production server from .env
 ALLOWED_HOSTS = ['localhost', '127.0.0.1','geotechx.com','217.160.55.177','13.231.246.37','orycta.com']

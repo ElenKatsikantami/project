@@ -1,0 +1,62 @@
+
+<div class="row  {% if '/project/profiles' in request.path %}hide{% endif %}" id="profile-filter">
+    <div class="col-md-3">
+      <div class="card ">
+        <div class="card-body ">
+          <div class="form-group bmd-form-group is-filled">
+            <select class="form-control datepicker" id="select-ags-file">
+              {% for ags in agsfile %}
+              <option value="{{ ags.id }}">{{ ags.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card ">
+        <div class="card-body ">
+          <div class="form-group bmd-form-group is-filled">
+            <select class="form-control datepicker" id="select-variable-first">
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card ">
+        <div class="card-body ">
+          <div class="form-group bmd-form-group is-filled">
+            <select class="form-control datepicker" id="select-variable-second">
+              <option value="Elevation">Elevation</option>
+              <option value="Depth">Depth</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card ">
+        <div class="card-body ">
+          <div class="form-group bmd-form-group is-filled">
+            <select class="form-control datepicker" id="select-class-type">
+              <option value="borehole">By Bore Hole</option>
+              <option value="machine">By Machine Type</option>
+              <option value="boreholeandmachine">By Bore Hole and Machine Type</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card ">
+        <div class="card-body ">
+          <div class="form-group bmd-form-group is-filled">
+            <select class="form-control datepicker" id="select-chart">
+              <option value="Scatter">Scatter plot</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
