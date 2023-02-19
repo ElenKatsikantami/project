@@ -432,6 +432,23 @@ class AddProjectDefaultProfileCategory(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         return context
 
+class EditProjectDefaultProfileCategory(LoginRequiredMixin, UpdateView):
+    template_name = 'pages/profile/default/form.html'
+    form_class = ProfileDefaultCategoryForm
+
+    def form_valid(self, form):
+        form.save(commit=True)
+        messages.success(
+            self.request, 'Category edited successfully.')
+        return redirect(reverse("defaultprofiles"))
+
+    def get_object(self):
+        return get_object_or_404(Projectdefaultprofilecategory, pk=self.kwargs["id"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 class DeleteProjectDefaultProfileCategory(LoginRequiredMixin, DeleteView):
     model = Projectdefaultprofilecategory
     success_url = "/project/default/profiles"
@@ -455,6 +472,23 @@ class AddProjectDefaultProfile(LoginRequiredMixin, CreateView):
         messages.success(
             self.request, 'Category added successfully.')
         return redirect(reverse("defaultprofiles"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+class EditProjectDefaultProfile(LoginRequiredMixin, UpdateView):
+    template_name = 'pages/profile/default/form.html'
+    form_class = ProfileDefaultForm
+
+    def form_valid(self, form):
+        form.save(commit=True)
+        messages.success(
+            self.request, 'Category edited successfully.')
+        return redirect(reverse("defaultprofiles"))
+
+    def get_object(self):
+        return get_object_or_404(Projectdefaultprofile, pk=self.kwargs["id"])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

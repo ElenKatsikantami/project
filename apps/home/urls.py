@@ -52,9 +52,11 @@ urlpatterns = [
     path('project/default/profiles', views.ProjectDefaultProfile.as_view(), name="defaultprofiles"),
 
     path('project/default/profile/category/add', views.AddProjectDefaultProfileCategory.as_view(), name="add-defaultprofilescategory"),
+    path('project/default/profile/category/edit/<id>', views.EditProjectDefaultProfileCategory.as_view(), name="edit-defaultprofilescategory"),
     path('project/default/profile/category/delete/<id>', views.DeleteProjectDefaultProfileCategory.as_view(), name="delete-defaultprofilescategory"),
 
     path('project/default/profile/add', views.AddProjectDefaultProfile.as_view(), name="add-defaultprofiles"),
+    path('project/default/profile/edit/<id>', views.EditProjectDefaultProfile.as_view(), name="edit-defaultprofiles"),
     path('project/default/profile/delete/<id>', views.DeleteProjectDefaultProfile.as_view(), name="delete-defaultprofiles"),
     
     path('project/generate/default/profile', views.ProjectDefaultProfileForm, name="generate-defaultprofiles"),
