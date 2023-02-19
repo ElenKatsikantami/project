@@ -298,7 +298,7 @@ class util:
                 for _, row in df_merg[df_merg['LOCA_ID'] == spec].iterrows():
                     value_waterlevel.append(round(row[columns[2]],4))
                     value_elevation.append(round(row[columns[1]],4))
-            dvalue['name'] =' Water Level'
+            dvalue['name'] = 'Water Level'
             dvalue['data'] = value_waterlevel
             req_value.append(dvalue)
             dvalue = {}

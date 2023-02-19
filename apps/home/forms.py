@@ -31,7 +31,8 @@ variable1Choices = (
         ('Residual Cohesion','Residual Cohesion'),
         ('Particle Size','Particle Size'),
         ('% passing 0.425mm','% passing 0.425mm'),
-        ('% of Gravel','% of Gravel')
+        ('% of Gravel','% of Gravel'),
+        ('Water Level','Water Level')
     )
 
 variable2Choices = (
