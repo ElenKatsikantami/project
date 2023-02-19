@@ -4,8 +4,63 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import filesizeformat
 from django.conf import settings
-from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile
+from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile, Projectdefaultprofilecategory, Projectdefaultprofile
 
+
+variable1Choices = (
+        ('TCR','TCR'),
+        ('SCR','SCR'),
+        ('RQD','RQD'),
+        ('N SPT','N SPT'),
+        ('CL','CL'),
+        ('PH','PH'),
+        ('SC','SC'),
+        ('LL','LL'),
+        ('PL','PL'),
+        ('PI','PI'),
+        ('Moisture Content','Moisture Content'),
+        ('Specific Gravity','Specific Gravity'),
+        ('Bulk Density','Bulk Density'),
+        ('Max Dry Density','Max Dry Density'),
+        ('Min Dry Density','Min Dry Density'),
+        ('Water Content','Water Content'),
+        ('UCS','UCS'),
+        ('Peak Angle of Friction','Peak Angle of Friction'),
+        ('Residual Angle of Friction','Residual Angle of Friction'),
+        ('Peak Cohesion','Peak Cohesion'),
+        ('Residual Cohesion','Residual Cohesion'),
+        ('Particle Size','Particle Size'),
+        ('% passing 0.425mm','% passing 0.425mm'),
+        ('% of Gravel','% of Gravel')
+    )
+
+variable2Choices = (
+        ('Elevation','Elevation'),
+        ('Depth','Depth'),
+        # ('Percentage Passing (%)','Percentage Passing (%)'),
+    )
+
+variable3Choices = (
+        ('borehole','By Bore Hole'),
+        ('machine','By Machine Type'),
+        ('boreholeandmachine','By Bore Hole and Machine Type'),
+        # ('boreholenumber','By Bore Number'),
+    )
+
+chartindexChoices = (
+        ('First','First'),
+        ('Second','Second'),
+        ('Third','Third'),
+        ('Fourth','Fourth'),
+        ('Five','Five'),
+        ('Six','Six'),
+        ('Seven','Seven'),
+        ('Eight','Eight'),
+        ('Nine','Nine'),
+        ('Ten','Ten'),
+        ('Eleven','Eleven'),
+        ('Twelveve','Twelveve'),
+    )
 
 class ProjectForm(forms.ModelForm):
     """form for project"""
@@ -76,4 +131,32 @@ class ProfileForm(forms.ModelForm):
                   "name": "Name",
                   "group": "Group",
                   "chart": "Charts"
+                  }
+
+class ProfileDefaultCategoryForm(forms.ModelForm):
+    """form for Default category"""
+
+    class Meta:
+        """Meta"""
+        model = Projectdefaultprofilecategory
+        fields = ("name",)
+        labels = {
+                  "name": "Name"
+                  }
+
+class ProfileDefaultForm(forms.ModelForm):
+    """form for Default Profile"""
+    variable1 = forms.ChoiceField(choices = variable1Choices)
+    variable2 = forms.ChoiceField(choices = variable2Choices)
+    variable3 = forms.ChoiceField(choices = variable3Choices)
+
+    class Meta:
+        """Meta"""
+        model = Projectdefaultprofile
+        fields = ("category","variable1","variable2","variable3",)
+        labels = {
+                  "category": "Category",
+                  "variable1": "Variable One",
+                  "variable2": "Variable Two",
+                  "variable3": "Variable Three",
                   }

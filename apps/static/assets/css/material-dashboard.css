@@ -4030,7 +4030,8 @@ button.close {
   .modal-content {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); }
   .modal-sm {
-    max-width: 300px; } }
+    max-width: 300px; }
+     }
 
 @media (min-width: 992px) {
   .modal-lg {
@@ -4662,7 +4663,9 @@ button.bg-dark:focus {
   .d-lg-flex {
     display: flex !important; }
   .d-lg-inline-flex {
-    display: inline-flex !important; } }
+    display: inline-flex !important; }
+  .btn .material-icons, .btn:not(.btn-just-icon):not(.btn-fab) .fa {
+      font-size: 1.1rem !important;;} }
 
 @media (min-width: 1200px) {
   .d-xl-none {
@@ -11188,7 +11191,7 @@ a[aria-expanded="true"] .caret,
 
 .table .td-actions .btn {
   margin: 0px;
-  padding: 5px; }
+  padding: 5px 10px; }
 
 .table > tbody > tr {
   position: relative; }

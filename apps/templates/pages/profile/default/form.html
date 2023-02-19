@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Project Delete {% endblock %}
+{% block title %} Add Project profile {% endblock %}
 
 {% load static %}
 
@@ -16,21 +16,20 @@
 <div class="col-md-8 col-12 mr-auto ml-auto">
     <div class="row">
         <div class="col-md-12">
-            <form id="TypeValidation" class="form-horizontal" action="" method="post" novalidate="novalidate"
-                enctype="multipart/form-data">
+            <form id="TypeValidation" class="form-horizontal" action="" method="post" novalidate="novalidate" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="card ">
                     <div class="card-header card-header-rose card-header-text">
                         <div class="card-text">
-                            <h4 class="card-title">Delete</h4>
+                            <h4 class="card-title">Profile Default Form</h4>
                         </div>
                     </div>
                     <div class="card-body ">
-                        <!-- {% for message in messages %}
+                        {% for message in messages %}
                         <div class="alert messages {{ messsage.tags }} control-label col-lg-12">
                             <p class="{{ message.tags }}">{{ message }}</p>
                         </div>
-                        {% endfor %} -->
+                        {% endfor %}
 
                         {% for error in form.non_field_errors %}
                         <div class="form-group has-error">{{ error }}</div>
@@ -49,16 +48,10 @@
                             </div>
                         </div>
                         {% endfor %}
-
                     </div>
                     <div class="card-footer ml-auto mr-auto">
-                        <h4 class="card-title">Are you sure? Do you want to delete?</h4>
+                        <button type="submit" class="btn btn-rose">Submit</button>
                     </div>
-                    <div class="card-footer ml-auto mr-auto">
-                        <button type="submit" class="btn btn-rose" style="margin-right:5px;">Delete</button>
-                        <a class="btn btn-rose" onclick='window.location.href="{% url 'profiles' %}"' style="color:#ffffff ;">Cancel</a>
-                    </div>
-
                 </div>
             </form>
         </div>

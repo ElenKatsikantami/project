@@ -9,8 +9,8 @@ from django.views.generic import TemplateView, CreateView, UpdateView, DeleteVie
 from django.contrib import messages
 from . ags import AGS
 from . utils import util
-from . models import ProjectTable, ProjectAGS, ContactTable, Projectprofile
-from . forms import ProjectForm, ProjectAGSForm, ContactForm
+from . models import ProjectTable, ProjectAGS, ContactTable, Projectprofile, Projectdefaultprofilecategory, Projectdefaultprofile
+from . forms import ProjectForm, ProjectAGSForm, ContactForm, ProfileDefaultCategoryForm, ProfileDefaultForm
 from . ags_reference import ags_reference
 
 chart_list = {
@@ -404,3 +404,112 @@ class tools(LoginRequiredMixin, TemplateView):
         """"get context data"""
         context = super().get_context_data(**kwargs)
         return context
+
+class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
+    """Project Default profile Class"""
+    template_name = "pages/profile/default/index.html"
+
+    def get_context_data(self, **kwargs):
+        """"get context data"""
+        context = super().get_context_data(**kwargs)
+        context["category"] = Projectdefaultprofilecategory.objects.order_by('id')
+        context["defaultprofile"] = Projectdefaultprofile.objects.order_by('id')
+        return context
+
+class AddProjectDefaultProfileCategory(LoginRequiredMixin, CreateView):
+    """add project Default profile category"""
+    template_name = 'pages/profile/default/form.html'
+    form_class = ProfileDefaultCategoryForm
+    error_message = "Invalid Category"
+
+    def form_valid(self, form):
+        form.save(commit=True)
+        messages.success(
+            self.request, 'Category added successfully.')
+        return redirect(reverse("defaultprofiles"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+class DeleteProjectDefaultProfileCategory(LoginRequiredMixin, DeleteView):
+    model = Projectdefaultprofilecategory
+    success_url = "/project/default/profiles"
+    template_name = "pages/profile/default/delete.html"
+
+    def get_object(self):
+        return get_object_or_404(Projectdefaultprofilecategory, pk=self.kwargs["id"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+class AddProjectDefaultProfile(LoginRequiredMixin, CreateView):
+    """add project Default profile category"""
+    template_name = 'pages/profile/default/form.html'
+    form_class = ProfileDefaultForm
+    error_message = "Invalid Category"
+
+    def form_valid(self, form):
+        form.save(commit=True)
+        messages.success(
+            self.request, 'Category added successfully.')
+        return redirect(reverse("defaultprofiles"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+class DeleteProjectDefaultProfile(LoginRequiredMixin, DeleteView):
+    model = Projectdefaultprofile
+    success_url = "/project/default/profiles"
+    template_name = "pages/profile/default/delete.html"
+
+    def get_object(self):
+        return get_object_or_404(Projectdefaultprofile, pk=self.kwargs["id"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+def ProjectDefaultProfileForm(request):
+    """project profile form addition"""
+    chartindexChoices = ['First','Second','Third','Fourth','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelveve']
+    try:
+        if request.method == 'POST':
+            # import pdb; pdb.set_trace() #breakpoint  c n s q l
+            projectid = request.POST.get('project')
+            project = ProjectTable.objects.get(id=projectid)
+            agslist = ProjectAGS.objects.filter(project_id=projectid)
+            categories = Projectdefaultprofilecategory.objects.order_by('id')
+            for category in categories:
+                chartdict = {}
+                counter = 0
+                for ags in agslist:
+                    name = category.name
+                    defaultprofile = Projectdefaultprofile.objects.filter(category_id=category.id)
+                    for profile in defaultprofile:
+                        chartinnerdict = {}
+                        chartinnerdict['ags'] = ags.id
+                        chartinnerdict['v1'] = profile.variable1
+                        chartinnerdict['v2'] = profile.variable2
+                        chartinnerdict['classtype'] = profile.variable3
+                        chartinnerdict['chart'] = 'Scatter'
+                        chartinnerdict['ags_text'] = ags.ags_file.name.split('/')[-1].split('_')[0]
+                        chartdict["drawChart-"+chartindexChoices[counter].lower()] = chartinnerdict
+                        counter+=1
+                        if counter == len(chartindexChoices)-1:
+                            break
+                # import pdb; pdb.set_trace() #breakpoint  c n s q l
+                instance = Projectprofile.objects.filter(name=name).filter(is_default=True).filter(project_id=projectid)
+                for obj in instance:
+                    obj.delete()
+                p = Projectprofile(name=name, project=project, chart=chartdict,is_default=True)
+                p.save()
+            result = {'message': 'Default Profile generated successfully'}
+        else:
+            result = {'message': 'Oops there is some error'}
+    except Exception as e:
+        result = {'message': 'Oops there is some error. Try Again' + str(e)}
+        return HttpResponse(json.dumps(result), content_type='application/json')
+    return HttpResponse(json.dumps(result), content_type='application/json')

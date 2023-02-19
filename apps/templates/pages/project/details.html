@@ -15,10 +15,11 @@
 
 {% block content %}
 
-{% include 'includes/projectmap.html' %}
-{% include 'includes/projectfilter.html' %}
+{% include 'includes/project/projectmap.html' %}
+{% include 'includes/project/projectfilter.html' %}
 {% include 'includes/charts.html' %}
-{% include 'includes/profileform.html' %}
+{% include 'includes/profile/profileform.html' %}
+{% include 'includes/profile/defaultprofileform.html' %}
 
 {% endblock content %}
 
@@ -54,7 +55,21 @@
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0];
+
+    var defaultmodal = document.getElementById("defaultprofileModal");
+    var btndefault = document.getElementById("defaultprofile");
+    var spandefault = document.getElementById("close-default-modal");
+
     var chartdict = {};
+
+    btndefault.onclick = function() {
+      defaultmodal.style.display = "block";
+      $("#profileprojectiddefault").val(projectid);
+    }
+
+    spandefault.onclick = function() {
+      defaultmodal.style.display = "none";
+    }
 </script>
 <script src="/static/custom/js/project.js"></script>
 <script src="/static/custom/js/map.js"></script>

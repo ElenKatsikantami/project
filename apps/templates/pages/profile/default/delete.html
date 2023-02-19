@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Project Delete {% endblock %}
+{% block title %} Default Profile Delete {% endblock %}
 
 {% load static %}
 
@@ -26,12 +26,6 @@
                         </div>
                     </div>
                     <div class="card-body ">
-                        <!-- {% for message in messages %}
-                        <div class="alert messages {{ messsage.tags }} control-label col-lg-12">
-                            <p class="{{ message.tags }}">{{ message }}</p>
-                        </div>
-                        {% endfor %} -->
-
                         {% for error in form.non_field_errors %}
                         <div class="form-group has-error">{{ error }}</div>
                         {% endfor %}
@@ -56,7 +50,7 @@
                     </div>
                     <div class="card-footer ml-auto mr-auto">
                         <button type="submit" class="btn btn-rose" style="margin-right:5px;">Delete</button>
-                        <a class="btn btn-rose" onclick='window.location.href="{% url 'profiles' %}"' style="color:#ffffff ;">Cancel</a>
+                        <a class="btn btn-rose" onclick='window.location.href="{% url 'defaultprofiles' %}"' style="color:#ffffff ;">Cancel</a>
                     </div>
 
                 </div>

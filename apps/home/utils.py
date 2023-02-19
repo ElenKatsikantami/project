@@ -94,7 +94,7 @@ class util:
         data, value = {}, []
         possible_value = ['_DEPT','_BASE','_TOP']
         null_values = ['NP','np']
-        print(class_type)
+        # print(class_type)
         try:
             v_ref = self._get_reference(variable_one)
             df_elevation = self._get_elevation()
@@ -112,7 +112,7 @@ class util:
             if variable_one == 'N SPT':
                 extra_col = v_ref['column'][0]
                 data_frame[column_name] = data_frame[[column_name,extra_col]].apply(self._column_max_value,axis=1)
-                print(data_frame[column_name])
+                # print(data_frame[column_name])
             if data_frame[column_name].dtype == "O":
                 data_frame[column_name][~data_frame[column_name].str.isalnum()] = \
                     data_frame[column_name][~data_frame[column_name].str.isalnum()].apply(

@@ -466,6 +466,7 @@ md = {
       // insert the navbar form before the sidebar list
       $nav_content = $(nav_content);
       // $navbar_form = $(navbar_form);
+      $sidebar_wrapper.find('.nav-mobile-menu').remove();
       $nav_content.insertBefore($sidebar_nav);
       $navbar_form.insertBefore($nav_content);
 

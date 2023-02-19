@@ -45,7 +45,18 @@ urlpatterns = [
     path('project/profiles/delete/<id>', views.DeleteProfile.as_view(), name="delete-profile"),
     path('project/profiles/details/<id>/<pid>', views.profileDetails.as_view(), name="profile-details"),
 
-    # profile
+    # tools
     path('tools', views.tools.as_view(), name="tools"),
+
+    # default profile
+    path('project/default/profiles', views.ProjectDefaultProfile.as_view(), name="defaultprofiles"),
+
+    path('project/default/profile/category/add', views.AddProjectDefaultProfileCategory.as_view(), name="add-defaultprofilescategory"),
+    path('project/default/profile/category/delete/<id>', views.DeleteProjectDefaultProfileCategory.as_view(), name="delete-defaultprofilescategory"),
+
+    path('project/default/profile/add', views.AddProjectDefaultProfile.as_view(), name="add-defaultprofiles"),
+    path('project/default/profile/delete/<id>', views.DeleteProjectDefaultProfile.as_view(), name="delete-defaultprofiles"),
+    
+    path('project/generate/default/profile', views.ProjectDefaultProfileForm, name="generate-defaultprofiles"),
 
 ]

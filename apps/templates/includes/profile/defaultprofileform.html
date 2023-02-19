@@ -1,0 +1,33 @@
+<!-- The Modal -->
+<div id="defaultprofileModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" id="close-default-modal">&times;</span>
+        <div class="card ">
+            <div class="card-header card-header-rose card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">contacts</i>
+                </div>
+                <h4 class="card-title">Generate Default Profiles</h4>
+            </div>
+            <div class="card-body ">
+                <div class="timeline-body">
+                    <p>It will generate the System Default profiles. System defined profiles are: </p>
+                </div>
+                <form class="form-horizontal" id="generate-default-profile">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group bmd-form-group is-filled">
+                                <input type="hidden" name="project" class="form-control" id="profileprojectiddefault">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-fill btn-rose" style="float: right;">Generate</button>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+
+</div>
