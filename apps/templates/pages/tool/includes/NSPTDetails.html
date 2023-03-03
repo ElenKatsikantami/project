@@ -1,0 +1,70 @@
+{% load static %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Description about N-SPT Correction</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7 ml-auto mr-auto">
+                <p>N-SPT values observed during testing are not utilized directly in the assessment
+                    of soil properties. These
+                    values need to be corrected to account for hammer efficiency, borehole diameter,
+                    sampling method, rod length
+                    and the overburden pressure. Current tool sets the rules to allow the
+                    calculations for the correct SPT numbers, N60 and (N1)60. You can
+                    activate the tool and then go back to project page to plot corrected SPT numbers
+                    with depth.
+                </p>
+
+                <h4>The corrected number N<sub>60</sub> is calculated as follows:</h4>
+                <p>
+                <ol>
+                    N<sub>60</sub> = C<sub>ER</sub> ∙ C<sub>RL</sub> ∙ C<sub>S</sub> ∙ C<sub>B</sub>
+                    ∙ measured N <br>
+
+                    The corrected number (N<sub>1</sub>)<sub>60</sub> is calculated as follows:<br>
+                    (N<sub>1</sub>)<sub>60</sub> = C<sub>N</sub> ∙ N<sub>60</sub><br>
+                    <br>
+                    Where:<br>
+                    <br>
+                    C<sub>ER</sub> = actual energy ration (compared to 60%) = ER/60<br>
+                    C<sub>RL</sub> = correction to account for length of rod<br>
+                    C<sub>S</sub> = correction due to liner used<br>
+                    C<sub>B</sub> = correction due to borehole diameter<br>
+                    C<sub>N</sub> = overburden pressure correction factor<br>
+                </ol>
+                </p>
+                <h4>Overburden pressure correction factor, C<sub>N</sub> methods are defined below:
+                </h4>
+                <ol>
+                    <li><strong>Peck, Hanson and Thornburn (1974)</strong></li>
+                    (C_{N} = 0.77 \cdot log(\frac{20}{\sigma'_{v0}(TSF)})) <br>
+                    <li><strong>Seed (1976)</strong></li>
+                    (C_{N} = 1- 0.25 \cdot log \,\, \sigma'_{v0}(TSF)) <br>
+
+                    <li><strong>Liao & Whitman (1986)</strong></li>
+
+                    (C_{N} = \sqrt\frac{1}{\sigma'_{v0} (TSF \,\, or \,\, kg/cm^2)}) <br>
+
+                    <li><strong>Skempton (1986)</strong></li>
+                    (C_{N} = \frac{2}{1+\sigma'_{v0}(TSF)}) For Fine sand of medium
+                    D<sub>r</sub>. <br>
+                    (C_{N} = \frac{3}{2+\sigma'_{v0}(TSF)} )For dense, coarse sand when Normally
+                    consolidated (NC). <br>
+                    (C_{N} = \frac{3}{2+\sigma'_{v0}(TSF)} ) For Overconsolidated (OE) soil. <br>
+                </ol>
+                <div class="card-header">
+                    <a href="#">
+                        <img class="img" src="{% static "assets/img/nsptmore_1.png" %}">
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5 ml-auto mr-auto">
+                <img class="img" src="{% static "assets/img/Picture1.png" %}"><br><br>
+                <img class="img" src="{% static "assets/img/nsptmore_2.png" %}"><br><br>
+                <img class="img" src="{% static "assets/img/nsptmore_3.png" %}"><br><br>
+                <img class="img" src="{% static "assets/img/nsptmore_4.png" %}">
+            </div>
+        </div>
+    </div>
+</div>

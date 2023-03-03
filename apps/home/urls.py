@@ -44,10 +44,7 @@ urlpatterns = [
     path('project/profileform', views.ProjectProfileForm, name="profileform"),
     path('project/profiles/delete/<id>', views.DeleteProfile.as_view(), name="delete-profile"),
     path('project/profiles/details/<id>/<pid>', views.profileDetails.as_view(), name="profile-details"),
-
-    # tools
-    path('tools', views.tools.as_view(), name="tools"),
-
+    
     # default profile
     path('project/default/profiles', views.ProjectDefaultProfile.as_view(), name="defaultprofiles"),
 
@@ -61,4 +58,11 @@ urlpatterns = [
     
     path('project/generate/default/profile', views.ProjectDefaultProfileForm, name="generate-defaultprofiles"),
 
+
+    # tools
+    path('tools', views.tools.as_view(), name="tools"),
+    path('tools/bearingCapacity', views.Bearing, name="bearingCapacity"),
+    path('tools/NSPT', views.NsptCorrection.as_view(), name="NSPT"),
+    path('tools/RelativeDensity', views.RelativeDensity.as_view(), name="RelativeDensity"),
+    path('tools/agsfiles', views.agsfiles.as_view(), name='ajax-tools-agsfiles'),
 ]

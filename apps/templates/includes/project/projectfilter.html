@@ -1,6 +1,6 @@
 
 <div class="row  {% if '/project/profiles' in request.path %}hide{% endif %}" id="profile-filter">
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="card ">
         <div class="card-body ">
           <div class="form-group bmd-form-group is-filled">
@@ -13,7 +13,19 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
+      <div class="card ">
+        <div class="card-body ">
+          <div class="form-group bmd-form-group is-filled">
+            <select class="form-control datepicker" id="select-category">
+              <option value="factual">factual</option>
+              <option value="interpretation">interpretation</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
       <div class="card ">
         <div class="card-body ">
           <div class="form-group bmd-form-group is-filled">

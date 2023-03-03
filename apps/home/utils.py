@@ -205,17 +205,29 @@ class util:
 
     def get_chart_list_base_on_ags(self,headings):
         """Filter out the chart variable base on ags"""
-        chart_heading = []
+        chart_heading_Interpretation,chart_heading_Factual = [],[]
         try:
             for chart_variable in [*ags_reference]:
-                chart_heading.append(ags_reference[chart_variable]['heading'])
-            column_list = [x for x in chart_heading if x in headings]
-            variable_list = [x for x in [*ags_reference]if ags_reference[x]['heading'] in column_list]
-            variable_list.append('Water Level')
-            print(variable_list)
+                if ags_reference[chart_variable]["category"] == "Interpretation":
+                    chart_heading_Interpretation.append((ags_reference[chart_variable]['heading'],ags_reference[chart_variable]['column']))
+                else:
+                    chart_heading_Factual.append(ags_reference[chart_variable]['heading'])
+            column_list_Interpretation =[]
+            for heading_column in chart_heading_Interpretation:
+                if heading_column[0] in headings:
+                    for column in heading_column[1]:
+                        if column in headings[heading_column[0]]:
+                            column_list_Interpretation.append(heading_column[0])
+            
+            
+            column_list_Factual = [x for x in chart_heading_Factual if x in headings]
+            variable_list_Factual = [x for x in [*ags_reference]if (ags_reference[x]['heading']in column_list_Factual) and(ags_reference[x]["category"] == "Factual") ]
+            variable_list_Interpretation = [x for x in [*ags_reference]if (ags_reference[x]['heading']in column_list_Interpretation) and(ags_reference[x]["category"] == "Interpretation")]
+            variable_list_Factual.append('Water Level')
+            print(variable_list_Interpretation)
         except Exception as exp:
             print(str(exp))
-        return variable_list
+        return variable_list_Factual,variable_list_Interpretation
 
     def get_borehole_list_base_on_ags(self):
         """Filter out the ags variable base on ags"""

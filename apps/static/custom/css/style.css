@@ -163,6 +163,39 @@ label#name-error {
 .hide{
   display: None;
 }
+.tool-summery{
+  max-height: 90%;
+  min-height: 90%;
+  overflow: overlay;
+}
+/* Style the DataTable search box */
+.dataTables_wrapper {
+  padding: 10px;
+}
+
+.dataTables_length {
+  padding: 10px;
+  display: inline;
+}
+
+.dataTables_filter {
+  padding: 10px;
+  float: right;
+  display: inline;
+}
+
+/* Style the DataTable pagination buttons */
+.dataTables_paginate {
+  margin-top: 10px;
+  float: right;
+  display: inline;
+}
+
+/* Style the DataTable info area */
+.dataTables_info {
+  margin-top: 10px;
+  display: inline;
+}
 
 
 /* Style the DataTable search box */
@@ -210,6 +243,15 @@ select {
   margin: 5px;
 }
 
+
+.tool-form{
+  justify-content: center;
+}
+.card .card-body .form-group {
+  margin: 8px 15px 0;
+  font-weight: 700;
+  color: #322329;
+}
 @media print{
   head {
     display: None;

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+
+{% block title %} Bearing Capacity for shallow foundation {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="page-categories">
+            <h3 class="title text-center">Bearing Capacity for shallow foundation</h3>
+            <br>
+            <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist">
+                        <i class="material-icons">info</i> Description
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#link8" role="tablist">
+                        <i class="material-icons">timeline</i> Activate
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link9" role="tablist">
+                        <i class="material-icons">gavel</i> Reference
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link10" role="tablist">
+                        <i class="material-icons">help_outline</i> Help Center
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content tab-space tab-subcategories">
+                <div class="tab-pane" id="link7">
+                    {% include 'pages/tool/includes/NSPTDetails.html' %}
+                </div>
+                <div class="tab-pane active" id="link8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="TypeValidation" class="form-horizontal" method="post"
+                                enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row tool-form">
+                                    <div class="col-md-7">
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select Project
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;"
+                                                        id="select-variable-first" name="select-variable-first"
+                                                        onchange="getAgs(this)">
+                                                        <option value="">---------</option>
+                                                        {% for project in projects %}
+                                                        <option value={{ project.id }}>{{ project.name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select AGS File
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;"
+                                                        id="select-variable-second" name="select-variable-second"
+                                                        required multiple>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Import Hammers’ efficiencies
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                {% for message in messages %}
+                                                <div class="alert alert-rose">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <i class="material-icons">close</i>
+                                                    </button>
+                                                    <span>
+                                                        <b> info - </b> {{ message }}</span>
+                                                </div>
+                                                {% endfor %}
+                                                {% for error in form.non_field_errors %}
+                                                <div class="form-group has-error">{{ error }}</div>
+                                                {% endfor %}
+                                                {% for field in form %}
+                                                {% for error in field.errors %}
+                                                <div class="alert alert-danger col-12" role="alert">{{
+                                                    error
+                                                    }}
+                                                </div>
+                                                {% endfor %}
+
+                                                <div class="form-group bmd-form-group">
+                                                    {{ field }}
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select Sampling Method (define CS)
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;" id="CS" name="CS"
+                                                        required>
+                                                        <option value=1.2>Sampler without liner </option>
+                                                        <option value=1.00>Standard Sampler</option>
+                                                        <option value=0.9>With liner for loose sand</option>
+                                                        <option value=0.8>With liner for dense sand and clay
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select Method for estimating overburden correction factor CN
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;" id="CN" name="CN"
+                                                        required>
+                                                        <option value="Liao">Liao & Whitman (1986) </option>
+                                                        <option value="Seed">Seed (1976)</option>
+                                                        <option value="Peck">Peck, Hanson and Thornburn (1974)
+                                                        </option>
+                                                        <option value="Skempton">Skempton (1986)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row tool-form">
+                                            <button class="btn btn-rose" type="reset">Reset</button>
+                                            <button class="btn btn-rose" type="submit"
+                                                style="margin-left:1% ;">Activate</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="card-header">
+                                            <a href="#">
+                                                <img class="img" src="{% static "assets/img/Picture1.png" %}">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="link9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Reference</h5>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Geotechnical investigation and testing – Field testing – Part 3: Standard
+                                    penetration test (ISO 22476-3:2005).</li>
+                                <li>ASTM D 1586-99 Standard Test Method for Penetration Test and Split-Barrel Sampling
+                                    of Soils.</li>
+                                <li>Kovacs, W. D. Salomone, L. A., and Yokal, F. Y., “Comparison of Energy Measurements
+                                    in the Standard Penetration Test Using the Cathead and Rope Method,” National Bureau
+                                    of Standards Report to the US Nuclear Regulatory Commision, 1983.</li>
+                                <li>Schmertman, J. H., “Use the SPT to Measure Dynamic Soil Properties ?-Yes, But..!”,
+                                    Dynamic Geotechnical Testing, ASTM STP 654, American Society for Testing and
+                                    Materials, 1978.</li>
+                                <li>Seed, H. B., Tokimastu, K., Harder, L. F. and Chung, R. F., “Influence of SPT
+                                    Procedures in Soil Liquefaction Resistance Evaluations,” Journal of Geotechnical
+                                    Engineering, Vol. 111, No. 12, December 1985.</li>
+                                <li>Skempton, A. W., “Standard Penetration Test Procedures and the Effects in Sands of
+                                    Overburden Pressure, Relative Density, Particle Size, Ageing and Over
+                                    Consolidation”, Geotechnique 36: 3, September, 1986.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="link10">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Help center</h5>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+<!-- MathJax version 3 snippet -->
+<script>
+    function getAgs(element) {
+        $('#select-variable-second').empty()
+        get_borhole_list(element.value)
+    };
+    function get_borhole_list(value) {
+        var project_id = parseInt(value);
+        var dataRequest = { project_id: project_id };
+        $.get('agsfiles', dataRequest).done(function (data) {
+            for (i = 0; i < data.agsfiles.length; i++) {
+                $('#select-variable-second').append($('<option>', { value: data.agsfiles[i][0], text: data.agsfiles[i][1] }));
+            }
+        });
+    };
+
+</script>
+
+
+
+
+{% endblock javascripts %}

@@ -36,6 +36,15 @@ ags_reference={
         "elevation":"ISPT_TOP",
         "column_max_value":450
     },
+    "(N1)60":{
+        "description":"Modefied Standard Penetration Test",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"",
+        "column":["ISPT_(N1)60"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
     "CL":{
         "description":"Chloride Content of Soil",
         "category":"Factual",

@@ -79,6 +79,33 @@ def pre_save_image(sender, instance, *args, **kwargs):
     except:
         pass
 
+class ProjectExcel(models.Model):
+    """Module for project AGS"""
+    id = models.AutoField(primary_key=True)
+    project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
+    ags_file = models.ForeignKey(ProjectAGS, on_delete = models.CASCADE, null=True)
+    excel_file = models.FileField(upload_to='project/excel/',  validators=[FileExtensionValidator(allowed_extensions=["xlsx"])], blank=False, null=False)
+    is_verified = models.BooleanField(default=False)
+
+@receiver(post_delete, sender=ProjectExcel)
+def post_save_image(sender, instance, *args, **kwargs):
+    """ Clean Old Image file """
+    try:
+        instance.excel_file.delete(save=False)
+    except:
+        pass
+
+@receiver(pre_save, sender=ProjectExcel)
+def pre_save_image(sender, instance, *args, **kwargs):
+    """ instance old image file will delete from os """
+    try:
+        old_file = instance.__class__.objects.get(ags_file_id=instance.ags_file_id,project_id=instance.project_id)
+        if os.path.exists(old_file.excel_file.path):
+            os.remove(old_file.excel_file.path)
+        old_file.delete()
+    except:
+        pass
+
 class ContactTable(models.Model):
     """Module for project"""
     id = models.AutoField(primary_key=True)
