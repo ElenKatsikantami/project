@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import filesizeformat
 from django.conf import settings
-from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile,ProjectExcel
+from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile,Projectdefaultprofilecategory, Projectdefaultprofile, ProjectExcel
 
 
 class ProjectForm(forms.ModelForm):

@@ -168,6 +168,51 @@ label#name-error {
   min-height: 90%;
   overflow: overlay;
 }
+/* Style the DataTable search box */
+.dataTables_wrapper {
+  padding: 10px;
+}
+
+.dataTables_length {
+  padding: 10px;
+  display: inline;
+}
+
+.dataTables_filter {
+  padding: 10px;
+  float: right;
+  display: inline;
+}
+
+/* Style the DataTable pagination buttons */
+.dataTables_paginate {
+  margin-top: 10px;
+  float: right;
+  display: inline;
+}
+
+/* Style the DataTable info area */
+.dataTables_info {
+  margin-top: 10px;
+  display: inline;
+}
+
+.paginate_button{
+  margin: 5px;
+}
+
+.form-check, label{
+  color: #000000;
+}
+
+[type="search"] {
+  margin-left: 10px;
+}
+
+select {
+  margin: 5px;
+}
+
 
 .tool-form{
   justify-content: center;
