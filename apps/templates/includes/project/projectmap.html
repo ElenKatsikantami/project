@@ -27,11 +27,11 @@
                 <td class="td-actions text-center">
                     {% if '/profile' not in request.path %} 
                   <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="{% url 'edit-project-ags' ags.id %}"'>
+                    onclick='window.location.href="{% url 'edit-project-ags' ags.pid ags.id %}"'>
                     <i class="material-icons">edit</i>
                   </button>
                   <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="{% url 'delete-project-ags' ags.id %}"'>
+                    onclick='window.location.href="{% url 'delete-project-ags' ags.pid ags.id %}"'>
                     <i class="material-icons">close</i>
                   </button>
                   {% endif %} 

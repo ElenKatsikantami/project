@@ -21,8 +21,8 @@ urlpatterns = [
     path('project/details/<id>', views.projectDetails.as_view(), name="project-details"),
 
     path('project/ags/add/<id>', views.AddProjectAGS.as_view(), name="add-project-ags"),
-    path('project/ags/edit/<id>', views.EditProjectAGS.as_view(), name="edit-project-ags"),
-    path('project/ags/delete/<id>', views.DeleteProjectAGS.as_view(), name="delete-project-ags"),
+    path('project/ags/edit/<pid>/<id>', views.EditProjectAGS.as_view(), name="edit-project-ags"),
+    path('project/ags/delete/<pid>/<id>', views.DeleteProjectAGS.as_view(), name="delete-project-ags"),
 
     #user urls
     path('profile', views.userprofile.as_view(), name="profile"),

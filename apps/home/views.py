@@ -152,6 +152,7 @@ class projectDetails(LoginRequiredMixin, TemplateView):
                 ags_dict['name'] = ags_name
                 ags_dict['id'] = ags.id
                 ags_dict['path'] = ags.ags_file
+                ags_dict['pid'] = self.kwargs["id"]
                 ags_list.append(ags_dict)
                 geojson_collection[ags_name] = geojson
         context["agsfile"] = ags_list
@@ -186,7 +187,7 @@ class EditProjectAGS(LoginRequiredMixin, UpdateView):
         form.save(commit=True)
         messages.success(
             self.request, 'Project AGS file edited successfully.')
-        return redirect(reverse("success"))
+        return HttpResponseRedirect(reverse('ags-success', kwargs={'id':self.kwargs["pid"]}))
 
     def get_object(self):
         return get_object_or_404(ProjectAGS, pk=self.kwargs["id"])
