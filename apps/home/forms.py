@@ -43,7 +43,7 @@ class ProjectAGSForm(forms.ModelForm):
         labels = {
                   "ags_file": "Project AGS files"
                   }
-        
+
 class ProjectEXCELForm(forms.ModelForm):
     """form for project"""
 
@@ -51,9 +51,7 @@ class ProjectEXCELForm(forms.ModelForm):
         """Meta"""
         model = ProjectExcel
         fields = ("excel_file",)
-        labels = {
-                  "excel_file": "Hammers’ efficiencies file"
-                  }
+
 class ContactForm(forms.ModelForm):
     """form for contact"""
 
@@ -73,7 +71,6 @@ class ContactForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'placeholder': 'Phone'}),
             'message': forms.TextInput(attrs={'placeholder': 'Message'})
         }
-        
 
 class ProfileForm(forms.ModelForm):
     """form for contact"""

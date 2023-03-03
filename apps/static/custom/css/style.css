@@ -163,7 +163,20 @@ label#name-error {
 .hide{
   display: None;
 }
+.tool-summery{
+  max-height: 90%;
+  min-height: 90%;
+  overflow: overlay;
+}
 
+.tool-form{
+  justify-content: center;
+}
+.card .card-body .form-group {
+  margin: 8px 15px 0;
+  font-weight: 700;
+  color: #322329;
+}
 @media print{
   head {
     display: None;

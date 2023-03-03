@@ -401,12 +401,13 @@ class profileDetails(LoginRequiredMixin, TemplateView):
 
 class tools(LoginRequiredMixin, TemplateView):
     """tools Class"""
-    template_name = "pages/tool/details.html"
+    template_name = "pages/tool/index.html"
 
     def get_context_data(self, **kwargs):
         """"get context data"""
         context = super().get_context_data(**kwargs)
         return context
+    
 def Bearing(request):
     if request.method == "POST":
         Width_of_foundation = float(request.POST["width"])
@@ -442,6 +443,7 @@ def Bearing(request):
     return render(request,"pages/tool/Bearing.html")
 
 class agsfiles(View):
+    """AGS file"""
     def get(self, request):
         project_id = self.request.GET.get('project_id')
         agsfile = ProjectAGS.objects.all().filter(project_id=project_id)
@@ -475,36 +477,15 @@ class NsptCorrection(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(reverse('NSPT'))
 
     def get_context_data(self, **kwargs):
-        
         context = super().get_context_data(**kwargs)
-        
-        #Convert models to JSON string
         context["projects"] = ProjectTable.objects.all()
         context["ags_files"] = ProjectAGS.objects.all()
         return context
-   
-class NsptDetails(LoginRequiredMixin, TemplateView):
-    """success class"""
-    template_name = 'pages/tool/NSPTDetails.html'
-    
-    def get_context_data(self, **kwargs):
-        """get context data"""
-        context = super().get_context_data(**kwargs)
-        return context
-    
-class RelativeDensity(LoginRequiredMixin, TemplateView):  
+
+class RelativeDensity(LoginRequiredMixin, TemplateView):
+    """Relative Density"""
     template_name = 'pages/tool/RelativeDensity.html'
-    # def form_valid(self):
-        
-    #     return HttpResponseRedirect(reverse('NSPT'))
-    def get_context_data(self, **kwargs):
-        """get context data"""
-        context = super().get_context_data(**kwargs)
-        return context 
-class RelativeDensityDetails(LoginRequiredMixin, TemplateView):
-    """success class"""
-    template_name = 'pages/tool/RelativeDensityDetails.html'
-    
+
     def get_context_data(self, **kwargs):
         """get context data"""
         context = super().get_context_data(**kwargs)
