@@ -4,7 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import filesizeformat
 from django.conf import settings
-from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile
+from .models import ProjectTable,ProjectAGS,ContactTable,Projectprofile,ProjectExcel
 
 
 class ProjectForm(forms.ModelForm):
@@ -43,7 +43,17 @@ class ProjectAGSForm(forms.ModelForm):
         labels = {
                   "ags_file": "Project AGS files"
                   }
+        
+class ProjectEXCELForm(forms.ModelForm):
+    """form for project"""
 
+    class Meta:
+        """Meta"""
+        model = ProjectExcel
+        fields = ("excel_file",)
+        labels = {
+                  "excel_file": "Hammers’ efficiencies file"
+                  }
 class ContactForm(forms.ModelForm):
     """form for contact"""
 

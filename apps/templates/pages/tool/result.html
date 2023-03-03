@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+
+{% block title %} Bearing Capacity Calculator {% endblock %}
+
+{% block content %}
+
+    <h4>{{result}}</h4> 
+    <a href ="{% url 'bearingCapacity'%}" > <button class="btn" > Another Calculation</button></a>
+{% endblock %}

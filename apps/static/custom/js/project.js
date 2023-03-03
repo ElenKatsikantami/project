@@ -1,10 +1,23 @@
 
 $(document).ready(function () {
     var headings_factual = headings.factual
-    $('#select-variable-first').empty()
+    var headings_interpretation = headings.interpretation
+  
+    $('#select-variable-first').empty();
     for (i = 0; i < headings_factual.length; i++) {
       $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
     }
+    
+    $('#select-category').on('change', function (){
+      $('#select-variable-first').empty();
+      if($('#select-category').val() == 'factual'){
+      for (i = 0; i < headings_factual.length; i++) {
+        $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
+      }}
+      else{
+      for (i = 0; i < headings_interpretation.length; i++) {
+        $('#select-variable-first').append($('<option>', { value: headings_interpretation[i], text: headings_interpretation[i] }));
+      }}})
   
     $('#select-variable-first').on('change', function () {
       $('#select-variable-second').empty()
@@ -40,9 +53,14 @@ $(document).ready(function () {
       $('#select-variable-first').empty()
       $('#select-variable-second').empty()
       $('#select-class-type').empty()
-      for (i = 0; i < headings_factual.length; i++) {
-        $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
-      }
+      if($('#select-category').val() == 'factual'){
+        for (i = 0; i < headings_factual.length; i++) {
+          $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
+        }}
+      else{
+        for (i = 0; i < headings_interpretation.length; i++) {
+          $('#select-variable-first').append($('<option>', { value: headings_interpretation[i], text: headings_interpretation[i] }));
+        }};
       $('#select-variable-second').append($('<option>', { value: 'Elevation', text: 'Elevation' }));
       $('#select-variable-second').append($('<option>', { value: 'Depth', text: 'Depth' }));
       general_key = ['By Bore Hole','By Machine Type','By Bore Hole and Machine Type']

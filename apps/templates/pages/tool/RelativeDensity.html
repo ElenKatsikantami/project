@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+
+{% block title %} Relative Density {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+Two main correlations are recommended for the relative density calculations from N SPT values. 
+One is based on the uncorrected N SPT (field measurements) and the second one is based on the 
+corrected (N<sub>1</sub>)<sub>60</sub>  value.<br>
+
+You can activate the tool and then go back to project page to plot relative density per borehole 
+with depth. <br>
+<div class ="row">
+    <div class ="col-md-4" >
+        <a   href= "{% url 'RelativeDensityDetails' %}" >
+        <button class="btn btn-rose" type= "button" >more ....</button> 
+        </a> 
+    </div>
+    <div class ="col-md-4" >
+        <button class="btn btn-rose" type= "reset" >reset</button>  
+    </div>
+    <div class ="col-md-4" >
+        <button class="btn btn-rose" type= "submit" >Save  / Activate</button>  
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- MathJax version 3 snippet -->
+    <script>
+        function getAgs(element)
+        {   
+            $('#select-variable-second').empty()
+            get_borhole_list(element.value)
+        };
+        function get_borhole_list(value){
+            var project_id = parseInt(value);
+            var dataRequest = {project_id: project_id};
+            $.get('agsfiles', dataRequest).done(function (data) {
+              for (i = 0; i < data.agsfiles.length; i++) {
+                  $('#select-variable-second').append($('<option>', { value: data.agsfiles[i][0], text: data.agsfiles[i][1] }));
+                }
+            });
+          };
+        
+    </script>
+
+{% endblock javascripts %}

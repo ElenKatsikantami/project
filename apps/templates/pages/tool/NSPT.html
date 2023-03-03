@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+
+{% block title %} NSPT Correction {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <div class ="row">
+        <div class ="col-md-11">
+            <p>N-SPT values observed during testing are not utilized directly in the assessment of soil properties. These values need to be corrected to account for hammer efficiency, borehole diameter, sampling method, rod length and the overburden pressure.
+            <br>
+            Current tool sets the rules to allow the calculations for the correct SPT numbers, N60 and (N1)60. You can activate the tool and then go back to project page to plot corrected SPT numbers with depth.
+            </p>
+        </div>
+    </div>
+    <div class ="row">
+        <div class="col-md-7">
+            <p>The corrected number N<sub>60</sub> is calculated as follows:<br>
+            N<sub>60</sub> = C<sub>ER</sub> ∙ C<sub>RL</sub> ∙ C<sub>S</sub> ∙ C<sub>B</sub>
+             ∙ measured N <br>
+            
+            The corrected number (N<sub>1</sub>)<sub>60</sub> is calculated as follows:<br>
+            (N<sub>1</sub>)<sub>60</sub> = C<sub>N</sub> ∙ N<sub>60</sub><br>
+            <br>
+            Where:<br>
+            <br>
+            C<sub>ER</sub> = actual energy ration (compared to 60%) = ER/60<br>
+            C<sub>RL</sub> = correction to account for length of rod<br>
+            C<sub>S</sub> = correction due to liner used<br>
+            C<sub>B</sub> = correction due to borehole diameter<br>
+            C<sub>N</sub> = overburden pressure correction factor<br>
+            </p>
+        </div>
+        <div class="col-md-3">
+            <img src={%static "assets/img/Picture1.png"%}>
+        </div>
+    </div>
+
+    <div class="col-md-8 col-12 ">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="TypeValidation" class="form-horizontal" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div  class ="row" >
+                        <div class="col-md-4 " >
+                            <h4>project name</h4>  
+                        </div >
+                        <div >
+                            <select style ="width: 300px; text-align:center;" id="select-variable-first" name="select-variable-first" onchange="getAgs(this)">
+                                <option value="">---------</option>
+                                {% for project in projects %}
+                              <option value={{ project.id }}>{{ project.name }}</option>
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div> 
+                    <div  class ="row" >
+                        <div class="col-md-4 " >
+                            <h4>ags file</h4>  
+                        </div >
+                        <div >
+                            <select  style ="width: 300px; text-align:center;" id="select-variable-second" name="select-variable-second" required multiple>
+                            </select>
+                        </div>
+                    </div>
+                    <div  class ="row" > 
+                        <div class="col-md-4 " >
+                            <h4>Import Hammers’ efficiencies:</h4>  
+                        </div >
+                    </div >
+                    <div  class ="row" >
+                        <div class ="card">
+                            {% for message in messages %}
+                                <div class="alert alert-rose">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <i class="material-icons">close</i>
+                                    </button>
+                                    <span>
+                                        <b> info - </b> {{ message }}</span>
+                                </div>
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                               <div class="form-group has-error">{{ error }}</div>
+                            {% endfor %}
+                            {% for field in form %}
+                                <div class="row">
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
+                                    {% endfor %}
+                                    <label class="col-sm-3 col-form-label">{{ field.label_tag }}</label>
+                                    <div class="col-sm-6">
+                                        <div class="form-group bmd-form-group">
+                                            {{ field | add_class:"form-control" }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div> 
+                    <div class ="row">
+                        <div class="col-md-8">
+                            <h4>Select Sampling Method (define CS):</h4>  
+                        </div> 
+                        <div >
+                            <select style ="width: 250px; text-align:center;" id="CS" name="CS" required>
+                                <option value = 1.2 >Sampler without liner </option>
+                                <option value = 1.00 >Standard Sampler</option>
+                                <option value = 0.9 >With liner for loose sand</option>
+                                <option value = 0.8 >With liner for dense sand and clay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class ="row">
+                        <div class="col-md-8">
+                            <h4>Select Method for estimating overburden correction factor, CN: </h4>  
+                        </div> 
+                        <div >
+                            <select style ="width: 250px; text-align:center;" id="CN" name="CN" required>
+                                <option value = "Liao" >Liao & Whitman (1986) </option>
+                                <option value = "Seed" >Seed (1976)</option>
+                                <option value = "Peck" >Peck, Hanson and Thornburn (1974)</option>
+                                <option value = "Skempton" >Skempton (1986)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class ="row">
+                        <div class ="col-md-4" >
+                            <a   href= "{% url 'NSPTDetails' %}" >
+                            <button class="btn btn-rose" type= "button" >more ....</button> 
+                            </a> 
+                        </div>
+                        <div class ="col-md-4" >
+                            <button class="btn btn-rose" type= "reset" >reset</button>  
+                        </div>
+                        <div class ="col-md-4" >
+                            <button class="btn btn-rose" type= "submit" >Save  / Activate</button>  
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- MathJax version 3 snippet -->
+    <script>
+        function getAgs(element)
+        {   
+            $('#select-variable-second').empty()
+            get_borhole_list(element.value)
+        };
+        function get_borhole_list(value){
+            var project_id = parseInt(value);
+            var dataRequest = {project_id: project_id};
+            $.get('agsfiles', dataRequest).done(function (data) {
+              for (i = 0; i < data.agsfiles.length; i++) {
+                  $('#select-variable-second').append($('<option>', { value: data.agsfiles[i][0], text: data.agsfiles[i][1] }));
+                }
+            });
+          };
+        
+    </script>
+    
+    
+    
+        
+{% endblock javascripts %}

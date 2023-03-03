@@ -10,14 +10,17 @@ from django.contrib import messages
 from . ags import AGS
 from . utils import util
 from . models import ProjectTable, ProjectAGS, ContactTable, Projectprofile
-from . forms import ProjectForm, ProjectAGSForm, ContactForm
+from . forms import ProjectForm, ProjectAGSForm, ContactForm , ProjectEXCELForm
 from . ags_reference import ags_reference
+from . Bearing_Capacity_for_Shallow_Foundation import *
+from . activate_nspt import activate_nspt
+from django.shortcuts import render
 
 chart_list = {
-    "factual": [*ags_reference],
+    "factual": [],
     "interpreted": [
-        'N SPT Vs Elevation'
-        ]}
+        '(N1)60 Vs Elevation'
+        ]}  
 
 class landing(CreateView):
     """landing class"""
@@ -125,7 +128,7 @@ class projectDetails(LoginRequiredMixin, TemplateView):
                 ags_class = AGS(ags_file=ags_file_path)
                 tables, headings = ags_class.ags_to_dataframe()
                 util_class = util(tables=tables)
-                chart_list['factual']  = util_class.get_chart_list_base_on_ags(headings)
+                chart_list['factual'],chart_list['interpretation']  = util_class.get_chart_list_base_on_ags(headings)
                 context["headings"] = json.dumps(chart_list)
                 region = " ".join(tables["PROJ"]["PROJ_LOC"])
                 proj_code = ags_class.get_proj_code(region=region)
@@ -365,7 +368,7 @@ class profileDetails(LoginRequiredMixin, TemplateView):
                 ags_class = AGS(ags_file=ags_file_path)
                 tables, headings = ags_class.ags_to_dataframe()
                 util_class = util(tables=tables)
-                chart_list['factual']  = util_class.get_chart_list_base_on_ags(headings)
+                chart_list['factual'],chart_list['interpretation']  = util_class.get_chart_list_base_on_ags(headings)
                 context["headings"] = json.dumps(chart_list)
                 region = " ".join(tables["PROJ"]["PROJ_LOC"])
                 proj_code = ags_class.get_proj_code(region=region)
@@ -402,5 +405,107 @@ class tools(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         """"get context data"""
+        context = super().get_context_data(**kwargs)
+        return context
+def Bearing(request):
+    if request.method == "POST":
+        Width_of_foundation = float(request.POST["width"])
+        Length_of_foundation = float(request.POST["length"])
+        Embedment_depth_of_footings = float(request.POST["df"])
+        Depth_to_Water = float(request.POST["dw"])
+        Friction_Angle = float(request.POST["Friction_Angle"])
+        Cohesion = float(request.POST["Cohesion"])
+        Unit_Weight = float(request.POST["Unit_Weight"])
+        alpha = float(request.POST["alpha"])
+        Factor_of_safety = float(request.POST["Factor_of_safety"])
+        inputs =[Width_of_foundation,Length_of_foundation,Embedment_depth_of_footings,Depth_to_Water
+                ,Friction_Angle,Cohesion,Unit_Weight,alpha,Factor_of_safety]
+        method = request.POST["method"]
+        if method =="Meyerhof":
+            result = get_qallow_Meyerhof(*inputs)
+        elif method =="Terzaghi":
+            result = get_qallow_Terzaghi(*inputs)
+        elif method =="Hansen":
+            eta = float(request.POST["eta"])
+            beta = float(request.POST["beta"])
+            inputs=inputs+[eta,beta]
+            result = get_qallow_Hansen(*inputs)  
+        else:
+            eta = float(request.POST["eta"])
+            beta = float(request.POST["beta"])
+            inputs=inputs+[eta,beta]
+            result = get_qallow_Vesic(*inputs)
+        context = {"result":result}
+        return render(request,"pages/tool/result.html",context)
+    else:
+        result=""
+    return render(request,"pages/tool/Bearing.html")
+
+class agsfiles(View):
+    def get(self, request):
+        project_id = self.request.GET.get('project_id')
+        agsfile = ProjectAGS.objects.all().filter(project_id=project_id)
+        result=[]
+        for ags in agsfile:
+            if ags.ags_file.name:
+                result.append([ags.id,ags.ags_file.name.split("/")[-1]])
+        response_data = {'agsfiles': result}
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+class NsptCorrection(LoginRequiredMixin, CreateView):
+    """add project"""
+    template_name = 'pages/tool/NSPT.html'
+    form_class = ProjectEXCELForm
+    
+    def form_valid(self, form):
+        project_excel_form = form.save(commit=False)
+        project_excel_form.project = ProjectTable(id=self.request.POST["select-variable-first"])
+
+        for ags_id in self.request.POST.getlist("select-variable-second"):
+            project_excel_form.ags_file = ProjectAGS(id=ags_id)
+            project_excel_form.save()
+            file_ags = ProjectAGS.objects.get(id=ags_id
+                        ,project_id=self.request.POST["select-variable-first"]).ags_file.path
+            Efficiency_file = project_excel_form.excel_file.path
+            cs = float(self.request.POST["CS"])
+            method = self.request.POST["CN"]
+            response = activate_nspt(file_ags,Efficiency_file,cs,method) 
+            messages.add_message(self.request,25,response)
+            
+        return HttpResponseRedirect(reverse('NSPT'))
+
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        
+        #Convert models to JSON string
+        context["projects"] = ProjectTable.objects.all()
+        context["ags_files"] = ProjectAGS.objects.all()
+        return context
+   
+class NsptDetails(LoginRequiredMixin, TemplateView):
+    """success class"""
+    template_name = 'pages/tool/NSPTDetails.html'
+    
+    def get_context_data(self, **kwargs):
+        """get context data"""
+        context = super().get_context_data(**kwargs)
+        return context
+    
+class RelativeDensity(LoginRequiredMixin, TemplateView):  
+    template_name = 'pages/tool/RelativeDensity.html'
+    # def form_valid(self):
+        
+    #     return HttpResponseRedirect(reverse('NSPT'))
+    def get_context_data(self, **kwargs):
+        """get context data"""
+        context = super().get_context_data(**kwargs)
+        return context 
+class RelativeDensityDetails(LoginRequiredMixin, TemplateView):
+    """success class"""
+    template_name = 'pages/tool/RelativeDensityDetails.html'
+    
+    def get_context_data(self, **kwargs):
+        """get context data"""
         context = super().get_context_data(**kwargs)
         return context
