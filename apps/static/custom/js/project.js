@@ -115,8 +115,8 @@ $(document).ready(function () {
     $('#drawChart-eleven-apply').click(function () {
       userChartDrawFunction("drawChart-eleven");
     });
-    $('#drawChart-twel-apply').click(function () {
-      userChartDrawFunction("drawChart-twel");
+    $('#drawChart-twelve-apply').click(function () {
+      userChartDrawFunction("drawChart-twelve");
     });  
     function userChartDrawFunction(chartDiv) {
       var chartinnerdict = {};
@@ -171,13 +171,16 @@ $(document).ready(function () {
   
     btn.onclick = function() {
       modal.style.display = "block";
+      console.log(chartdict)
       $("#profilechartlist").val(JSON.stringify(chartdict, null, 2));
       $("#profileprojectname").val(projectname);
       $("#profileprojectid").val(projectid);
     }
+
     span.onclick = function() {
       modal.style.display = "none";
     }
+
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";

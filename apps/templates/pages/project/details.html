@@ -9,16 +9,18 @@
 <link rel="stylesheet" href="/static/assets/css/leaflet/easy-button.css" />
 <link rel='stylesheet' href='/static/assets/css/leaflet/leaflet.fullscreen.css' />
 <link rel="stylesheet" href="/static/assets/css/leaflet/L.Control.Locate.min.css" />
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<link  href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/custom/css/style.css" />
 {% endblock stylesheets %}
 
 {% block content %}
 
-{% include 'includes/projectmap.html' %}
-{% include 'includes/projectfilter.html' %}
+{% include 'includes/project/projectmap.html' %}
+{% include 'includes/project/projectfilter.html' %}
 {% include 'includes/charts.html' %}
-{% include 'includes/profileform.html' %}
+{% include 'includes/profile/profileform.html' %}
+{% include 'includes/profile/defaultprofileform.html' %}
 
 {% endblock content %}
 
@@ -54,8 +56,35 @@
     var modal = document.getElementById("myModal");
     var btn = document.getElementById("myBtn");
     var span = document.getElementsByClassName("close")[0];
+
+    var defaultmodal = document.getElementById("defaultprofileModal");
+    var btndefault = document.getElementById("defaultprofile");
+    var spandefault = document.getElementById("close-default-modal");
+
     var chartdict = {};
+
+    btndefault.onclick = function() {
+      defaultmodal.style.display = "block";
+      $("#profileprojectiddefault").val(projectid);
+    }
+
+    spandefault.onclick = function() {
+      defaultmodal.style.display = "none";
+    }
 </script>
 <script src="/static/custom/js/project.js"></script>
 <script src="/static/custom/js/map.js"></script>
+
+
+<script src="/static/assets/js/core/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $('#table_profile').DataTable();
+</script>
+
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $('#table_borehole').DataTable();
+    $('#table_ags').DataTable();
+</script>
 {% endblock javascripts %}

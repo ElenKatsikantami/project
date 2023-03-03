@@ -5,53 +5,60 @@
 {% load static %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<link  href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12">
-      <div class="card ">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">Profile Name</th>
-                <th class="text-center">Project Name</th>
-                <th class="text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for profile in profiles %}
-              <tr>
-                <td class="text-center">{{ forloop.counter }} </td>
-                <td class="text-center">{{ profile.name }}</td>
-                <td class="text-center">{{ profile.project.name }}</td>
-                </td>
-                <td class="td-actions text-center">
-                    <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="{% url 'profile-details' profile.project.id profile.id %}"'>
-                    <i class="material-icons">check</i>
-                  </button>
-                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="{% url 'delete-profile' profile.id %}"'>
-                    <i class="material-icons">close</i>
-                  </button>
-                  <!-- <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="/media/{{ profile.id }}"'>
-                    <i class="material-icons">download</i>
-                  </button> -->
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="card ">
+      <div class="card-body">
+        <table class="table" id="table_profile">
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">Project Name</th>
+              <th class="text-center">Profile Name</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for profile in profiles %}
+            <tr>
+              <td class="text-center">{{ forloop.counter }} </td>
+              <td class="text-center">{{ profile.project.name }}</td>
+              <td class="text-center">{{ profile.name }}</td>
+              </td>
+              <td class="td-actions text-center">
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'profile-details' profile.project.id profile.id %}"'>
+                  <i class="material-icons">check</i>
+                </button>
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'delete-profile' profile.id %}"'>
+                  <i class="material-icons">close</i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
     </div>
   </div>
+  <div class="col-md-1"></div>
+</div>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script src="/static/assets/js/core/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $('#table_profile').DataTable();
+</script>
+{% endblock javascripts %}

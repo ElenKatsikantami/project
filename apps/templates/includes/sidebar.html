@@ -18,16 +18,21 @@
           <ul class="nav">
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'project' %}">
-                <i class="material-icons">content_paste</i>
-                <p>Project</p>
+                <span class="sidebar-mini"> P </span><span class="sidebar-normal"> Project </span>
               </a>
             </li>
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'profiles' %}">
-                <i class="material-icons">contacts</i>
-                <p>Profile</p>
+                <span class="sidebar-mini"> Pf </span><span class="sidebar-normal"> Profile </span>
               </a>
             </li>
+            {% if request.user.is_superuser %}
+            <li class="nav-item ">
+              <a class="nav-link" href="{% url 'defaultprofiles' %}">
+                <span class="sidebar-mini"> DP </span><span class="sidebar-normal"> Default Profiles </span>
+              </a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </li>
@@ -42,14 +47,12 @@
           <ul class="nav">
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'tools' %}">
-                <i class="material-icons">content_paste</i>
-                <p>Tools</p>
+                <span class="sidebar-mini"> T </span><span class="sidebar-normal"> Tools </span>
               </a>
             </li>
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'tools' %}">
-                <i class="material-icons">contacts</i>
-                <p>Profile</p>
+                <span class="sidebar-mini"> P </span><span class="sidebar-normal"> Profiles </span>
               </a>
             </li>
           </ul>
@@ -66,21 +69,18 @@
           <ul class="nav">
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'user_list' %}">
-                <i class="material-icons">person</i>
-                <p>Users</p>
+                <span class="sidebar-mini"> U </span><span class="sidebar-normal"> Users </span>
               </a>
             </li>
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'profiles' %}">
-                <i class="material-icons">contacts</i>
-                <p>Rules</p>
+                <span class="sidebar-mini"> R </span><span class="sidebar-normal"> Rules </span>
               </a>
             </li>
             {% if request.user.is_superuser %}
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'contact' %}">
-                <i class="material-icons">phone</i>
-                <p>Contact</p>
+                <span class="sidebar-mini"> C </span><span class="sidebar-normal"> Contact </span>
               </a>
             </li>
             {% endif %}

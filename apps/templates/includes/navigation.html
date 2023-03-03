@@ -1,8 +1,7 @@
-
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
   <div class="container-fluid">
     <div class="navbar-wrapper">
-      <a class="navbar-brand" href="#pablo">Geo Database Management</a>
+      <a class="navbar-brand" href="#">Geo Database Management</a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
       aria-expanded="false" aria-label="Toggle navigation">
@@ -15,19 +14,34 @@
     <div class="collapse navbar-collapse justify-content-end">
       {% if request.path == '/project' %}
       <div class="input-group no-border">
-        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project' %}"'><i class="material-icons">add</i> Add project</button>
+        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project' %}"'><i
+            class="material-icons">add</i> Add project</button>
       </div>
       {% endif %}
       {% if '/project/details/' in request.path %}
       <div class="input-group no-border">
-        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"'><i class="material-icons">add</i> Add AGS</button>
-        <button id="myBtn" class="btn btn-primary" style = 'margin-left: 1%;'><i class="material-icons">save</i> Save as profile</button>
+        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"'><i
+            class="material-icons">add</i> Add AGS</button>
+        <button id="defaultprofile" class="btn btn-primary" style='margin-left: 1%;'><i class="material-icons">save</i> Generate Default
+              Profiles</button>
+        <button id="myBtn" class="btn btn-primary" style='margin-left: 1%;'><i class="material-icons">save</i> Save as
+          Custom Profile</button>
       </div>
       {% endif %}
       {% if '/profiles/details/' in request.path %}
       <div class="input-group no-border">
-        <button class="btn btn-primary" onclick="profile_edit();"><i class="material-icons">edit</i> Enable Edit</button>
-        <button id="myBtn" class="btn btn-primary hide" style = 'margin-left: 1%;'><i class="material-icons">save</i> Save</button>
+        <button class="btn btn-primary" onclick="profile_edit();"><i class="material-icons">edit</i> Enable
+          Edit</button>
+        <button id="myBtn" class="btn btn-primary hide" style='margin-left: 1%;'><i class="material-icons">save</i>
+          Save</button>
+      </div>
+      {% endif %}
+      {% if request.path == '/project/default/profiles' %}
+      <div class="input-group no-border">
+        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-defaultprofilescategory' %}"'><i
+            class="material-icons">add</i> Add Category</button>
+        <button class="btn btn-primary" style='margin-left: 1%;' onclick='window.location.href="{% url 'add-defaultprofiles' %}"'><i
+            class="material-icons">add</i> Add Default Profile</button>
       </div>
       {% endif %}
       {% if request.user.is_authenticated %}
@@ -47,7 +61,6 @@
           </div>
         </li>
       </ul>
-
       {% endif %}
     </div>
 

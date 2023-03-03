@@ -125,6 +125,24 @@ class Projectprofile(models.Model):
     group = models.ForeignKey(Group,on_delete = models.CASCADE, null=True)
     name = models.CharField(max_length=200)
     chart = JSONField()
+    is_default = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+class Projectdefaultprofilecategory(models.Model):
+    "project profile"
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Projectdefaultprofile(models.Model):
+    "project profile"
+    id = models.AutoField(primary_key=True)
+    category = models.ForeignKey(Projectdefaultprofilecategory, on_delete = models.CASCADE, null=True)
+    variable1 = models.CharField(max_length=200)
+    variable2 = models.CharField(max_length=200)
+    variable3 = models.CharField(max_length=200)
