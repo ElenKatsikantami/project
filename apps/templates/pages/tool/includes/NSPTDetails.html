@@ -1,5 +1,11 @@
 {% load static %}
+{% block javascripts %}
+<script type="text/javascript" id="MathJax-script"
+		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+{% endblock javascripts %}
 <div class="card">
+
     <div class="card-header">
         <h3 class="card-title">Description about N-SPT Correction</h3>
     </div>
@@ -38,25 +44,23 @@
                 </h4>
                 <ol>
                     <li><strong>Peck, Hanson and Thornburn (1974)</strong></li>
-                    (C_{N} = 0.77 \cdot log(\frac{20}{\sigma'_{v0}(TSF)})) <br>
+                    \(C_{N} = 0.77 \cdot log(\frac{20}{\sigma'_{v0}(TSF)})\) <br>
                     <li><strong>Seed (1976)</strong></li>
-                    (C_{N} = 1- 0.25 \cdot log \,\, \sigma'_{v0}(TSF)) <br>
+                    \(C_{N} = 1- 0.25 \cdot log \,\, \sigma'_{v0}(TSF)\) <br>
 
                     <li><strong>Liao & Whitman (1986)</strong></li>
 
-                    (C_{N} = \sqrt\frac{1}{\sigma'_{v0} (TSF \,\, or \,\, kg/cm^2)}) <br>
+                    \(C_{N} = \sqrt\frac{1}{\sigma'_{v0} (TSF \,\, or \,\, kg/cm^2)}\) <br>
 
                     <li><strong>Skempton (1986)</strong></li>
-                    (C_{N} = \frac{2}{1+\sigma'_{v0}(TSF)}) For Fine sand of medium
+                    \(C_{N} = \frac{2}{1+\sigma'_{v0}(TSF)}\) For Fine sand of medium
                     D<sub>r</sub>. <br>
-                    (C_{N} = \frac{3}{2+\sigma'_{v0}(TSF)} )For dense, coarse sand when Normally
+                    \(C_{N} = \frac{3}{2+\sigma'_{v0}(TSF)} \)For dense, coarse sand when Normally
                     consolidated (NC). <br>
-                    (C_{N} = \frac{3}{2+\sigma'_{v0}(TSF)} ) For Overconsolidated (OE) soil. <br>
+                    \(C_{N} = \frac{3}{2+\sigma'_{v0}(TSF)} \) For Overconsolidated (OE) soil. <br>
                 </ol>
                 <div class="card-header">
-                    <a href="#">
-                        <img class="img" src="{% static "assets/img/nsptmore_1.png" %}">
-                    </a>
+                    <img class="img" src="{% static "assets/img/nsptmore_1.png" %}">
                 </div>
             </div>
             <div class="col-md-5 ml-auto mr-auto">

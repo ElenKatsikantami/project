@@ -15,6 +15,7 @@ from . forms import ProjectForm, ProjectAGSForm, ContactForm, ProfileDefaultCate
 from . ags_reference import ags_reference
 from . Bearing_Capacity_for_Shallow_Foundation import *
 from . activate_nspt import activate_nspt
+from . activate_relativeDensity import *
 from django.shortcuts import render
 
 chart_list = {
@@ -626,17 +627,39 @@ class NsptCorrection(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["projects"] = ProjectTable.objects.all()
-        context["ags_files"] = ProjectAGS.objects.all()
         return context
 
-class RelativeDensity(LoginRequiredMixin, TemplateView):
+def RelativeDensity(request):
     """Relative Density"""
-    template_name = 'pages/tool/RelativeDensity.html'
+    context={}
+    context["projects"] = ProjectTable.objects.all()
+    context["dr"] = ""
+    context["class"] = ""
+    if 'activate' in request.POST:
+        
+    
+        # do unsubscribe
+        for ags_id in request.POST.getlist("select-variable-second"):
+            file_ags = ProjectAGS.objects.get(
+                            id=ags_id
+                            ,project_id=request.POST["select-variable-first"]).ags_file.path
+            method = request.POST["method"]
+            response = activateRelativeDensity(file_ags,method) 
+            messages.add_message(request,25,response)
+    elif 'calculate' in request.POST:
+        method_2 = request.POST["method_2"]
+        x = int(request.POST["NSPT"]) 
+        if method_2 == "Terzaghi":
+            result = get_dr_Terzaghi(x)
+            context["dr"] = str(result[0])
+            context["class"] = result[1]
+        else:
+            result = get_dr_Skempton(x)
+            context["dr"] = str(result)
 
-    def get_context_data(self, **kwargs):
-        """get context data"""
-        context = super().get_context_data(**kwargs)
-        return context
+
+    
+    return render(request,'pages/tool/RelativeDensity.html', context)
 
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
     """Project Default profile Class"""
