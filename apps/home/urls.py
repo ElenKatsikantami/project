@@ -63,6 +63,6 @@ urlpatterns = [
     path('tools', views.tools.as_view(), name="tools"),
     path('tools/bearingCapacity', views.Bearing, name="bearingCapacity"),
     path('tools/NSPT', views.NsptCorrection.as_view(), name="NSPT"),
-    path('tools/RelativeDensity', views.RelativeDensity.as_view(), name="RelativeDensity"),
+    path('tools/RelativeDensity', views.RelativeDensity, name="RelativeDensity"),
     path('tools/agsfiles', views.agsfiles.as_view(), name='ajax-tools-agsfiles'),
 ]

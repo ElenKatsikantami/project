@@ -1,0 +1,88 @@
+{% load static %}
+{% block javascripts %}
+<script type="text/javascript" id="MathJax-script"
+		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+{% endblock javascripts %}
+<div class="card">
+
+    <div class="card-header">
+        <h3 class="card-title">Description about Relative Density Calculations</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7 ml-auto mr-auto">
+                <p>One of the most important soil aggregate property is relative density.<br> 
+                    The relative density of soil is used to describe the state of compactness of granular 
+                    material and generally qualitatively described as very loose, loose, medium dense, dense 
+                    and very dense. <br> It is defined as the ratio of difference of void ratios in its loosest 
+                    and densest state:<br> 
+                    <br> 
+                    Dr = (e<sub>max</sub> – e<sub>current</sub>)/(e<sub>max</sub> –e<sub>min</sub>).<br> 
+                    <br> <br> 
+                    There are many theoretical correlations of relative density with N SPT number. The two most 
+                    important ones are outlined below:<br> 
+                    Method 1: Terzaghi and Peck, 1967 correlates relative density with the uncorrected N SPT 
+                    number(field data).<br> 
+                    Current tool interpolates for intermediate values of Dr (%). <br> 
+                </p>
+                <div>
+                    <table border ="2px" class= "table table-hover table-sm text-center">
+                        <thead>
+                            <tr>
+                                <th>N value<br>(blows/ft or 305 mm)</th>
+                                <th>Relative<br>Density</th>
+                                <th><br>D<sub>r</sub>(%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0 to 4</td>
+                                <td>very loose</td>
+                                <td>0 to 15</td>
+                            </tr>
+                            <tr>
+                                <td>4 to 10</td>
+                                <td>loose</td>
+                                <td>15 to 35</td>
+                            </tr>
+                            <tr>
+                                <td>10 to 30</td>
+                                <td>medium</td>
+                                <td>35 to 65</td>
+                            </tr>
+                            <tr>
+                                <td>30 to 50</td>
+                                <td>dense</td>
+                                <td>65 to 85</td>
+                            </tr>
+                            <tr>
+                                <td>> 50</td>
+                                <td>very dense</td>
+                                <td>85 to 100</td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                    <p class="col-md-11 ml-auto mr-auto">Source: Terzaghi and Peck (27), p. 341 and Lambe and Whitman (6), p. 31.</p>
+                </div>
+                <p>Method 2: Skempton , 1986 correlates relative density with the corrected 
+                    (N<sub>1</sub>)<sub>60</sub> number.<br> 
+                    \(D_{r} = \sqrt \frac{(N_{1})_{60}}{60} \)  <br>
+                    The constant number 60 depends on the average particle size D50 and can range 
+                    from 55 for sine sand to 65 for coarse sand. This tool uses an average value of 60 throughout. <br>
+                </p> 
+            </div>
+            <div class="col-md-5 ml-auto mr-auto">
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
