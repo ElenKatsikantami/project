@@ -19,6 +19,7 @@ urlpatterns = [
     path('project/edit/<id>', views.EditProject.as_view(), name="edit-project"),
     path('project/delete/<id>', views.DeleteProject.as_view(), name="delete-project"),
     path('project/details/<id>', views.projectDetails.as_view(), name="project-details"),
+    path('project/section/<id>', views.projectsection.as_view(), name="project-section"),
 
     path('project/ags/add/<id>', views.AddProjectAGS.as_view(), name="add-project-ags"),
     path('project/ags/edit/<pid>/<id>', views.EditProjectAGS.as_view(), name="edit-project-ags"),

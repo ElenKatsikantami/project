@@ -81,4 +81,7 @@ class delete_user(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        prf = User.objects.get(username=self.kwargs["id"])
+        prfname = prf.username
+        context["name"] = prfname
         return context

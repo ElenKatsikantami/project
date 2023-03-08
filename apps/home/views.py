@@ -106,6 +106,8 @@ class DeleteProject(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        project = ProjectTable.objects.get(id=self.kwargs["id"])
+        context["name"] = project.name
         return context
 
 class projectDetails(LoginRequiredMixin, TemplateView):
@@ -161,6 +163,60 @@ class projectDetails(LoginRequiredMixin, TemplateView):
         context["nspt"] = json.dumps(nspt)
         return context
 
+class projectsection(LoginRequiredMixin, TemplateView):
+    """Project Class"""
+    template_name = "pages/project/section.html"
+
+    def get_context_data(self, **kwargs):
+        """"get context data"""
+        ags_list, holetable, nspt = [], [], {}
+        context = super().get_context_data(**kwargs)
+        context["project"] = get_object_or_404(
+            ProjectTable, pk=self.kwargs["id"])
+        agsfile = ProjectAGS.objects.filter(project_id=self.kwargs["id"])
+        geojson_collection = {}
+        for ags in agsfile:
+            tables = None
+            geojson = {"type": "FeatureCollection", "features": []}
+            try:
+                ags_file_path = os.path.join(
+                    settings.MEDIA_ROOT, str(ags.ags_file))
+                ags_class = AGS(ags_file=ags_file_path)
+                tables, headings = ags_class.ags_to_dataframe()
+                util_class = util(tables=tables)
+                chart_list['factual'],chart_list['interpretation']  = util_class.get_chart_list_base_on_ags(headings)
+                context["headings"] = json.dumps(chart_list)
+                region = " ".join(tables["PROJ"]["PROJ_LOC"])
+                proj_code = ags_class.get_proj_code(region=region)
+                proj_code_to_wgs = pyproj.Transformer.from_crs(proj_code, 4326)
+                if ags_class.ags_version == 'ags3':
+                    loca = tables['HOLE']
+                if ags_class.ags_version == 'ags4':
+                    # import pdb; pdb.set_trace() #breakpoint  c n s q l
+                    df_loca = tables['LOCA']
+                    df_mond = tables['MOND']
+                    loca = df_loca.merge(
+                            df_mond, on='LOCA_ID', how='left')
+                util_class.get_geojson(
+                    loca, ags, proj_code_to_wgs, holetable, geojson)
+            except Exception as exp:
+                print(str(exp))
+            if tables:
+                ags_dict = {}
+                ags_name = ags.ags_file.name.split('/')[-1].split('_')[0]
+                ags_dict['name'] = ags_name
+                ags_dict['id'] = ags.id
+                ags_dict['path'] = ags.ags_file
+                ags_dict['pid'] = self.kwargs["id"]
+                ags_list.append(ags_dict)
+                geojson_collection[ags_name] = geojson
+        context["agsfile"] = ags_list
+        context["hole"] = json.dumps(geojson_collection)
+        context["holetable"] = holetable
+        context["nspt"] = json.dumps(nspt)
+        return context
+
+
 class AddProjectAGS(LoginRequiredMixin, CreateView):
     """add project"""
     template_name = 'pages/project/agcform.html'
@@ -206,6 +262,10 @@ class DeleteProjectAGS(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        ags = ProjectAGS.objects.get(id=self.kwargs["id"])
+        agsname = ags.ags_file.name.split('/')[-1].split('_')[0]
+        context["project"] = ags.project.name
+        context["name"] = agsname
         return context
 
 class userprofile(LoginRequiredMixin, TemplateView):
@@ -320,7 +380,7 @@ def ProjectProfileForm(request):
             chart = request.POST.get('chart')
             # import pdb; pdb.set_trace() #breakpoint  c n s q l
             project = ProjectTable.objects.get(id=projectid)
-            p = Projectprofile(name=name, project=project, chart=json.loads(chart))
+            p = Projectprofile(name=name, project=project, chart=json.loads(chart), type='Custom')
             p.save()
             result = {'message': 'Profile added successfully'}
         else:
@@ -340,6 +400,10 @@ class DeleteProfile(LoginRequiredMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        prf = Projectprofile.objects.get(id=self.kwargs["id"])
+        prfname = prf.name
+        context["project"] = prf.project.name
+        context["name"] = prfname
         return context
 
 class profileDetails(LoginRequiredMixin, TemplateView):

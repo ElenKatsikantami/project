@@ -74,15 +74,7 @@
                             <div class="description">
                                 <h4 class="info-title">Whats is AGS4 ?</h4>
                                 <p class="description">
-                                    AGS4 is a standard for data exchange in GeoTechnical Engineering, and compises
-                                    of two part:
-                                <ol>
-                                    <li>The text file format for sharing data between companies/projects - for
-                                        machine 2 machine exchange</li>
-                                    <li>And a data dictionary used for the exchange of GeoTechnical data - for
-                                        GeoTechnical engineer stuff</li>
-                                </ol>
-
+                                    AGS4 is a standard for transferring data between organizations in the site investigation and geotechnical/geoenvironmental industry, independent of software, hardware or operating system. Typical information that are being shared are ground investigation and laboratory test results and monitoring data as well as standard information on the project and machinery and standards used for the testing.
                                 </p>
                             </div>
                         </div>
@@ -90,20 +82,25 @@
                             <div class="description">
                                 <h4 class="info-title">File Format</h4>
                                 <p class="description">
-                                    The first column are the DATA DESCRIPTORS, and basically describe what the row’s
-                                    data means:
-
+                                    The AGS files are simple digital files (similar to .txt files) which store site investigation and geotechnical/environmental data. Data is structured in Groups. Each group has a unique name, headings, units and type to describe what information the data contain. 
+                                    <br>
+                                    The main parts of an AGS file are:
                                 <ol>
-                                    <li>GROUP - indicates a new group (spreadsheet tab)</li>
-                                    <li>HEADING - the column headings for this group (column in a tab)</li>
-                                    <li>UNIT - the units for the columns, is there is one</li>
-                                    <li>TYPE - the column type, eg X for text or 2DP for two decimal places (the
-                                        column
-                                        formatting)</li>
-                                    <li>DATA - one or more data rows conforming to the TYPE (the lines of data after
-                                        fixed header)</li>
-                                    <li>The HEADING, UNIT and TYPE are coolectively called the HEADER and define the
-                                        column ? (to check)</li>
+                                    <li>GROUP – indicates a collection of similar data items in the dictionary (spreadsheet tab)
+                                    </li>
+                                    <li>HEADING – indicates what information is contained at each attribute/column in a data group (column in a tab/group)
+                                    </li>
+                                    <li>UNIT – the units for each column/attribute
+                                    </li>
+                                    <li>TYPE – the attribute/column type for each data, ie. X for text or 2DP for two decimal places (the column formatting)
+                                    </li>
+                                    <li>DATA – one or more data rows conforming to the TYPE (the lines of data after fixed header). Each row of DATA can have multiple variables as per the HEADING. 
+                                    </li>
+                                </ol>
+                                <br>
+                                    The HEADING, UNIT and TYPE are collectively called the HEADER and define the main GROUP attributes. 
+                                    Each row in the data file must start with a DATA DESCRIPTOR that defines the contents of that row. Main Descriptors are GROUP, HEADING, UNIT, TYPE and DATA. 
+
                                     </p>
                             </div>
                         </div>

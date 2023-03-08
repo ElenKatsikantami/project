@@ -89,7 +89,7 @@ for (var i = 0; i < hole_list.length; i++) {
 			return L.circleMarker(latlng,{radius:6});
 		},
 		onEachFeature: async function (feature, layer) {
-			layer.bindPopup('Hole ID: <h6>'+feature.properties.id +'</h6>Latitude: <h6>'+feature.properties.lat +'</h6>Longitude: <h6>'+feature.properties.lon +'</h6><br />');
+			layer.bindPopup('Hole ID: <h6>'+feature.properties.id +'</h6>Latitude: <h6>'+feature.properties.lat +'</h6>Longitude: <h6>'+feature.properties.lon +'</h6><br /><button class="btn btn-primary" id="drawChart-first-apply"><i class="material-icons">draw</i> Draw-1</button><br /><br /><button class="btn btn-primary" id="drawChart-first-apply"><i class="material-icons">draw</i> Draw-2</button>');
 			layer.bindTooltip(feature.properties.id);
 		}
 	}).addTo(map);

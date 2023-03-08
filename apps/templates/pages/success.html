@@ -24,11 +24,11 @@
                 <br>
                 {% if '/project' in request.path %}
                     <button class="btn btn-primary" onclick='window.location.href="{% url 'project' %}"' style = 'margin: 0 3%;'><i
-                            class="material-icons" >content_paste</i> Back</button>
+                            class="material-icons" >content_paste</i> Back to project</button>
                 {% endif %}
                 {% if '/ags' in request.path %}
                     <button class="btn btn-primary" onclick='window.location.href="{% url 'project-details' project %}"' style = 'margin: 0 3%;'><i
-                                class="material-icons" >content_paste</i> Back</button>
+                                class="material-icons" >content_paste</i> Back to project</button>
                 {% endif %}
                 {% endfor %}
                 {% endif %}

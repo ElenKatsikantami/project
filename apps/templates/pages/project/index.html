@@ -30,6 +30,10 @@
             <i class="material-icons">art_track</i>
           </button>
           <button type="button" class="btn" rel="tooltip" data-placement="bottom" title=""
+            data-original-title="Section" onclick='window.location.href="{% url 'project-section' project.id %}"'>
+            <i class="material-icons">schedule</i>
+          </button>
+          <button type="button" class="btn" rel="tooltip" data-placement="bottom" title=""
             data-original-title="Edit" onclick='window.location.href="{% url 'edit-project' project.id %}"'>
             <i class="material-icons">edit</i>
           </button>

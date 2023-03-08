@@ -1,7 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
   <div class="container-fluid">
     <div class="navbar-wrapper">
-      <a class="navbar-brand" href="#">Geo Database Management</a>
+      {% if '/profiles/details/' in request.path %}
+      <a class="navbar-brand" href="{% url 'project' %}">Projects</a>/<a class="navbar-brand" href="{% url 'profiles' %}">Profile</a>
+      {% endif %}
+      {% if '/project/section/' in request.path %}
+      <a class="navbar-brand" href="{% url 'project' %}">Projects</a>/<a class="navbar-brand" href="#">{{ project.name }}</a>
+      {% endif %}
+      {% if '/project/details/' in request.path %}
+      <a class="navbar-brand" href="{% url 'project' %}">Projects</a>/<a class="navbar-brand" href="#">{{ project.name }}</a>
+      {% endif %}
+      
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
       aria-expanded="false" aria-label="Toggle navigation">
@@ -26,6 +35,11 @@
               Profiles</button>
         <button id="myBtn" class="btn btn-primary" style='margin-left: 1%;'><i class="material-icons">save</i> Save as
           Custom Profile</button>
+      </div>
+      {% endif %}
+      {% if '/project/section/' in request.path %}
+      <div class="input-group no-border">
+        <button id="myBtn" class="btn btn-primary" style='margin-left: 1%;'><i class="material-icons">save</i> Save Section</button>
       </div>
       {% endif %}
       {% if '/profiles/details/' in request.path %}

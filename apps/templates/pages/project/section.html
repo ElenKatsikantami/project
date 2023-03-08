@@ -1,0 +1,59 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} project Details {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<!-- Link to Leaflet Stylesheet-->
+<link rel="stylesheet" href="/static/assets/css/leaflet/leaflet.css" />
+<link rel="stylesheet" href="/static/assets/css/leaflet/easy-button.css" />
+<link rel='stylesheet' href='/static/assets/css/leaflet/leaflet.fullscreen.css' />
+<link rel="stylesheet" href="/static/assets/css/leaflet/L.Control.Locate.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<link  href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+{% include 'includes/project/section.html' %}
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- IMPORT all JS FILES -->
+<!-- Link to leaflet javascript library-->
+<script src="/static/assets/js/core/jquery-3.6.0.min.js"></script>
+<script src="/static/assets/js/core/leaflet/leaflet.js"></script>
+<script src="/static/assets/js/core/leaflet/easy-button.js"></script>
+<script src='/static/assets/js/core/leaflet/Leaflet.fullscreen.min.js'></script>
+<script src="/static/assets/js/core/leaflet/leaflet.ajax.min.js"></script>
+<script src="/static/assets/js/core/leaflet/L.Control.Locate.min.js"></script>
+<script src="/static/assets/js/core/highchart/highcharts.js"></script>
+<script src="/static/assets/js/core/highchart/exporting.js"></script>
+<script src="/static/assets/js/core/highchart/export-data.js"></script>
+<script src="/static/assets/js/core/highchart/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/pattern-fill.js"></script>
+<script src="https://code.highcharts.com/themes/high-contrast-light.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+<script src="/static/assets/js/plugins/bootbox.min.js"></script>
+<script src="/static/custom/js/main.js"></script>
+<script src="/static/custom/js/chartData.js"></script>
+<script src="/static/custom/js/chart.js"></script>
+<script>
+    var headings = '{{headings|safe}}';
+    var holes = '{{hole|safe}}';
+    var projectname = '{{ project.name|safe }}'
+    var projectid = '{{ project.id|safe }}'
+    var headings = JSON.parse(headings);
+    var hole_data = JSON.parse(holes);
+    var hole_list = []
+    for (var key in hole_data) {
+      hole_list.push(key);
+    }
+    
+</script>
+<script src="/static/custom/js/section.js"></script>
+<script src="/static/custom/js/map.js"></script>
+
+{% endblock javascripts %}

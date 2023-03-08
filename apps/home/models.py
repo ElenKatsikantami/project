@@ -123,6 +123,7 @@ class Projectprofile(models.Model):
     "project profile"
     project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
     group = models.ForeignKey(Group,on_delete = models.CASCADE, null=True)
+    type = models.CharField(max_length=7, default='Default')
     name = models.CharField(max_length=200)
     chart = JSONField()
     is_default = models.BooleanField(default=False)

@@ -175,3 +175,114 @@ function genericBarChart(data, div_id, chart_title, chart_sub_title, xAxisTitle,
     
 }
 
+var pieColors = ['#234a83', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'];
+function getPattern(i) {
+    return {
+        pattern: Highcharts.merge(Highcharts.patterns[i], {
+            color: pieColors[i]
+        })
+    };
+}
+
+var patterns = [0, 1, 2, 3, 4].map(getPattern);
+function genericStacChart(data, div_id, chart_title, chart_sub_title, xAxisTitle, yAxisTitle) {
+
+    Highcharts.chart(div_id, {
+        chart: {
+            type: 'column',
+            zoomType: 'xy'
+        },
+        title: {
+            text: chart_title
+          },
+          subtitle: {
+              text: chart_sub_title
+          },
+        xAxis: {
+            categories: data.categories,
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: yAxisTitle
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: ( // theme
+                        Highcharts.defaultOptions.title.style &&
+                        Highcharts.defaultOptions.title.style.color
+                    ) || 'gray',
+                    textOutline: 'none'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: 12,
+            y: 70,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        colors: patterns,
+        series: [{
+            name: 'BPL',
+            data: [3]
+        }, {
+            name: 'FA Cup',
+            data: [14]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }, {
+            name: 'CL',
+            data: [10]
+        }],
+        exporting: exportContextMenu
+    });
+    
+}
+
+
