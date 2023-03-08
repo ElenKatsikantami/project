@@ -40,6 +40,8 @@ def get_Total_Unit_Weight(x):
         return 19    
 def first_correction(ispt_sheet):
     df_ispt = ispt_sheet
+    for column in df_ispt.columns:
+        df_ispt[column] = pd.to_numeric(df_ispt[column],errors='ignore')
     if df_ispt["ISPT_NVAL"].dtype == "O":
         df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()] = \
         df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()].apply(lambda x: x.split("/")[0]).copy()
