@@ -47,7 +47,7 @@ def activateRelativeDensity(file_ags,method):
         if "ISPT_dr_Terzaghi" in headings["ISPT"] :
             return f"Relative Density is already activated for {file_ags_name} by Terzaghi and Peck method"
         df = df_ispt["ISPT_NVAL"].apply(get_dr_Terzaghi)
-        tables["ISPT"]["ISPT_dr_Terzaghi"] = pd.Series(["",""]).append(df[0])
+        tables["ISPT"]["ISPT_dr_Terzaghi"] = pd.Series(["","%"]).append(df[0])
         tables["ISPT"]["ISPT_classifications"] = pd.Series(["",""]).append(df[1])
         headings["ISPT"].append("ISPT_dr_Terzaghi")
         headings["ISPT"].append("ISPT_classifications")
@@ -59,7 +59,7 @@ def activateRelativeDensity(file_ags,method):
         if "ISPT_(N1)60" not in headings["ISPT"]:
             return "NSPT must be activated first"
         dr = df_ispt["ISPT_(N1)60"].apply(get_dr_Skempton)
-        tables["ISPT"]["ISPT_dr_Skempton"] = pd.Series(["",""]).append(dr)
+        tables["ISPT"]["ISPT_dr_Skempton"] = pd.Series(["","%"]).append(dr)
         headings["ISPT"].append("ISPT_dr_Skempton")
         AGS4.dataframe_to_AGS4(tables, headings,file_ags)
         return f"Relative Density activated for {file_ags_name} by Skempton method"
@@ -68,7 +68,7 @@ def activateRelativeDensity(file_ags,method):
             and "ISPT_dr_Skempton" in headings["ISPT"] ):
             return f"Relative Density is already activated for {file_ags_name} by both methods"
         df = df_ispt["ISPT_NVAL"].apply(get_dr_Terzaghi)
-        tables["ISPT"]["ISPT_dr_Terzaghi"] = pd.Series(["",""]).append(df[0])
+        tables["ISPT"]["ISPT_dr_Terzaghi"] = pd.Series(["","%"]).append(df[0])
         tables["ISPT"]["ISPT_classifications"] = pd.Series(["",""]).append(df[1])
         headings["ISPT"].append("ISPT_dr_Terzaghi")
         headings["ISPT"].append("ISPT_classifications")
@@ -76,7 +76,7 @@ def activateRelativeDensity(file_ags,method):
             return f"""NSPT must be activated first
                     Relative Density activated for {file_ags_name} by Terzaghi and Peck method only"""
         dr = df_ispt["ISPT_(N1)60"].apply(get_dr_Skempton)
-        tables["ISPT"]["ISPT_dr_Skempton"] = pd.Series(["",""]).append(dr)
+        tables["ISPT"]["ISPT_dr_Skempton"] = pd.Series(["","%"]).append(dr)
         headings["ISPT"].append("ISPT_dr_Skempton")
         AGS4.dataframe_to_AGS4(tables, headings,file_ags)
         return f"Relative Density activated for {file_ags_name} by both methods"

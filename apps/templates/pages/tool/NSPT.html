@@ -8,7 +8,14 @@
 <link rel="stylesheet" href="/static/custom/css/style.css" />
 {% endblock stylesheets %}
 {% block content %}
-
+<style>
+    #import_hammer {
+    display: none;
+    }
+    #enter_manually {
+    display: none;
+    }
+</style>
 <div class="row">
     <div class="col-md-10 ml-auto mr-auto">
         <div class="page-categories">
@@ -48,6 +55,19 @@
                                 {% csrf_token %}
                                 <div class="row tool-form">
                                     <div class="col-md-7">
+                                        {% for message in messages %}
+                                                <div class="alert alert-rose">
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <i class="material-icons">close</i>
+                                                    </button>
+                                                    <span>
+                                                        <b> info - </b> {{ message }}</span>
+                                                </div>
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                        <div class="form-group has-error">{{ error }}</div>
+                                        {% endfor %}
                                         <div class="row ">
                                             <div class="col-md-4 card-header text-center">
                                                 <h5 class="card-title">
@@ -58,7 +78,7 @@
                                                     <select style="width: 300px; text-align:center;"
                                                         id="select-variable-first" name="select-variable-first"
                                                         onchange="getAgs(this)">
-                                                        <option value="">---------</option>
+                                                        <option hidden disabled selected value> -- select a project -- </option>
                                                         {% for project in projects %}
                                                         <option value={{ project.id }}>{{ project.name }}
                                                         </option>
@@ -84,48 +104,80 @@
                                         </div>
                                         <div class="row ">
                                             <div class="col-md-4 card-header text-center">
-                                                <h5 class="card-title">
-                                                    Import Hammers’ efficiencies
-                                                </h5>
+                                                <h5 class="card-title">Hammers' efficiencies</h5>
                                             </div>
                                             <div class="col-md-8">
-                                                {% for message in messages %}
-                                                <div class="alert alert-rose">
-                                                    <button type="button" class="close" data-dismiss="alert"
-                                                        aria-label="Close">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
-                                                    <span>
-                                                        <b> info - </b> {{ message }}</span>
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;" id="method" name="method"
+                                                    onchange="showDiv(this)" required>
+                                                        <option hidden disabled selected value> -- select an entry method -- </option>
+                                                        <option value="excel">Import Excel</option>
+                                                        <option value="manually">Enter Manually</option>
+                                                        <option value="fixed">Fixed value for all efficiencies (70%)</option>
+                                                    </select>
                                                 </div>
-                                                {% endfor %}
-                                                {% for error in form.non_field_errors %}
-                                                <div class="form-group has-error">{{ error }}</div>
-                                                {% endfor %}
-                                                {% for field in form %}
-                                                {% for error in field.errors %}
-                                                <div class="alert alert-danger col-12" role="alert">{{
-                                                    error
-                                                    }}
-                                                </div>
-                                                {% endfor %}
+                                            </div>
 
-                                                <div class="form-group bmd-form-group">
-                                                    {{ field }}
+                                        </div>
+                                        <div class="row " >
+                                            <div class="col-md-4 card-header text-center" id="import_hammer">
+                                                <h5 class="card-title">
+                                                    Import Excel file
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8" id="import_hammer">
+                                                <div >
+                                                    <div >
+                                                        {% for field in form %}
+                                                            {% for error in field.errors %}
+                                                            <div class="alert alert-danger col-12" role="alert">{{error}}
+                                                            </div>
+                                                            {% endfor %} 
+
+                                                            <div class="form-group bmd-form-group">
+                                                                {{ field }}
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <div class="form-group bmd-form-group">
+                                                        <button type="button" rel="tooltip" class="btn"  title="Download an example"
+                                                            onclick='window.location.href="/media/project/examples/Hammers Efficiencies example.xlsx"'>
+                                                            <i class="material-icons">download</i>Download an example
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="row " >
+                                            <div class="col-md-4 card-header text-center" id="enter_manually">
+                                                <h5 class="card-title">
+                                                    Enter efficiencies
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8" id="enter_manually">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <table border ="2px" class= " text-center" id="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 150px;">Hammer</th>
+                                                                <th style="width: 150px;">Efficiency(%)</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row ">
                                             <div class="col-md-4 card-header text-center">
                                                 <h5 class="card-title">
-                                                    Select Sampling Method (define CS)
+                                                    Define CS
                                                 </h5>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="form-group has-default bmd-form-group">
                                                     <select style="width: 300px; text-align:center;" id="CS" name="CS"
                                                         required>
+                                                        <option hidden disabled selected value> -- Select Sampling Method -- </option>
                                                         <option value=1.2>Sampler without liner </option>
                                                         <option value=1.00>Standard Sampler</option>
                                                         <option value=0.9>With liner for loose sand</option>
@@ -140,13 +192,14 @@
                                         <div class="row ">
                                             <div class="col-md-4 card-header text-center">
                                                 <h5 class="card-title">
-                                                    Select Method for estimating overburden correction factor CN
+                                                    Define CN
                                                 </h5>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="form-group has-default bmd-form-group">
                                                     <select style="width: 300px; text-align:center;" id="CN" name="CN"
                                                         required>
+                                                        <option hidden disabled selected value>Select Method for overburden correction factor</option>
                                                         <option value="Liao">Liao & Whitman (1986) </option>
                                                         <option value="Seed">Seed (1976)</option>
                                                         <option value="Peck">Peck, Hanson and Thornburn (1974)
@@ -156,11 +209,50 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Correct N for full penetration
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;" id="correct" name="correct"
+                                                        required>
+                                                        <option hidden disabled selected value> -- Select an option --  </option>
+                                                        <option value="1">YES</option>
+                                                        <option value="0">NO</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Maximum limiting N value
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    
+                                                    <input  style="width: 300px; text-align:center;" type="number" id="Maximum" placeholder ="enter Maximum limiting N value"
+                                                    name="Maximum" min="50" max ="300" step="1" required>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                         <br>
                                         <div class="row tool-form">
-                                            <button class="btn btn-rose" type="reset">Reset</button>
+                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                                type="button">Back To Tools</button></a>
+                                            {%for project in projects|slice:":1"%}
+                                            <a  id="backtoproject" href="{% url 'project-details' project.id %}" style="margin-left:1% ;"><button class="btn btn-rose" 
+                                                type="button">Back To Project</button></a>
+                                            {%endfor%} 
+                                            <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
                                             <button class="btn btn-rose" type="submit"
                                                 style="margin-left:1% ;">Activate</button>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-5">
@@ -227,21 +319,60 @@
 <script>
     function getAgs(element) {
         $('#select-variable-second').empty()
+        let value_1 = "/project/details/"+ element.value ;
+        document.querySelector('#backtoproject').href = value_1;
         get_borhole_list(element.value)
     };
+    
     function get_borhole_list(value) {
         var project_id = parseInt(value);
+        var table = document.getElementById("table");
+        table.deleteTFoot();
+        var all_machine = [];
         var dataRequest = { project_id: project_id };
         $.get('agsfiles', dataRequest).done(function (data) {
             for (i = 0; i < data.agsfiles.length; i++) {
                 $('#select-variable-second').append($('<option>', { value: data.agsfiles[i][0], text: data.agsfiles[i][1] }));
             }
+            for (i = 0; i < data.machines.length; i++) {
+                if (!all_machine.includes(data.machines[i]) ){
+                all_machine.push(data.machines[i])
+                var footer = table.createTFoot();
+                var row = footer.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = data.machines[i]; 
+                cell2.innerHTML = '<input  type="number" id="calculate" name="machine" min="1" max ="100" step="1">';}
+            }
         });
     };
 
 </script>
+<script>
+    function showDiv(element){ 
+        var elements_excel = document.querySelectorAll('[id=import_hammer]'); 
+        var elements_manuall = document.querySelectorAll('[id=enter_manually]'); 
+            if (element.value == "excel"){
+                for(var i = 0; i < 2; i++) {
+                    elements_excel[i].style.display = 'block';
+                    elements_manuall[i].style.display = 'none';
+                };
+            }
+            else if(element.value == "manually"){
+                for(var i = 0; i < 2; i++) {
+                    elements_excel[i].style.display = 'none';
+                    elements_manuall[i].style.display = 'block';
+                };
+            }
+            else{
+                for(var i = 0; i < 2; i++) {
+                    elements_excel[i].style.display = 'none';
+                    elements_manuall[i].style.display = 'none';
+                };
+            }
+            
+        }
 
-
-
+</script>
 
 {% endblock javascripts %}

@@ -44,23 +44,13 @@
                 <div class="tab-pane active" id="link8">
                     <div class="card">
                         <div class="card-body">
+    
                             <form id="TypeValidation" class="form-horizontal" method="post"
                                 enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="row tool-form">
-                                    <div class="col-md-2">
-                                        <div class="card-header">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="row ">
-                                            <div class="col-md-4 card-header text-center">
-                                                <h5 class="card-title">
-                                                    Select Project
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="form-group has-default bmd-form-group">
-                                                    {% for message in messages %}
+                                    <div class="col-md-7">
+                                        {% for message in messages %}
                                                     <div class="alert alert-rose">
                                                         <button type="button" class="close" data-dismiss="alert"
                                                             aria-label="Close">
@@ -71,10 +61,17 @@
                                                         </span>
                                                     </div>
                                                     {% endfor %}
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select Project
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
                                                     <select style="width: 300px; text-align:center;"
                                                         id="select-variable-first" name="select-variable-first"
                                                         onchange="getAgs(this)">
-                                                        <option value="">---------</option>
+                                                        <option hidden disabled selected value> -- select a project -- </option>
                                                         {% for project in projects %}
                                                         <option value={{ project.id }}>{{ project.name }}
                                                         </option>
@@ -106,7 +103,8 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="form-group has-default bmd-form-group">
-                                                    <select style="width: 300px; text-align:center;" id="method" name="method">
+                                                    <select style="width: 300px; text-align:center;" id="method" name="method" required>
+                                                        <option hidden disabled selected value> -- select a method -- </option>
                                                         <option value="Terzaghi">Terzaghi and Peck </option>
                                                         <option value="Skempton">Skempton </option>
                                                         <option value="Both">Both </option>
@@ -119,20 +117,26 @@
                                         
                                         <br>
                                         <div class="row tool-form">
-                                            <button class="btn btn-rose" type="reset">Reset</button>
-                                            <button class="btn btn-rose" type="submit" name="activate" value="activate"
-                                                style="margin-left:1% ;" onclick="fun_1()">Activate</button>
+                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                                type="button">Back To Tools</button></a>
+                                            {%for project in projects|slice:":1"%}
+                                            <a  id="backtoproject" href="{% url 'project-details' project.id %}" style="margin-left:1% ;"><button class="btn btn-rose" 
+                                                type="button">Back To Project</button></a>
+                                            {%endfor%} 
+                                            <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
+                                            <button class="btn btn-rose" type="submit"
+                                                style="margin-left:1% ;">Activate</button>
                                         </div>
                                         <div class="row ">
                                             
                                             <div class="col-md-12">
                                                 <div class="form-group has-default bmd-form-group">
-                                                    <table border ="2px" class= "table table-hover table-sm text-center" id="table">
+                                                    <table border ="2px" class= "table  text-center" id="table">
                                                         <thead>
                                                             <tr>
                                                                 <th rowspan="2">Method</th>
                                                                 <th>N SPT Value</th>
-                                                                <th style="width=200px">Relative Density of Sand/Silty Sand</th>
+                                                                <th>Relative Density of Sand/Silty Sand</th>
                                                                 <th rowspan="2">Classification</th>
                                                             </tr>
                                                             <tr>
@@ -149,11 +153,11 @@
                                         </div>
                                         <br>
                                         <div class="row tool-form">
-                                            <button class="btn btn-rose" type="button" onclick="Calculate()" >Calculate</button>
+                                            <button class="btn btn-rose" type="button" onclick="Calculate()">Calculate</button>
                                         </div>
                                         
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-5">
                                         <div class="card-header">
                                         </div>
                                     </div>
@@ -206,7 +210,9 @@
 <!-- MathJax version 3 snippet -->
 <script>
     function getAgs(element) {
-        $('[name=select-variable-second]').empty()
+        $('#select-variable-second').empty()
+        let value_1 = "/project/details/"+ element.value ;
+        document.querySelector('#backtoproject').href = value_1;
         get_borhole_list(element.value)
     };
     function get_borhole_list(value) {
@@ -220,12 +226,7 @@
     };
 
 </script>
-<script>
-    function fun_1() {
-        document.getElementById("calculate").removeAttribute('required');}
-    function fun_2() {
-            document.getElementById("activate").removeAttribute('required');}
-</script> 
+
 <script>
     var y;
     var classification;
@@ -246,8 +247,8 @@
         y = 85 + 15 * (x-50) / 50;
         classification = "Very Dense";}
     else{
-        y = "wrong entry"
-        classification = "wrong entry"
+        y = "please enter a number from 0 to 100"
+        classification = "please enter a number from 0 to 100"
         }
     return [y,classification];
     }
@@ -256,8 +257,8 @@
             classification = get_dr_Terzaghi(x)[1];
             y = 100*(x/60)**0.5;}
         else{
-            y = "wrong entry"
-            classification = "wrong entry"
+            y = "please enter a number from 0 to 100"
+            classification = "please enter a number from 0 to 100"
             }
         return [y,classification];}
 

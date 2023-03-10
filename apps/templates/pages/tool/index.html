@@ -46,8 +46,25 @@
 
               </div>
               <div class="tab-pane" id="link21">
-                Efficiently unleash cross-media information without cross-media value. Quickly maximize timely
-                deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.
+                <p>Activated ags files</p>
+                <table border ="2px"  >
+                <thead>
+                  <tr class= "text-center">
+                    <th style="width: 50px;" >#</th>
+                    <th style="width: 100px;">project</th>
+                    <th style="width: 250px;">ags name</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for file in nspt_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td>{{ file|first }}</td>
+                      <td>{{ file|slice:'1:'|first }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -142,8 +159,27 @@
 
               </div>
               <div class="tab-pane" id="link31">
-                Efficiently unleash cross-media information without cross-media value. Quickly maximize timely
-                deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.
+                <p>Activated ags files</p>
+                <table border ="2px"  >
+                <thead>
+                  <tr class= "text-center">
+                    <th style="width: 50px;" >#</th>
+                    <th style="width: 50px;" >Method activated</th>
+                    <th style="width: 100px;">project</th>
+                    <th style="width: 250px;">ags name</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for file in RelativeDensity_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td>{{ file|first }}</td>
+                      <td>{{ file|slice:'1:2'|first }}</td>
+                      <td>{{ file|slice:'2:'|first }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
