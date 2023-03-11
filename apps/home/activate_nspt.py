@@ -22,6 +22,7 @@ def get_CN(x,method):
     return min(2,nc)
     # 300 / (200+x)
     # 170 / (70+x)
+    
 def get_CR(x):
         if x <= 4:
             return 0.75
@@ -31,6 +32,7 @@ def get_CR(x):
             return 0.95
         else:
             return 1    
+        
 def get_Total_Unit_Weight(x):
     if x >= 50:
         return 20
@@ -38,7 +40,8 @@ def get_Total_Unit_Weight(x):
         return 18
     else:
         return 19    
-def first_correction(ispt_sheet):
+    
+def first_correction(ispt_sheet,maximum,correct):
     df_ispt = ispt_sheet
     for column in df_ispt.columns:
         df_ispt[column] = pd.to_numeric(df_ispt[column],errors='ignore')
@@ -46,29 +49,39 @@ def first_correction(ispt_sheet):
         df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()] = \
         df_ispt["ISPT_NVAL"][~df_ispt["ISPT_NVAL"].str.isalnum()].apply(lambda x: x.split("/")[0]).copy()
         df_ispt["ISPT_NVAL"]=pd.to_numeric(df_ispt["ISPT_NVAL"])
-    df_ispt["sum"]=df_ispt[["ISPT_PEN3","ISPT_PEN4","ISPT_PEN5","ISPT_PEN6"]].sum(axis=1).replace(0,300)
-    df_ispt["corrected"] = list(map(lambda x,y:120 if (x*300/y)>=120 else int(np.ceil((x*300/y))),df_ispt["ISPT_NVAL"],df_ispt["sum"]))
-    df_ispt["ISPT_NVAL"]= list(map(lambda x,y:y if x==50 else x,df_ispt["ISPT_NVAL"],df_ispt["corrected"]))
+    if correct == "1":
+        df_ispt["sum"]=df_ispt[["ISPT_PEN3","ISPT_PEN4","ISPT_PEN5","ISPT_PEN6"]].sum(axis=1).replace(0,300)
+        df_ispt["corrected"] = list(map(lambda x,y:min(int(maximum),int(np.ceil((x*300/y)))),df_ispt["ISPT_NVAL"],df_ispt["sum"]))
+        df_ispt["ISPT_NVAL"]= list(map(lambda x,y:y if x==50 else x,df_ispt["ISPT_NVAL"],df_ispt["corrected"]))
     return  df_ispt
 
-def activate_nspt(file_ags,Efficiency_file,cs,method):
+def activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct):
     file_ags_name = file_ags.split("\\")[-1]
     tables, headings = AGS4.AGS4_to_dataframe(file_ags)
     if "ISPT_(N1)60" in headings["ISPT"]:
         return f"NSPT is already activated for {file_ags_name}"
-    df_ispt = first_correction(tables["ISPT"][2:].copy())
-
-    try:
-        df_efficiency = pd.read_excel(Efficiency_file).dropna()
-        dictionery ={i:j for i,j in zip(df_efficiency.iloc[:,0] ,np.round(df_efficiency.iloc[:,1]*(100 if df_efficiency.iloc[:,1][0]<1 else 1),1)) }
-    except:
-        dictionery = {}
-    machines=[]
-    for i in list(map(lambda x :get_machines(x),tables["HDPH"]["HDPH_EXC"][2:].replace(np.nan,"").unique())):
-        machines.extend(i)
+    df_ispt = first_correction(tables["ISPT"][2:].copy(),maximum,correct)
+    
+    file = pd.ExcelFile(r"media\project\examples\Hammers Efficiencies example.xlsx")
+    xls = pd.ExcelFile(file)
+    machines = xls.parse("Sheet1")["Hammer"]
+    xls.close()
+    file.close()
+    dictionery = {}
+    if type(Efficiency_file) == str:
+        try:
+            df_efficiency = pd.read_excel(Efficiency_file).dropna()
+            dictionery ={i:j for i,j in zip(df_efficiency.iloc[:,0] ,np.round(df_efficiency.iloc[:,1]*(100 if df_efficiency.iloc[:,1][0]<1 else 1),1)) }
+        except:
+            dictionery = {}
+    elif type(Efficiency_file) == list:
+        for i,value in enumerate(Efficiency_file):
+            if value != "":
+                dictionery[machines[i]] = np.round(float(value)*(100 if float(value)<1 else 1),1)
+            
     for i in machines:
         if i not in dictionery:
-            Efficiency = 60
+            Efficiency = 70
             dictionery[i]= Efficiency 
             
     elevations = [i for i in tables["LOCA"].columns if i in ["LOCA_GL","LOCA_LOCZ"]]
@@ -81,7 +94,7 @@ def activate_nspt(file_ags,Efficiency_file,cs,method):
     groundWater_column = groundWater_dict[groundWater_sheet]
     df["water"] = tables[groundWater_sheet][groundWater_column][2:].apply(float)
     df["machines"] = tables["HDPH"]["HDPH_EXC"]
-    df["efficency"] = df["machines"].replace(np.nan,"").apply(lambda x :min([dictionery[i] for i in get_machines(x)])) 
+    df["efficency"] = df["machines"].apply(lambda x :min([dictionery[i] for i in x.split(",")])) 
     df=df.set_axis(df["LOCA_ID"])
 
     df_Interpretation = df_ispt.copy()[["LOCA_ID","ISPT_TOP","ISPT_NVAL"]]
@@ -120,8 +133,9 @@ def activate_nspt(file_ags,Efficiency_file,cs,method):
     df_Interpretation["(N1)60"] = np.round(df_Interpretation["N60"]*condition + df_Interpretation["N60"]*df_Interpretation["CN"]*(1-condition), decimals=1)
 
     tables["ISPT"]["ISPT_(N1)60"] = np.concatenate((tables["ISPT"]["ISPT_NVAL"][:2],df_Interpretation["(N1)60"]))
-    
-    headings["ISPT"].append("ISPT_(N1)60")
+    tables["ISPT"]["ISPT_N60"] = np.concatenate((tables["ISPT"]["ISPT_NVAL"][:2],df_Interpretation["N60"]))
+    tables["ISPT"]["ISPT_correctedN"] = np.concatenate((tables["ISPT"]["ISPT_NVAL"][:2],df_ispt["ISPT_NVAL"]))
+    headings["ISPT"].extend(["ISPT_(N1)60","ISPT_N60","ISPT_correctedN"])
     AGS4.dataframe_to_AGS4(tables, headings,file_ags)
     
     return f"NSPT activated for {file_ags_name}"

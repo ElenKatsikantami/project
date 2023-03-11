@@ -1,0 +1,93 @@
+{% load static %}
+{% block javascripts %}
+<script type="text/javascript" id="MathJax-script"
+		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+{% endblock javascripts %}
+<div class="card">
+
+    <div class="card-header">
+        <h3 class="card-title">Description about Friction Angle Calculation</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7 ml-auto mr-auto">
+                <p>Friction angle together with cohesion define the shear strength parameters of soil. 
+                    For granular / cohesionless soil (c = 0) friction angle is mainly estimated either from 
+                    laboratory tests or from correlations with N SPT number. <br>
+                    There are many correlations to estimate friction angle for granular material from N SPT 
+                    values . Their are based on the uncorrected N SPT (field measurements) or based on 
+                    the corrected (N1)60  value.<br>
+                </p>
+
+                <h4>Method 1 : Peck, Hanson and Thornburn (1974)</h4>
+                <p>\(\phi' = 27.1+0.3N'+0.00054N'^2\)</p>
+                <h4>Method 2 : defines friction angle from curve fitting of plot from 
+                    Peck, Hanson and Thornburn as presented in CIRIA Report 143 (1995)</h4>
+                <h4>Method 3 :  calculated as the average between two curve fitted curves 
+                    from Terzaghi, Peck & Mersi (1996)</h4>
+                <h4>Method 4 and 5 : assume linear interpolation to the values defined as 
+                    approximation from two different sources: Peck, Hanson and Thornburn and Meyerhof.</h4>
+                <div class="card-header">
+                    <table class= "table table-hover table-sm text-center">
+                        <caption>a - Source : Peck, Hanson and Thornburn (12) p. 310</caption>
+                        <caption>b - Source : Meyerhof (13) p. 17</caption>
+                        <thead>
+                            <tr>
+                                <th rowspan="2">N value<br>(blows/ft or 305 mm)</th>
+                                <th rowspan="2">Relative<br>Density</th>
+                                <th colspan="2">Approximate \(\phi'_{tc}\) (degrees)</th>
+                            </tr>
+                            <tr>
+                                <th>(a)</th>
+                                <th>(b)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0 to 4</td>
+                                <td>very loose</td>
+                                <td>< 28</td>
+                                <td>< 30</td>
+                            </tr>
+                            <tr>
+                                <td>4 to 10</td>
+                                <td>loose</td>
+                                <td>28 to 30</td>
+                                <td>30 to 35</td>
+                            </tr>
+                            <tr>
+                                <td>10 to 30</td>
+                                <td>medium</td>
+                                <td>30 to 36</td>
+                                <td>35 to 40</td>
+                            </tr>
+                            <tr>
+                                <td>30 to 50</td>
+                                <td>dense</td>
+                                <td>36 to 41</td>
+                                <td>40 to 45</td>
+                            </tr>
+                            <tr>
+                                <td>> 50</td>
+                                <td>very dense</td>
+                                <td>> 41</td>
+                                <td>> 45</td>
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                </div>
+                <h4>Method 6 : from Dunham (1954) can be used only to define an 
+                    upper bound of friction angle</h4>
+                <p>\(\phi' = \sqrt{ 12N} + 20\)</p>
+            </div>
+            <div class="col-md-5 ml-auto mr-auto">
+                <img class="img" src="{% static "assets/img/FractionAngle_2.png" %}"><br><br>
+                <p class ="text-center">method 2</p>
+                <img class="img" src="{% static "assets/img/FractionAngle_1.png" %}"><br><br>
+                <p class ="text-center">method 3</p>
+            </div>
+        </div>
+    </div>
+</div>

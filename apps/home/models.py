@@ -55,6 +55,10 @@ class ProjectAGS(models.Model):
     project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
     ags_file = models.FileField(upload_to='project/ags/',  validators=[FileExtensionValidator(allowed_extensions=["ags"])], blank=True, null=True)
     is_verified = models.BooleanField(default=False)
+    nspt_activated = models.BooleanField(default=False)
+    rdTerzaghi_activated = models.BooleanField(default=False)
+    rdSkempton_activated = models.BooleanField(default=False)
+    FractionAngle_activated = models.BooleanField(default=False)
 
 @receiver(post_delete, sender=ProjectAGS)
 def post_save_image(sender, instance, *args, **kwargs):
@@ -84,7 +88,7 @@ class ProjectExcel(models.Model):
     id = models.AutoField(primary_key=True)
     project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
     ags_file = models.ForeignKey(ProjectAGS, on_delete = models.CASCADE, null=True)
-    excel_file = models.FileField(upload_to='project/excel/',  validators=[FileExtensionValidator(allowed_extensions=["xlsx"])], blank=False, null=False)
+    excel_file = models.FileField(upload_to='project/excel/',  validators=[FileExtensionValidator(allowed_extensions=["xlsx"])], blank=True, null=False)
     is_verified = models.BooleanField(default=False)
 
 @receiver(post_delete, sender=ProjectExcel)

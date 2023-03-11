@@ -45,6 +45,24 @@ ags_reference={
         "heading":"ISPT",
         "elevation":"ISPT_TOP"
     },
+    "N60":{
+        "description":"Modefied Standard Penetration Test",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"",
+        "column":["ISPT_N60"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
+    "corrected N":{
+        "description":"Modefied Standard Penetration Test",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"",
+        "column":["ISPT_correctedN"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
     "CL":{
         "description":"Chloride Content of Soil",
         "category":"Factual",
@@ -224,5 +242,32 @@ ags_reference={
         "column":["GRAG_GRAV"],
         "heading":"GRAV",
         "elevation":"ISPT_TOP"
-    }
+    },
+    "Relative Density (Skempton)":{
+        "description":"Relative Density",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"%",
+        "column":["ISPT_dr_Skempton"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
+    "Relative Density (Terzaghi)":{
+        "description":"Relative Density",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"%",
+        "column":["ISPT_dr_Terzaghi"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
+    "Friction Angle":{
+        "description":"Friction Angle",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"°",
+        "column":["ISPT_FractionAngle"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
 }
