@@ -36,28 +36,11 @@
           </ul>
         </div>
       </li>
-      <li class="nav-item {% if '/tools' in request.path %}active{% endif %}">
-        <a class="nav-link" data-toggle="collapse" href="#tools">
-          <i class="material-icons">widgets</i>
-          <p> Tools
-            <b class="caret"></b>
-          </p>
+      <li class="nav-item  {% if '/tools' in request.path %}active{% endif %} ">
+        <a class="nav-link" href="{% url 'tools' %}">
+          <i class="material-icons">widgets</i><span class="sidebar-normal"> Tools </span>
         </a>
-        <div class="collapse" id="tools">
-          <ul class="nav">
-            <li class="nav-item ">
-              <a class="nav-link" href="{% url 'tools' %}">
-                <span class="sidebar-mini"> T </span><span class="sidebar-normal"> Tools </span>
-              </a>
-            </li>
-            <li class="nav-item ">
-              <a class="nav-link" href="{% url 'tools' %}">
-                <span class="sidebar-mini"> P </span><span class="sidebar-normal"> Profiles </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </li>
+        </li>
       <li class="nav-item {% if '/user' in request.path %}active{% endif %}">
         <a class="nav-link" data-toggle="collapse" href="#users">
           <i class="material-icons">person</i>

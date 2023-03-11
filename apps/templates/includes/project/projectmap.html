@@ -34,15 +34,15 @@
                     onclick='window.location.href="{% url 'delete-project-ags' ags.pid ags.id %}"'>
                     <i class="material-icons">close</i>
                   </button>
+                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'edit-project-ags-micro' ags.pid ags.id %}"'>
+                  <i class="material-icons">art_track</i>
+                </button>
                   {% endif %} 
                   <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
                     onclick='window.location.href="/media/{{ ags.path }}"'>
                     <i class="material-icons">download</i>
                   </button>
-                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                  onclick='window.location.href="{% url 'edit-project-ags-micro' ags.pid ags.id %}"'>
-                  <i class="material-icons">art_track</i>
-                </button>
                 </td>
               </tr>
               {% endfor %}
