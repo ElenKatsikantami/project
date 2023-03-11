@@ -17,6 +17,7 @@ from . ags_reference import ags_reference
 from . Bearing_Capacity_for_Shallow_Foundation import *
 from . activate_nspt import activate_nspt
 from . activate_relativeDensity import *
+from . activate_frictionangle import *
 from django.shortcuts import render
 
 chart_list = {
@@ -489,7 +490,42 @@ class tools(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         """"get context data"""
+        NSPT_activated = []
+        for ags in ProjectAGS.objects.all().filter(nspt_activated=True):
+            project = ProjectTable.objects.get(id=ags.project_id).name
+            ags_name = ags.ags_file.name.split("/")[-1]
+            NSPT_activated.append((project,ags_name))
+            
+        FractionAngle_activated = []
+        for ags in ProjectAGS.objects.all().filter(FractionAngle_activated=True):
+            project = ProjectTable.objects.get(id=ags.project_id).name
+            ags_name = ags.ags_file.name.split("/")[-1]
+            FractionAngle_activated.append((project,ags_name))
+            
+        Skempton_activated = []
+        for ags in ProjectAGS.objects.all().filter(rdSkempton_activated=True):
+            project = ProjectTable.objects.get(id=ags.project_id).name
+            ags_name = ags.ags_file.name.split("/")[-1]
+            Skempton_activated.append((project,ags_name))
+        
+        Terzaghi_activated = []
+        for ags in ProjectAGS.objects.all().filter(rdTerzaghi_activated=True):
+            project = ProjectTable.objects.get(id=ags.project_id).name
+            ags_name = ags.ags_file.name.split("/")[-1]
+            Terzaghi_activated.append((project,ags_name))
+        RelativeDensityALL = set(Skempton_activated + Terzaghi_activated)
+        RelativeDensity_activated = []
+        for i in RelativeDensityALL:
+            if i in Skempton_activated and i in Terzaghi_activated:
+                RelativeDensity_activated.append(("both",)+i)
+            elif i in Skempton_activated and i not in Terzaghi_activated:
+                RelativeDensity_activated.append(("Skempton",)+i)
+            else:
+                RelativeDensity_activated.append(("Terzaghi and Peck",)+i)
         context = super().get_context_data(**kwargs)
+        context["nspt_activated"] = NSPT_activated
+        context["RelativeDensity_activated"] = RelativeDensity_activated
+        context["FractionAngle_activated"] = FractionAngle_activated
         return context
 
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
@@ -693,53 +729,82 @@ class NsptCorrection(LoginRequiredMixin, CreateView):
         for ags_id in self.request.POST.getlist("select-variable-second"):
             project_excel_form.ags_file = ProjectAGS(id=ags_id)
             project_excel_form.save()
-            file_ags = ProjectAGS.objects.get(id=ags_id
-                        ,project_id=self.request.POST["select-variable-first"]).ags_file.path
-            Efficiency_file = project_excel_form.excel_file.path
+            ags = ProjectAGS.objects.get(id=ags_id
+                        ,project_id=self.request.POST["select-variable-first"])
+            ags.nspt_activated = True
+            ags.save()
+            file_ags =ags.ags_file.path
             cs = float(self.request.POST["CS"])
             method = self.request.POST["CN"]
-            response = activate_nspt(file_ags,Efficiency_file,cs,method) 
+            maximum = self.request.POST["Maximum"]
+            correct = self.request.POST["correct"]
+            Efficiency_file = ""
+            if self.request.POST["method"] == "excel":
+                try:
+                    Efficiency_file = project_excel_form.excel_file.path
+                    
+                except:
+                    pass
+                response = activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct) 
+            elif self.request.POST["method"] == "excel":
+                machines = self.request.POST.getlist("machine")
+                response = activate_nspt(file_ags,machines,cs,method,maximum,correct)
+            else:
+                response = activate_nspt(file_ags,70,cs,method,maximum,correct)
             messages.add_message(self.request,25,response)
             
         return HttpResponseRedirect(reverse('NSPT'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["projects"] = ProjectTable.objects.all()
+        context["projects"] = ProjectTable.objects.all().filter(owner_id = self.request.user.id)
         return context
 
 def RelativeDensity(request):
     """Relative Density"""
     context={}
-    context["projects"] = ProjectTable.objects.all()
-    context["dr"] = ""
-    context["class"] = ""
-    if 'activate' in request.POST:
+    context["projects"] = ProjectTable.objects.all().filter(owner_id = request.user.id)
+    
+    for ags_id in request.POST.getlist("select-variable-second"):
+        ags = ProjectAGS.objects.get(
+                        id=ags_id
+                        ,project_id=request.POST["select-variable-first"])
         
-    
-        # do unsubscribe
-        for ags_id in request.POST.getlist("select-variable-second"):
-            file_ags = ProjectAGS.objects.get(
-                            id=ags_id
-                            ,project_id=request.POST["select-variable-first"]).ags_file.path
-            method = request.POST["method"]
-            response = activateRelativeDensity(file_ags,method) 
-            messages.add_message(request,25,response)
-    elif 'calculate' in request.POST:
-        method_2 = request.POST["method_2"]
-        x = int(request.POST["NSPT"]) 
-        if method_2 == "Terzaghi":
-            result = get_dr_Terzaghi(x)
-            context["dr"] = str(result[0])
-            context["class"] = result[1]
-        else:
-            result = get_dr_Skempton(x)
-            context["dr"] = str(result)
+        file_ags =ags.ags_file.path
+        method = request.POST["method"]
+        if method =="Terzaghi":
+            ags.rdTerzaghi_activated = True
+            ags.save()
+        elif method =="Skempton":
+            if ags.nspt_activated:
+                ags.rdSkempton_activated = True
+                ags.save()
+        elif method == "Both":
+            ags.rdTerzaghi_activated = True
+            if ags.nspt_activated:
+                ags.rdSkempton_activated = True
+            ags.save()
+            
+        response = activateRelativeDensity(file_ags,method)
 
-
-    
+        messages.add_message(request,25,response)
     return render(request,'pages/tool/RelativeDensity.html', context)
 
+def FrictionAngle(request):
+    context ={}
+    context["projects"] = ProjectTable.objects.all().filter(owner_id = request.user.id)
+    for ags_id in request.POST.getlist("select-variable-second"):
+        ags = ProjectAGS.objects.get(
+                        id=ags_id
+                        ,project_id=request.POST["select-variable-first"])
+        
+        file_ags =ags.ags_file.path
+        method = request.POST["method"]
+        ags.FractionAngle_activated = True
+        ags.save()
+        response = activate_frictionangle(file_ags,method)
+        messages.add_message(request,25,response)
+    return render(request,'pages/tool/FrictionAngle.html', context)
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
     """Project Default profile Class"""
     template_name = "pages/profile/default/index.html"
