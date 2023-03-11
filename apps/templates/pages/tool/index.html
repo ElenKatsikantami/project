@@ -187,5 +187,72 @@
       </div>
     </div>
   </div>
+  <div class="col-md-6">
+    <div class="card tool-summery">
+      <div class="card-header ">
+        <h4 class="card-title">Friction Angle Tool</h4>
+      </div>
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+
+            <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#link40" role="tablist">
+                  <i class="material-icons">dashboard</i> About
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#link41" role="tablist">
+                  <i class="material-icons">schedule</i> Results
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'FrictionAngle' %}" role="tablist">
+                  <i class="material-icons">timeline</i> Acrivate
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-8">
+            <div class="tab-content">
+              <div class="tab-pane active" id="link40">
+                Friction angle together with cohesion define the shear strength parameters of soil. 
+                Its definition is derived from the Mohr-Coulomb failure criterion. It can be determined 
+                in the laboratory by direct shear test or triaxial tests or from theoretical correlations 
+                with density or N SPT number.<br>
+                <br>
+                Current tool sets the rules to calculate friction angle for granular soils based on N SPT 
+                number. You can activate the tool and then go back to project page to plot friction angle 
+                with depth. 
+
+              </div>
+              <div class="tab-pane" id="link41">
+                <p>Activated ags files</p>
+                <table border ="2px"  >
+                <thead>
+                  <tr class= "text-center">
+                    <th style="width: 50px;" >#</th>
+                    <th style="width: 100px;">project</th>
+                    <th style="width: 250px;">ags name</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for file in FractionAngle_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td>{{ file|first }}</td>
+                      <td>{{ file|slice:'1:'|first }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content %}

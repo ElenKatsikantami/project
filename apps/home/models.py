@@ -58,6 +58,7 @@ class ProjectAGS(models.Model):
     nspt_activated = models.BooleanField(default=False)
     rdTerzaghi_activated = models.BooleanField(default=False)
     rdSkempton_activated = models.BooleanField(default=False)
+    FractionAngle_activated = models.BooleanField(default=False)
 
 @receiver(post_delete, sender=ProjectAGS)
 def post_save_image(sender, instance, *args, **kwargs):

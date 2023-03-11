@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+
+{% block title %} Friction Angle {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+{% block content %}
+
+
+<div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="page-categories">
+            <h3 class="title text-center">Friction Angle</h3>
+            <br>
+            <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist">
+                        <i class="material-icons">info</i> Description
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#link8" role="tablist">
+                        <i class="material-icons">timeline</i> Activate
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link9" role="tablist">
+                        <i class="material-icons">gavel</i> Reference
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link10" role="tablist">
+                        <i class="material-icons">help_outline</i> Help Center
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content tab-space tab-subcategories">
+                <div class="tab-pane" id="link7">
+                    {% include 'pages/tool/includes/FrictionAngleDetails.html' %}
+                </div>
+                <div class="tab-pane active" id="link8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="TypeValidation" class="form-horizontal" method="post"
+                                enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row tool-form">
+                                    <div class="col-md-7">
+                                        {% for message in messages %}
+                                            <div class="alert alert-rose">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <i class="material-icons">close</i>
+                                                </button>
+                                                <span>
+                                                    <b> info - </b> {{ message }}
+                                                </span>
+                                            </div>
+                                        {% endfor %}
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select Project
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;"
+                                                        id="select-variable-first" name="select-variable-first"
+                                                        onchange="getAgs(this)">
+                                                        <option hidden disabled selected value> -- select a project -- </option>
+                                                        {% for project in projects %}
+                                                        <option value={{ project.id }}>{{ project.name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select AGS File
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;"
+                                                        id="activate" name="select-variable-second"
+                                                        required multiple>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-md-4 card-header text-center">
+                                                <h5 class="card-title">
+                                                    Select Method :
+                                                </h5>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <select style="width: 300px; text-align:center;" id="method" name="method" required>
+                                                        <option hidden disabled selected value> -- select a method -- </option>
+                                                        <option value="1">1 Peck, Hanson and Thornburn</option>
+                                                        <option value="2">2 Peck et al</option>
+                                                        <option value="3">3 Curve fitting Terzaghi, Peck & Mersi</option>
+                                                        <option value="4">4 Peck, Hanson and Thornburn(table)</option>
+                                                        <option value="5">5 Meyerhof (table)</option>
+                                                        <option value="6">6 Dunham</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <div class="row tool-form">
+                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                                type="button">Back To Tools</button></a>
+                                            {%for project in projects|slice:":1"%}
+                                            <a  id="backtoproject" href="{% url 'project-details' project.id %}" style="margin-left:1% ;"><button class="btn btn-rose" 
+                                                type="button">Back To Project</button></a>
+                                            {%endfor%} 
+                                            <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
+                                            <button class="btn btn-rose" type="submit"
+                                                style="margin-left:1% ;">Activate</button>
+                                        </div>
+                                        <div class="row ">
+                                            
+                                            <div class="col-md-12">
+                                                <div class="form-group has-default bmd-form-group">
+                                                    <table border ="2px" class= "table  text-center" id="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan="2">Method</th>
+                                                                <th rowspan="2">N SPT Value</th>
+                                                                <th>Friction Angle</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><sup>o</sup></th>
+                                                            </tr>
+                                                        </thead>
+        
+                                                    </table>
+                                                    <button class="btn btn-rose" type="button" style="position : absolute; right:0px;"
+                                                    onclick="myFunction()">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row tool-form">
+                                            <button class="btn btn-rose" type="button" onclick="Calculate()">Calculate</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="card-header">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="link9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Reference</h5>
+                        </div>
+                        <div class="card-body">
+                            
+                            <ol>
+                                <li>Terzaghi, K. and Peck, R.B. (1967) Soil Mechanics in Engineering Practice. John Wiley & Sons, New York.</li>
+                                <li>Peck, R.B., Hanson, W.E., and Thornburn, T.H., (1974), “Foundation Engineering”, John Wiley & Sons, 514p.</li>
+                                <li>Meyerhof, G.G., (1956), “Penetration Tests and Bearing Capacity of Cohesionless Soils”, Jnl. Soil Mech. & Found. Div., ASCE, Vol. 82, No. SM1.</li>
+                                <li>EPRI EL-6800, Project 1493-6, Final Report, Aug 1990, Manual on Estimating Soil Properties for Foundation Design.</li>
+                                <li>CIRIA Report 143, 1995, The Standard Penetration Test (SPT): Methods and Use.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="link10">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Help center</h5>
+                        </div>
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+<!-- MathJax version 3 snippet -->
+<script>
+    function getAgs(element) {
+        $('#select-variable-second').empty()
+        let value_1 = "/project/details/"+ element.value ;
+        document.querySelector('#backtoproject').href = value_1;
+        get_borhole_list(element.value)
+    };
+    function get_borhole_list(value) {
+        var project_id = parseInt(value);
+        var dataRequest = { project_id: project_id };
+        $.get('agsfiles', dataRequest).done(function (data) {
+            for (i = 0; i < data.agsfiles.length; i++) {
+                $('[name=select-variable-second]').append($('<option>', { value: data.agsfiles[i][0], text: data.agsfiles[i][1] }));
+            }
+        });
+    };
+
+</script>
+
+
+<script>
+    var y;
+
+    function apply_first(x){
+        if (x <= 100 && x >0){
+            y = 27.1 + 0.3*x + 0.00054*(x**2);}
+        else{
+            y = "please enter a number from 0 to 100"
+            }
+        return y;}
+
+    function apply_second(x){
+        if (x <= 100 && x >0){
+            y = -0.0014*x**2 + 0.3534*x + 26.964;}
+        else{
+            y = "please enter a number from 0 to 100"
+            }
+        return y;}
+
+    function apply_third(x){
+        if (x <= 100 && x >0){
+            var Coarse = 0.00002*x**3 - 0.0056*x**2 + 0.583*x + 27.558;
+            var Fine = -0.00002*x**3 - 0.0015*x**2 + 0.4089*x + 27.395;
+            y = (Coarse+Fine)/2 ;}
+        else{
+            y = "please enter a number from 0 to 100"
+            }
+        return y;}
+
+    function apply_sixth(x){
+        if (x <= 100 && x >0){
+            y = (12*x)**0.5 + 20;}
+        else{
+            y = "please enter a number from 0 to 100"
+            }
+        return y;}
+
+    function get_average(x){
+        var z = (apply_first(x) + apply_second(x) + apply_third(x) + apply_sixth(x))/4;
+    return z;}
+
+    function apply_forth(x){
+        var z = get_average(100);
+        if (x <= 4 && x >0){
+            y = 25 + 3 * x / 4;}
+        else if (x <= 10 && x >4){
+            y = 28 + 2 * (x-4) / 6;}
+        else if (x <= 30 && x >10){
+            y = 30 + 6 * (x-10) / 20;}
+        else if (x <= 50 && x >30){
+            y = 36 + 5 * (x-30) / 20;}
+        else if (x <= 100 && x >50){
+            y = 41 + (z-41)  * (x-50) / 50;}
+        else{
+            y = "please enter a number from 0 to 100"
+            }
+        return y;
+        }
+
+    function apply_fifth(x){
+        var z = get_average(100);
+        if (x <= 4 && x >0){
+            y = 25 + 5 * x / 4;}
+        else if (x <= 10 && x >4){
+            y = 30 + 5 * (x-4) / 6;}
+        else if (x <= 30 && x >10){
+            y = 35 + 5 * (x-10) / 20;}
+        else if (x <= 50 && x >30){
+            y = 40 + 5 * (x-30) / 20;}
+        else if (x <= 100 && x >50){
+            y = 45 + (z-45) * (x-50) / 50;}
+        else{
+            y = "please enter a number from 0 to 100"
+            }
+        return y;
+        }
+
+    function myFunction() {
+        var table = document.getElementById("table");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = '<select style=" text-align:center;" id="method_2" name="method_2">\
+            <option value="1">1 Peck, Hanson and Thornburn</option>\
+            <option value="2">2 Peck et al</option>\
+            <option value="3">3 Curve fitting Terzaghi, Peck & Mersi</option>\
+            <option value="4">4 Peck, Hanson and Thornburn(table)</option>\
+            <option value="5">5 Meyerhof (table)</option>\
+            <option value="6">6 Dunham</option></select>';
+        cell2.innerHTML = '<input  type="number" id="calculate" name="input" min="1" max ="100" step="1">';
+        cell3.innerHTML = '<p  name="FrictionAngle" >';
+      }
+      function Calculate() {
+        var table = document.getElementById('table');
+        var methods = table.getElementsByTagName('select');
+        var items = table.getElementsByTagName('input');
+        var output_FrictionAngle = document.getElementsByName('FrictionAngle');
+        for(var i=0; i<items.length; i++){
+            if(methods[i].value == "1"){
+                y = apply_first(items[i].value);
+                if (typeof y == "number"){y=y.toFixed(2);}
+                output_FrictionAngle[i].innerHTML = y;
+            }
+            else if(methods[i].value == "2"){
+                y = apply_second(items[i].value);
+                if (typeof y == "number"){y=y.toFixed(2);}
+                output_FrictionAngle[i].innerHTML = y;
+            }
+            else if(methods[i].value == "3"){
+                y = apply_third(items[i].value);
+                if (typeof y == "number"){y=y.toFixed(2);}
+                output_FrictionAngle[i].innerHTML = y;
+            }
+            else if(methods[i].value == "4"){
+                y = apply_forth(items[i].value);
+                if (typeof y == "number"){y=y.toFixed(2);}
+                output_FrictionAngle[i].innerHTML = y;
+            }
+            else if(methods[i].value == "5"){
+                y = apply_fifth(items[i].value);
+                if (typeof y == "number"){y=y.toFixed(2);}
+                output_FrictionAngle[i].innerHTML = y;
+            }
+            else{
+                y = apply_sixth(items[i].value);
+                if (typeof y == "number"){y=y.toFixed(2);}
+                output_FrictionAngle[i].innerHTML = y;
+            }
+            }
+    }
+</script>
+{% endblock javascripts %}

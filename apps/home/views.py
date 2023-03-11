@@ -16,6 +16,7 @@ from . ags_reference import ags_reference
 from . Bearing_Capacity_for_Shallow_Foundation import *
 from . activate_nspt import activate_nspt
 from . activate_relativeDensity import *
+from . activate_frictionangle import *
 from django.shortcuts import render
 
 chart_list = {
@@ -478,6 +479,12 @@ class tools(LoginRequiredMixin, TemplateView):
             ags_name = ags.ags_file.name.split("/")[-1]
             NSPT_activated.append((project,ags_name))
             
+        FractionAngle_activated = []
+        for ags in ProjectAGS.objects.all().filter(FractionAngle_activated=True):
+            project = ProjectTable.objects.get(id=ags.project_id).name
+            ags_name = ags.ags_file.name.split("/")[-1]
+            FractionAngle_activated.append((project,ags_name))
+            
         Skempton_activated = []
         for ags in ProjectAGS.objects.all().filter(rdSkempton_activated=True):
             project = ProjectTable.objects.get(id=ags.project_id).name
@@ -501,6 +508,7 @@ class tools(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["nspt_activated"] = NSPT_activated
         context["RelativeDensity_activated"] = RelativeDensity_activated
+        context["FractionAngle_activated"] = FractionAngle_activated
         return context
 
 
@@ -741,8 +749,6 @@ def RelativeDensity(request):
     """Relative Density"""
     context={}
     context["projects"] = ProjectTable.objects.all().filter(owner_id = request.user.id)
-    context["dr"] = ""
-    context["class"] = ""
     
     for ags_id in request.POST.getlist("select-variable-second"):
         ags = ProjectAGS.objects.get(
@@ -769,6 +775,21 @@ def RelativeDensity(request):
         messages.add_message(request,25,response)
     return render(request,'pages/tool/RelativeDensity.html', context)
 
+def FrictionAngle(request):
+    context ={}
+    context["projects"] = ProjectTable.objects.all().filter(owner_id = request.user.id)
+    for ags_id in request.POST.getlist("select-variable-second"):
+        ags = ProjectAGS.objects.get(
+                        id=ags_id
+                        ,project_id=request.POST["select-variable-first"])
+        
+        file_ags =ags.ags_file.path
+        method = request.POST["method"]
+        ags.FractionAngle_activated = True
+        ags.save()
+        response = activate_frictionangle(file_ags,method)
+        messages.add_message(request,25,response)
+    return render(request,'pages/tool/FrictionAngle.html', context)
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
     """Project Default profile Class"""
     template_name = "pages/profile/default/index.html"

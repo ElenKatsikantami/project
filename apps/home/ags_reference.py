@@ -261,4 +261,13 @@ ags_reference={
         "heading":"ISPT",
         "elevation":"ISPT_TOP"
     },
+    "Friction Angle":{
+        "description":"Friction Angle",
+        "category":"Interpretation",
+        "Sub_category":"Field",
+        "unit":"°",
+        "column":["ISPT_FractionAngle"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP"
+    },
 }
