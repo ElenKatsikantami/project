@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Add Project {% endblock %}
+
+{% load static %}
+
+{% load widget_tweaks %}
+
+{% block stylesheets %}
+<!-- Link to Leaflet Stylesheet-->
+<link href="{% static 'ajax_datatable/css/style.css' %}" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+
+{% block content %}
+
+{{ form.media }}
+
+<div class="col-md-12 col-12 mr-auto ml-auto">
+    <div class="row" id="profile-filter">
+        <div class="col-md-3">
+            <div class="card ">
+                <div class="card-body ">
+                    <div class="form-group bmd-form-group is-filled">
+                        <select class="form-control datepicker" id="select-heading">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-icon card-header-rose">
+                <h4 class="card-title ">Simple Table</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="datatable_permissions">
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="{% static 'ajax_datatable/js/utils.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script>
+    var headings = '{{headings|safe}}';
+    var headings = JSON.parse(headings)
+    $('#select-heading').empty();
+    for (i = 0; i < headings.length; i++) {
+        $('#select-heading').append($('<option>', { value: headings[i], text: headings[i] }));
+    }
+  </script>
+
+<script language="javascript">
+
+    $(document).ready(function() {
+       
+    });
+
+</script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

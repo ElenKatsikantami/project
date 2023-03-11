@@ -23,6 +23,8 @@ urlpatterns = [
 
     path('project/ags/add/<id>', views.AddProjectAGS.as_view(), name="add-project-ags"),
     path('project/ags/edit/<pid>/<id>', views.EditProjectAGS.as_view(), name="edit-project-ags"),
+    path('project/ags/micoredit/<pid>/<id>', views.EditProjectAGSMicro.as_view(), name="edit-project-ags-micro"),
+    path('project/ags/micoredit', views.AGSMicroTable.as_view(), name="ags-micro-table"),
     path('project/ags/delete/<pid>/<id>', views.DeleteProjectAGS.as_view(), name="delete-project-ags"),
 
     #user urls
@@ -45,7 +47,7 @@ urlpatterns = [
     path('project/profileform', views.ProjectProfileForm, name="profileform"),
     path('project/profiles/delete/<id>', views.DeleteProfile.as_view(), name="delete-profile"),
     path('project/profiles/details/<id>/<pid>', views.profileDetails.as_view(), name="profile-details"),
-    
+ 
     # default profile
     path('project/default/profiles', views.ProjectDefaultProfile.as_view(), name="defaultprofiles"),
 
@@ -56,7 +58,7 @@ urlpatterns = [
     path('project/default/profile/add', views.AddProjectDefaultProfile.as_view(), name="add-defaultprofiles"),
     path('project/default/profile/edit/<id>', views.EditProjectDefaultProfile.as_view(), name="edit-defaultprofiles"),
     path('project/default/profile/delete/<id>', views.DeleteProjectDefaultProfile.as_view(), name="delete-defaultprofiles"),
-    
+
     path('project/generate/default/profile', views.ProjectDefaultProfileForm, name="generate-defaultprofiles"),
 
 

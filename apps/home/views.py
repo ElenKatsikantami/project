@@ -7,6 +7,7 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, View
 from django.contrib import messages
+from ajax_datatable.views import AjaxDatatableView
 from . ags import AGS
 from . utils import util
 from . models import ProjectTable, ProjectAGS, ContactTable, Projectprofile, Projectdefaultprofilecategory, Projectdefaultprofile
@@ -217,7 +218,6 @@ class projectsection(LoginRequiredMixin, TemplateView):
         context["nspt"] = json.dumps(nspt)
         return context
 
-
 class AddProjectAGS(LoginRequiredMixin, CreateView):
     """add project"""
     template_name = 'pages/project/agcform.html'
@@ -252,6 +252,23 @@ class EditProjectAGS(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+class EditProjectAGSMicro(LoginRequiredMixin, TemplateView):
+    template_name = 'pages/project/microags.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        project = ProjectTable.objects.get(id=self.kwargs["pid"])
+        agsfile = ProjectAGS.objects.get(id=self.kwargs["id"])
+        ags_file_path = os.path.join(settings.MEDIA_ROOT, str(agsfile.ags_file))
+        ags_class = AGS(ags_file=ags_file_path)
+        tables, headings = ags_class.ags_to_dataframe()
+        context["headings"] = json.dumps([*headings])
+        return context
+
+class AGSMicroTable(LoginRequiredMixin, AjaxDatatableView):
+    """DataTable"""
+    pass
 
 class DeleteProjectAGS(LoginRequiredMixin, DeleteView):
     model = ProjectTable
@@ -475,7 +492,6 @@ class tools(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         return context
 
-
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
     """Project Default profile Class"""
     template_name = "pages/profile/default/index.html"
@@ -618,7 +634,6 @@ def ProjectDefaultProfileForm(request):
         result = {'message': 'Oops there is some error. Try Again' + str(e)}
         return HttpResponse(json.dumps(result), content_type='application/json')
     return HttpResponse(json.dumps(result), content_type='application/json')
-
 
 def Bearing(request):
     if request.method == "POST":
