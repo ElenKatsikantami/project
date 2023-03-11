@@ -805,6 +805,7 @@ def FrictionAngle(request):
         response = activate_frictionangle(file_ags,method)
         messages.add_message(request,25,response)
     return render(request,'pages/tool/FrictionAngle.html', context)
+
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
     """Project Default profile Class"""
     template_name = "pages/profile/default/index.html"
@@ -947,3 +948,7 @@ def ProjectDefaultProfileForm(request):
         result = {'message': 'Oops there is some error. Try Again' + str(e)}
         return HttpResponse(json.dumps(result), content_type='application/json')
     return HttpResponse(json.dumps(result), content_type='application/json')
+
+class policy(LoginRequiredMixin, TemplateView):
+    """Index class"""
+    template_name = "pages/policy.html"

@@ -58,10 +58,11 @@ urlpatterns = [
     path('project/default/profile/add', views.AddProjectDefaultProfile.as_view(), name="add-defaultprofiles"),
     path('project/default/profile/edit/<id>', views.EditProjectDefaultProfile.as_view(), name="edit-defaultprofiles"),
     path('project/default/profile/delete/<id>', views.DeleteProjectDefaultProfile.as_view(), name="delete-defaultprofiles"),
-
     path('project/generate/default/profile', views.ProjectDefaultProfileForm, name="generate-defaultprofiles"),
 
-
+    # privacy
+    path('policy', views.policy.as_view(), name="policy"),
+    
     # tools
     path('tools', views.tools.as_view(), name="tools"),
     path('tools/bearingCapacity', views.Bearing, name="bearingCapacity"),
