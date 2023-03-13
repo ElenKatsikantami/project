@@ -185,8 +185,10 @@ function getPattern(i) {
 }
 
 var patterns = [0, 1, 2, 3, 4].map(getPattern);
-function genericStacChart(data, div_id, chart_title, chart_sub_title, xAxisTitle, yAxisTitle) {
 
+function genericStacChart(data, div_id, chart_title, chart_sub_title, xAxisTitle, yAxisTitle) {
+    $('#'+div_id+'-1').addClass('hide')
+    $('#'+div_id+'-2').removeClass('hide')
     Highcharts.chart(div_id, {
         chart: {
             type: 'column',
@@ -234,13 +236,8 @@ function genericStacChart(data, div_id, chart_title, chart_sub_title, xAxisTitle
             }
         },
         legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: 12,
-            y: 70,
-            floating: true,
-            borderWidth: 1,
+            layout: "horizontal",
+            maxHeight: 40,
             backgroundColor:
                 Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
             shadow: true

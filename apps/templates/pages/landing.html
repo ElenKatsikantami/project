@@ -1,78 +1,293 @@
-{% extends "layouts/base-landing-nikos.html" %}
+{% extends "layouts/base-landing.html" %}
 {% block title %} Landing {% endblock %}
 {% block stylesheets %}{% endblock stylesheets %}
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-  <div class="w3-display-left w3-text-white" style="padding:48px">
-    <span class="w3-jumbo w3-hide-small">Unlock the Science. Decode your data.</span><br>
-    <span class="w3-xxlarge w3-hide-large w3-hide-medium"></span><br>
-    <span class="w3-large">Data management and geo-consulting services. </span><br>
-    <br>
-    <br>
-    <br>
-    <!--	<span class="w3-large">To learn more contact us at  
-      
-          <p><a href="" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">info@orycta.com</a></span></p>-->
-  </div>
-  <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-  </div>
-</header>
 
-<!-- Modal for full size images on click-->
-<div id="modal01" class="w3-modal w3-black" onclick="this.style.display = 'none'">
-  <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright" title="Close Modal Image">×</span>
-  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-    <img id="img01" class="w3-image">
-    <p id="caption" class="w3-opacity w3-large"></p>
-  </div>
-</div>
-
-<!-- Promo Section - "Geo-data" -->
-<div class="w3-container w3-light-grey" style="padding:30px 16px">
-  <div class="w3-row-padding">
-    <div class="w3-col m6">
-      <h3>Information into knowledge.</h3>
-      <p>In depth analysis of geotechnical data focusing on valuable, project specific insights.<br>Interpretation made
-        easy so that you can draw meaningful decisions and turn geotechnical risk into a unique competitive advantage.
-      </p>
-      <p>Decode. Manage. Store. Share.
-      <p><a href="{% url 'login' %}" class="w3-button w3-black"><i class="fa fa-th"> </i> Geo-data platform [Coming soon]</a></p>
-    </div>
-    <div class="w3-col m6">
-      <img class="w3-image w3-round-large" src="/static/assets/landing/images/2.jpg" alt="Buildings" width="800"
-        height="450">
+<div class="page-header align-items-start min-vh-100"
+  style="background-image: url('/static/assets-landing/img/bg.jpg');" loading="lazy">
+  <span class="mask bg-gradient-dark opacity-6"></span>
+  <div class="container" style="margin-top:20%;">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center mx-auto my-auto">
+        <h1 class="text-white">Decode Manage Store Share.</h1>
+        <p class="lead mb-4 text-white opacity-8">In depth analysis of geotechnical data focusing on valuable, project
+          specific insights.
+          Interpretation made easy so that you can draw meaningful decisions and turn geotechnical risk into a unique
+          competitive advantage.
+        </p>
+        <h6 class="text-white mb-2 mt-5">Find us on</h6>
+        <div class="d-flex justify-content-center">
+          <a href="javascript:;"><i class="fab fa-facebook text-lg text-white me-4" aria-hidden="true"></i></a>
+          <a href="javascript:;"><i class="fab fa-instagram text-lg text-white me-4" aria-hidden="true"></i></a>
+          <a href="javascript:;"><i class="fab fa-twitter text-lg text-white me-4" aria-hidden="true"></i></a>
+          <a href="javascript:;"><i class="fab fa-google-plus text-lg text-white" aria-hidden="true"></i></a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<div class="w3-container w3-light-grey" style="padding:60px 16px" id="contact">
-  <h3 class="w3-center">CONTACT</h3>
-  <p class="w3-center w3-large">Have an interesting project or want to know more? Get in touch:</p>
-    {{ form.media }}
-    <form id="TypeValidation" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {% for message in messages %}
-      <div class="alert messages {{ messsage.tags }} control-label col-lg-12">
-        <p class="{{ message.tags }}">{{ message }}</p>
+
+<div class="card card-body shadow-xl mx-3 mx-md-4 mt-n6">
+  <section class="py-7">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="row justify-content-start">
+            <div class="col-md-6">
+              <div class="info">
+                <i class="material-icons text-3xl text-gradient text-info mb-3">public</i>
+                <h5>Fully integrated</h5>
+                <p>We get insulted by others, lose trust for those We get back freezes</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info">
+                <i class="material-icons text-3xl text-gradient text-info mb-3">payments</i>
+                <h5>Payments functionality</h5>
+                <p>We get insulted by others, lose trust for those We get back freezes</p>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-start mt-4">
+            <div class="col-md-6">
+              <div class="info">
+                <i class="material-icons text-3xl text-gradient text-info mb-3">apps</i>
+                <h5>Prebuilt components</h5>
+                <p>We get insulted by others, lose trust for those We get back freezes</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info">
+                <i class="material-icons text-3xl text-gradient text-info mb-3">3p</i>
+                <h5>Improved platform</h5>
+                <p>We get insulted by others, lose trust for those We get back freezes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 ms-auto mt-lg-0 mt-4">
+          <div class="card">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <a class="d-block blur-shadow-image">
+                <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-colored-shadow"
+                  class="img-fluid border-radius-lg">
+              </a>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="font-weight-normal">
+                <a href="javascript:;">Information into knowledge.</a>
+              </h5>
+              <p class="mb-0">
+                In depth analysis of geotechnical data focusing on valuable, project specific insights.
+              </p>
+              <p class="mb-0">
+                Decode. Manage. Store. Share.
+              </p>
+              <button type="button" class="btn bg-gradient-info btn-sm mb-0 mt-3">Geo-data platform</button>
+            </div>
+          </div>
+        </div>
       </div>
-      {% endfor %}
-      {% for error in form.non_field_errors %}
-      <div class="form-group has-error">{{ error }}</div>
-      {% endfor %}
-      {% for field in form %}
-      <div class="row">
-        {% for error in field.errors %}
-        <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
-        {% endfor %}
-        {{ field|add_class:'w3-input w3-border'}}
+    </div>
+  </section>
+  <section class="py-3">
+    <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <h3 class="mb-5">Check my latest blogposts</h3>
       </div>
-      {% endfor %}
-      <button class="w3-button w3-black" type="submit" name="submit">
-        <i class="fa fa-paper-plane"></i> SEND MESSAGE
-      </button>
-    </form>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-md-12 col-12">
+        <div class="card card-blog card-background cursor-pointer">
+          <div class="full-background" style="background-image: url('/static/assets-landing/img/bg.jpg')"
+            loading="lazy"></div>
+          <div class="card-body">
+            <div class="content-left text-start my-auto py-4">
+              <h2 class="card-title text-white">Flexible work hours</h2>
+              <p class="card-description text-white">Rather than worrying about switching offices every couple years,
+                you stay in the same place.</p>
+              <a href="javascript:;" class="text-white text-sm icon-move-right">Read More
+                <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card card-plain">
+          <div class="card-header p-0 position-relative">
+            <a class="d-block blur-shadow-image">
+              <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-blur-shadow"
+                class="img-fluid shadow border-radius-lg" loading="lazy">
+            </a>
+          </div>
+          <div class="card-body px-0">
+            <h5>
+              <a href="javascript:;" class="text-dark font-weight-bold">Rover raised $65 million</a>
+            </h5>
+            <p>
+              Finding temporary housing for your dog should be as easy as
+              renting an Airbnb. That’s the idea behind Rover ...
+            </p>
+            <a href="javascript:;" class="text-info text-sm icon-move-right">Read More
+              <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card card-plain">
+          <div class="card-header p-0 position-relative">
+            <a class="d-block blur-shadow-image">
+              <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-blur-shadow"
+                class="img-fluid shadow border-radius-lg" loading="lazy">
+            </a>
+          </div>
+          <div class="card-body px-0">
+            <h5>
+              <a href="javascript:;" class="text-dark font-weight-bold">MateLabs machine learning</a>
+            </h5>
+            <p>
+              If you’ve ever wanted to train a machine learning model
+              and integrate it with IFTTT, you now can with ...
+            </p>
+            <a href="javascript:;" class="text-info text-sm icon-move-right">Read More
+              <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-sm-6">
+        <div class="card card-plain">
+          <div class="card-header p-0 position-relative">
+            <a class="d-block blur-shadow-image">
+              <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-blur-shadow"
+                class="img-fluid shadow border-radius-lg" loading="lazy">
+            </a>
+          </div>
+          <div class="card-body px-0">
+            <h5>
+              <a href="javascript:;" class="text-dark font-weight-bold">MateLabs machine learning</a>
+            </h5>
+            <p>
+              If you’ve ever wanted to train a machine learning model
+              and integrate it with IFTTT, you now can with ...
+            </p>
+            <a href="javascript:;" class="text-info text-sm icon-move-right">Read More
+              <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </section>
+
 </div>
+
+<section class="py-lg-5">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card box-shadow-xl overflow-hidden mb-5">
+          <div class="row">
+            <div class="col-lg-5 position-relative bg-cover px-0"
+              style="background-image: url('/static/assets-landing/img/bg.jpg')" loading="lazy">
+              <div class="z-index-2 text-center d-flex h-100 w-100 d-flex m-auto justify-content-center">
+                <div class="mask bg-gradient-dark opacity-8"></div>
+                <div class="p-5 ps-sm-8 position-relative text-start my-auto z-index-2">
+                  <h3 class="text-white">Contact Information</h3>
+                  <p class="text-white opacity-8 mb-4">Fill up the form and our Team will get back to you within 24
+                    hours.</p>
+                  <div class="d-flex p-2 text-white">
+                    <div>
+                      <i class="fas fa-phone text-sm" aria-hidden="true"></i>
+                    </div>
+                    <div class="ps-3">
+                      <span class="text-sm opacity-8">(+40) 772 100 200</span>
+                    </div>
+                  </div>
+                  <div class="d-flex p-2 text-white">
+                    <div>
+                      <i class="fas fa-envelope text-sm" aria-hidden="true"></i>
+                    </div>
+                    <div class="ps-3">
+                      <span class="text-sm opacity-8">hello@creative-tim.com</span>
+                    </div>
+                  </div>
+                  <div class="d-flex p-2 text-white">
+                    <div>
+                      <i class="fas fa-map-marker-alt text-sm" aria-hidden="true"></i>
+                    </div>
+                    <div class="ps-3">
+                      <span class="text-sm opacity-8">Dyonisie Wolf Bucharest, RO 010458</span>
+                    </div>
+                  </div>
+                  <div class="mt-4">
+                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
+                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Facebook">
+                      <i class="fab fa-facebook" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
+                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Twitter">
+                      <i class="fab fa-twitter" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
+                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Dribbble">
+                      <i class="fab fa-dribbble" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
+                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Instagram">
+                      <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <form class="p-3" id="contact-form" method="post">
+                <div class="card-header">
+                  <h2>Say Hi!</h2>
+                  <p class="lead"> We'd like to talk with you.</p>
+                </div>
+                <div class="card-body pt-1">
+                  <div class="row">
+                    <div class="col-md-12 pe-2 mb-3">
+                      <div class="input-group input-group-static mb-4">
+                        <label>My name is</label>
+                        <input type="text" class="form-control" placeholder="Full Name">
+                      </div>
+                    </div>
+                    <div class="col-md-12 pe-2 mb-3">
+                      <div class="input-group input-group-static mb-4">
+                        <label>I'm looking for</label>
+                        <input type="text" class="form-control" placeholder="What you love">
+                      </div>
+                    </div>
+                    <div class="col-md-12 pe-2 mb-3">
+                      <div class="input-group input-group-static mb-4">
+                        <label>Your message</label>
+                        <textarea name="message" class="form-control" id="message" rows="6"
+                          placeholder="I want to say that..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 text-end ms-auto">
+                      <button type="submit" class="btn bg-gradient-info mb-0">Send Message</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock content %}

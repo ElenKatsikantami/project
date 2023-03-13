@@ -243,7 +243,6 @@ select {
   margin: 5px;
 }
 
-
 .tool-form{
   justify-content: center;
 }
@@ -252,6 +251,11 @@ select {
   font-weight: 700;
   color: #322329;
 }
+
+.leaflet-popup.leaflet-zoom-animated {
+  width: 200px;
+}
+
 @media print{
   head {
     display: None;

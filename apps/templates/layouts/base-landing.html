@@ -1,82 +1,210 @@
+<!--
+=========================================================
+* Material Kit 2 - v3.0.4
+=========================================================
+
+* Product Page:  https://www.creative-tim.com/product/material-kit 
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <link rel="" href="">
-	<title>Geo-Data Management  {% block title %}{% endblock %}</title>
-	<script
-		type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-	<!-- bootstrap-css -->
-	<link href="/static/assets/landing/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-	<!--// bootstrap-css -->
-	<!-- css -->
-	<link rel="stylesheet" href="/static/assets/landing/css/style.css" type="text/css" media="all" />
-	<!--// css -->
-	<!-- font-awesome icons -->
-	<link rel="stylesheet" href="/static/assets/font/Geomanist-Light-Webfont/geomanist-light-webfont.ttf" />
-	
-	<link href="/static/assets/landing/css/font-awesome.css" rel="stylesheet">
-	<!-- //font-awesome icons -->
-	<!-- font -->
-	<link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i" rel="stylesheet">
-	<link
-		href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-		rel="stylesheet">
-	<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700italic,700,400italic,300italic,300'
-		rel='stylesheet' type='text/css'>
-	<!-- //font -->
-	<script src="/static/assets/landing/js/jquery-1.11.1.min.js"></script>
-	<script src="/static/assets/landing/js/bootstrap.js"></script>
-	<script type="text/javascript">
-		jQuery(document).ready(function ($) {
-			$(".scroll").click(function (event) {
-				event.preventDefault();
-				$('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
-			});
-		});
-	</script>
-    
-    {% block stylesheets %}{% endblock stylesheets %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="" sizes="76x76" href="/static/assets-landing/img/logos/logo.png">
+  <link rel="" type="image/png" href="/static/assets-landing/img/logos/logo.png">
+  <title>
+    Geo-Data Management  {% block title %}{% endblock %}
+  </title>
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+  <!-- Nucleo Icons -->
+  <link href="/static/assets-landing/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="/static/assets-landing/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <!-- CSS Files -->
+  <link id="pagestyle" href="/static/assets-landing/css/material-kit.css?v=3.0.4" rel="stylesheet" />
 </head>
 
-<body>
-
+<body class="sign-in-basic">
+  <!-- Navbar Transparent -->
+  {% include 'includes/landing/navbar.html' %}
+  <!-- End Navbar -->
+  
   {% block content %}{% endblock content %}
-
-	<script src="/static/assets/landing/js/responsiveslides.min.js"></script>
-	<script src="/static/assets/landing/js/SmoothScroll.min.js"></script>
-	<script type="text/javascript" src="/static/assets/landing/js/move-top.js"></script>
-	<script type="text/javascript" src="/static/assets/landing/js/easing.js"></script>
-	<!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function () {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear' 
-				};
-			*/
-
-			$().UItoTop({ easingType: 'easeOutQuart' });
-
-		});
-	</script>
-	<!-- //here ends scrolling icon -->
-	<script src="/static/assets/landing/js/jarallax.js"></script>
-	<script type="text/javascript">
-		/* init Jarallax */
-		$('.jarallax').jarallax({
-			speed: 0.5,
-			imgWidth: 1366,
-			imgHeight: 768
-		})
-	</script>
+  <footer class="footer pt-5 mt-5">
+    <div class="container">
+      <div class=" row">
+        <div class="col-md-3 mb-4 ms-auto">
+          <div>
+            <a href="{% url 'landing' %}">
+              <img src="/static/assets/landing/images/logo-trans.png" class="mb-3 footer-logo" alt="main_logo">
+            </a>
+            <h6 class="font-weight-bolder mb-4">Geo-Data Management</h6>
+          </div>
+          <div>
+            <ul class="d-flex flex-row ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link pe-1" href="https://www.facebook.com/CreativeTim/" target="_blank">
+                  <i class="fab fa-facebook text-lg opacity-8"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link pe-1" href="https://twitter.com/creativetim" target="_blank">
+                  <i class="fab fa-twitter text-lg opacity-8"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link pe-1" href="https://dribbble.com/creativetim" target="_blank">
+                  <i class="fab fa-dribbble text-lg opacity-8"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link pe-1" href="https://github.com/creativetimofficial" target="_blank">
+                  <i class="fab fa-github text-lg opacity-8"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link pe-1" href="https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w"
+                  target="_blank">
+                  <i class="fab fa-youtube text-lg opacity-8"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4">
+          <div>
+            <h6 class="text-sm">Company</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/presentation" target="_blank">
+                  About Us
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/templates/free" target="_blank">
+                  Freebies
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/templates/premium" target="_blank">
+                  Premium Tools
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/blog" target="_blank">
+                  Blog
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4">
+          <div>
+            <h6 class="text-sm">Resources</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="https://iradesign.io/" target="_blank">
+                  Illustrations
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/bits" target="_blank">
+                  Bits & Snippets
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/affiliates/new" target="_blank">
+                  Affiliate Program
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4">
+          <div>
+            <h6 class="text-sm">Help & Support</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/contact-us" target="_blank">
+                  Contact Us
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/knowledge-center" target="_blank">
+                  Knowledge Center
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://services.creative-tim.com/?ref=ct-mk2-footer" target="_blank">
+                  Custom Development
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/sponsorships" target="_blank">
+                  Sponsorships
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-6 col-6 mb-4 me-auto">
+          <div>
+            <h6 class="text-sm">Legal</h6>
+            <ul class="flex-column ms-n3 nav">
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/knowledge-center/terms-of-service/"
+                  target="_blank">
+                  Terms & Conditions
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/knowledge-center/privacy-policy/"
+                  target="_blank">
+                  Privacy Policy
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.creative-tim.com/license" target="_blank">
+                  Licenses (EULA)
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="text-center">
+            <p class="text-dark my-4 text-sm font-weight-normal">
+              All rights reserved. Copyright ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script> Geo-Data Management.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--   Core JS Files   -->
+  <script src="/static/assets-landing/js/core/popper.min.js" ></script>
+  <script src="/static/assets-landing/js/core/bootstrap.min.js" ></script>
+  <script src="/static/assets-landing/js/plugins/perfect-scrollbar.min.js"></script>
+  <!--  Plugin for Parallax, full documentation here: https://github.com/wagerfield/parallax  -->
+  <script src="/static/assets-landing/js/plugins/parallax.min.js"></script>
+  <!-- Control Center for Material UI Kit: parallax effects, scripts for the example pages etc -->
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI"></script>
+  <script src="/static/assets-landing/js/material-kit.min.js?v=3.0.4" ></script>
 </body>
 
 </html>
