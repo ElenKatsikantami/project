@@ -75,10 +75,9 @@ def activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct):
         except:
             dictionery = {}
     elif type(Efficiency_file) == list:
-        for i,value in enumerate(Efficiency_file):
+        for machine,value in Efficiency_file:
             if value != "":
-                dictionery[machines[i]] = np.round(float(value)*(100 if float(value)<1 else 1),1)
-            
+                dictionery[machine] = np.round(float(value)*(100 if float(value)<1 else 1),1)
     for i in machines:
         if i not in dictionery:
             Efficiency = 70
@@ -93,8 +92,8 @@ def activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct):
     groundWater_dict = {"WSTG":"WSTG_DPTH","MOND":"MOND_RDNG","WSTK":"WSTK_DEP"}
     groundWater_column = groundWater_dict[groundWater_sheet]
     df["water"] = tables[groundWater_sheet][groundWater_column][2:].apply(float)
-    df["machines"] = tables["HDPH"]["HDPH_EXC"]
-    df["efficency"] = df["machines"].apply(lambda x :min([dictionery[i] for i in x.split(",")])) 
+    df["machines"] = tables["HDPH"][2:]["HDPH_EXC"]
+    df["efficency"] = df["machines"].apply(lambda x :min([dictionery[i.upper().replace("ADDII","ADII").strip()] for i in x.split("&")])) 
     df=df.set_axis(df["LOCA_ID"])
 
     df_Interpretation = df_ispt.copy()[["LOCA_ID","ISPT_TOP","ISPT_NVAL"]]
@@ -127,8 +126,8 @@ def activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct):
         df_Interpretation["CB"] = 1.15
     df_Interpretation["CR"] = df_Interpretation["ISPT_TOP"].apply(get_CR)
 
-    df_Interpretation["N60"] = (df_Interpretation["Efficiency"]/60)*df_Interpretation["CB"]*\
-                                df_Interpretation["CS"]*df_Interpretation["CR"]*df_Interpretation["ISPT_NVAL"]
+    df_Interpretation["N60"] = np.round((df_Interpretation["Efficiency"]/60)*df_Interpretation["CB"]*\
+                                df_Interpretation["CS"]*df_Interpretation["CR"]*df_Interpretation["ISPT_NVAL"], decimals=1)
     condition = (df_Interpretation["ISPT_TOP"] <= 5).apply(int)
     df_Interpretation["(N1)60"] = np.round(df_Interpretation["N60"]*condition + df_Interpretation["N60"]*df_Interpretation["CN"]*(1-condition), decimals=1)
 
