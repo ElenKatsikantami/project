@@ -17,12 +17,12 @@ def get_dr_Terzaghi(x):
         y = 65 + 20 * (x-30) / 20
         classification = "Dense"
     else:
-        y = 85 + 15 * (x-50) / 50
+        y = 85 + 15 * (x-50) / 150
         classification = "Very Dense"
     return pd.Series([min(y,100) ,classification])
 
 def get_dr_Skempton(x):
-    return min((x/60)**0.5,100)
+    return min(100*(x/60)**0.5,100)
 
 def first_correction(ispt_sheet):
     df_ispt = ispt_sheet
