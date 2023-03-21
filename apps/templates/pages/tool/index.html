@@ -2,6 +2,8 @@
 
 {% block title %} Tools {% endblock %}
 
+{% load filename %}
+
 {% block stylesheets %}
 <link rel="stylesheet" href="/static/custom/css/style.css" />
 {% endblock stylesheets %}
@@ -47,20 +49,20 @@
               </div>
               <div class="tab-pane" id="link21">
                 <p>Activated ags files</p>
-                <table border ="2px"  >
+                <table class="table">
                 <thead>
                   <tr class= "text-center">
-                    <th style="width: 50px;" >#</th>
-                    <th style="width: 100px;">project</th>
-                    <th style="width: 250px;">ags name</th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">project</th>
+                    <th class="text-center">ags name</th>
                   </tr>
                 </thead>
                   <tbody>
                     {% for file in nspt_activated %}
                     <tr>
                       <td class="text-center">{{ forloop.counter }} </td>
-                      <td>{{ file|first }}</td>
-                      <td>{{ file|slice:'1:'|first }}</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -160,7 +162,7 @@
               </div>
               <div class="tab-pane" id="link31">
                 <p>Activated ags files</p>
-                <table border ="2px"  >
+                <table class="table">
                 <thead>
                   <tr class= "text-center">
                     <th style="width: 50px;" >#</th>
@@ -229,7 +231,7 @@
               </div>
               <div class="tab-pane" id="link41">
                 <p>Activated ags files</p>
-                <table border ="2px"  >
+                <table class="table">
                 <thead>
                   <tr class= "text-center">
                     <th style="width: 50px;" >#</th>

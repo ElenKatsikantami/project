@@ -12,6 +12,12 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
 <link  href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/custom/css/style.css" />
+<style>
+ 
+  .leaflet-popup-content {
+      margin: 2px 2px 2px 2px;
+  }
+  </style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -54,5 +60,11 @@
     
 </script>
 <script src="/static/custom/js/section.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+    $('#table_profile').DataTable();
+    $('#table_borehole').DataTable();
+    $('#table_ags').DataTable();
+</script>
 
 {% endblock javascripts %}

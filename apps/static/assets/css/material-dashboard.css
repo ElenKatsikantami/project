@@ -11812,7 +11812,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
         top: 4px;
         font-size: 16px; }
   .card [class*="card-header-"] {
-    margin: 0px 15px 0;
+    margin: 15px 15px 0;
     padding: 0;
     position: relative; }
     .card [class*="card-header-"] .card-title + .card-category {
