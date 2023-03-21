@@ -1,88 +1,90 @@
 <div class="row">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-body ">
-          <div id="detail-map" style="min-height:73vh;  max-height: 73vh; z-index: 0;">
-          </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body ">
+        <div id="detail-map" style="min-height:73vh;  max-height: 73vh; z-index: 0;">
         </div>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card ">
-        <div class="table-responsive" style="min-height:22vh;  max-height: 22vh;">
-          <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"'><i
-            class="material-icons">add</i> Add AGS</button>
-          <table class="table" id="table_ags">
-            <thead>
-              <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">AGS File</th>
-                <th class="text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for ags in agsfile %}
-              <tr>
-                <td class="text-center">{{ forloop.counter }} </td>
-                <td class="text-center">{{ ags.name }}</td>
-                </td>
-                <td class="td-actions text-center">
-                    {% if '/profile' not in request.path %} 
-                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="{% url 'edit-project-ags' ags.pid ags.id %}"'>
-                    <i class="material-icons">edit</i>
-                  </button>
-                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="{% url 'delete-project-ags' ags.pid ags.id %}"'>
-                    <i class="material-icons">close</i>
-                  </button>
-                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+  </div>
+  <div class="col-md-6">
+    <div class="card ">
+      <div class="table-responsive" style="min-height:22vh;  max-height: 22vh;">
+      {% if '/project/details' in request.path %}
+        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"' style="float: right;padding: 2px;margin: 16px;"><i
+            class="material-icons" >add</i> Add AGS</button>
+        {% endif %}
+        <table class="table" id="table_ags">
+          <thead>
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">AGS File</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ags in agsfile %}
+            <tr>
+              <td class="text-center">{{ forloop.counter }} </td>
+              <td class="text-center">{{ ags.name }}</td>
+              </td>
+              <td class="td-actions text-center">
+                {% if '/profile' not in request.path %}
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'edit-project-ags' ags.pid ags.id %}"'>
+                  <i class="material-icons">edit</i>
+                </button>
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="{% url 'delete-project-ags' ags.pid ags.id %}"'>
+                  <i class="material-icons">close</i>
+                </button>
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
                   onclick='window.location.href="{% url 'edit-project-ags-micro' ags.pid ags.id %}"'>
                   <i class="material-icons">art_track</i>
                 </button>
-                  {% endif %} 
-                  <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                    onclick='window.location.href="/media/{{ ags.path }}"'>
-                    <i class="material-icons">download</i>
-                  </button>
-                </td>
+                {% endif %}
+                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                  onclick='window.location.href="/media/{{ ags.path }}"'>
+                  <i class="material-icons">download</i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive" style="min-height:48vh;  max-height: 48vh;">
+          <table class="table table-striped" id="table_borehole">
+            <thead>
+              <tr>
+                <th class="text-center">#</th>
+                <th>Project</th>
+                <th>Borehole</th>
+                <th>Longitude</th>
+                <th>Latitude</th>
+                <th>Existing GL</th>
+                <th>Water Level</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for hole in holetable %}
+              <tr>
+                <td class="text-center">{{ forloop.counter }} </td>
+                <td>{{ hole.ags }}</td>
+                <td>{{ hole.LOCA_ID }}</td>
+                <td>{{ hole.longitude }}</td>
+                <td>{{ hole.latitude }}</td>
+                <td>{{ hole.LOCA_GL }}</td>
+                <td>{{ hole.MOND_RDNG }}</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
-          <div class="table-responsive" style="min-height:48vh;  max-height: 48vh;">
-            <table class="table table-striped" id="table_borehole">
-              <thead>
-                <tr>
-                  <th class="text-center">#</th>
-                  <th>Project</th>
-                  <th>Borehole</th>
-                  <th>Longitude</th>
-                  <th>Latitude</th>
-                  <th>Existing GL</th>
-                  <th>Water Level</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for hole in holetable %}
-                <tr>
-                  <td class="text-center">{{ forloop.counter }} </td>
-                  <td>{{ hole.ags }}</td>
-                  <td>{{ hole.LOCA_ID }}</td>
-                  <td>{{ hole.longitude }}</td>
-                  <td>{{ hole.latitude }}</td>
-                  <td>{{ hole.LOCA_GL }}</td>
-                  <td>{{ hole.MOND_RDNG }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
+</div>
