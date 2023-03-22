@@ -26,12 +26,16 @@
       <div class="card-body">
         <div class="card-actions text-center">
           <button type="button" class="btn" rel="tooltip" data-placement="bottom" title=""
-            data-original-title="View" onclick='window.location.href="{% url 'project-details' project.id %}"'>
-            <i class="material-icons">art_track</i>
+            data-original-title="Details" onclick='window.location.href="{% url 'project-details' project.id %}"'>
+            <i class="material-icons">insights</i>
           </button>
           <button type="button" class="btn" rel="tooltip" data-placement="bottom" title=""
             data-original-title="Section" onclick='window.location.href="{% url 'project-section' project.id %}"'>
-            <i class="material-icons">schedule</i>
+            <i class="material-icons">leaderboard</i>
+          </button>
+          <button type="button" class="btn" rel="tooltip" data-placement="bottom" title=""
+            data-original-title="Report" onclick='window.location.href="{% url 'project-report' project.id %}"'>
+            <i class="material-icons">check_box</i>
           </button>
           <button type="button" class="btn" rel="tooltip" data-placement="bottom" title=""
             data-original-title="Edit" onclick='window.location.href="{% url 'edit-project' project.id %}"'>

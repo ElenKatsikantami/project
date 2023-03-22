@@ -2,6 +2,8 @@
 
 {% block title %} Tools {% endblock %}
 
+{% load filename %}
+
 {% block stylesheets %}
 <link rel="stylesheet" href="/static/custom/css/style.css" />
 {% endblock stylesheets %}
@@ -18,13 +20,13 @@
           <div class="col-lg-4 col-md-6">
             <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#link10" role="tablist">
+                <a class="nav-link active" data-toggle="tab" href="#link20" role="tablist">
                   <i class="material-icons">dashboard</i> About
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#link11" role="tablist">
-                  <i class="material-icons">schedule</i> Status
+                <a class="nav-link" data-toggle="tab" href="#link21" role="tablist">
+                  <i class="material-icons">schedule</i> Results
                 </a>
               </li>
               <li class="nav-item">
@@ -36,7 +38,7 @@
           </div>
           <div class="col-md-8">
             <div class="tab-content">
-              <div class="tab-pane active" id="link10">
+              <div class="tab-pane active" id="link20">
                 N-SPT values observed during testing are not utilized directly in the assessment
                 of soil properties. These values need to be corrected to account for hammer efficiency
                 , borehole diameter,sampling method, rod length and the overburden pressure.
@@ -45,28 +47,26 @@
                 corrected SPT numbers with depth.
 
               </div>
-              <div class="tab-pane" id="link11">
+              <div class="tab-pane" id="link21">
                 <p>Activated ags files</p>
-                <div class="table-responsive">
-                  <table class="table text-center"  >
-                    <thead>
-                      <tr>
-                        <th style="width: 50px;" >#</th>
-                        <th style="width: 100px;">project</th>
-                        <th style="width: 250px;">ags name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for file in nspt_activated %}
-                      <tr>
-                        <td >{{ forloop.counter }} </td>
-                        <td>{{ file|first }}</td>
-                        <td>{{ file|slice:'1:'|first }}</td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
+                <table class="table">
+                <thead>
+                  <tr class= "text-center">
+                    <th class="text-center">#</th>
+                    <th class="text-center">project</th>
+                    <th class="text-center">ags name</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for file in nspt_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -74,83 +74,10 @@
       </div>
     </div>
   </div>
-  
   <div class="col-md-6">
     <div class="card tool-summery">
       <div class="card-header ">
         <h4 class="card-title">Relative Density Tool</h4>
-      </div>
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-lg-4 col-md-6">
-
-            <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#link20" role="tablist">
-                  <i class="material-icons">dashboard</i> About
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#link21" role="tablist">
-                  <i class="material-icons">schedule</i> Status
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'RelativeDensity' %}" role="tablist">
-                  <i class="material-icons">timeline</i> Acrivate
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-8">
-            <div class="tab-content">
-              <div class="tab-pane active" id="link20">
-                One of the most important soil aggregate property is relative density.<br>
-                The relative density of soil is used to describe the state of compactness of
-                granular material and generally qualitatively described as very loose, loose,
-                medium dense, dense and very dense. It is defined as the ratio of difference of
-                void ratios in its loosest and densest state:<br>
-                Dr = (e<sub>max</sub> – e<sub>current</sub>)/(e<sub>max</sub> –e<sub>min</sub>).
-
-              </div>
-              <div class="tab-pane" id="link21">
-                <p>Activated ags files</p>
-                <div class="table-responsive">
-                  <table class="table text-center" >
-                    <thead>
-                      <tr>
-                        <th style="width: 50px;" >#</th>
-                        <th style="width: 50px;" >Method activated</th>
-                        <th style="width: 100px;">project</th>
-                        <th style="width: 250px;">ags name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for file in RelativeDensity_activated %}
-                      <tr>
-                        <td>{{ forloop.counter }} </td>
-                        <td>{{ file|first }}</td>
-                        <td>{{ file|slice:'1:2'|first }}</td>
-                        <td>{{ file|slice:'2:'|first }}</td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <div class="card tool-summery">
-      <div class="card-header ">
-        <h4 class="card-title">Friction Angle Tool</h4>
       </div>
       <div class="card-body ">
         <div class="row">
@@ -164,7 +91,95 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#link31" role="tablist">
-                  <i class="material-icons">schedule</i> Status
+                  <i class="material-icons">schedule</i> Results
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'RelativeDensity' %}" role="tablist">
+                  <i class="material-icons">timeline</i> Acrivate
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-8">
+            <div class="tab-content">
+              <div class="tab-pane active" id="link30">
+                One of the most important soil aggregate property is relative density.<br>
+                The relative density of soil is used to describe the state of compactness of
+                granular material and generally qualitatively described as very loose, loose,
+                medium dense, dense and very dense. It is defined as the ratio of difference of
+                void ratios in its loosest and densest state:<br>
+                Dr = (e<sub>max</sub> – e<sub>current</sub>)/(e<sub>max</sub> –e<sub>min</sub>).
+
+              </div>
+              <div class="tab-pane" id="link31">
+                <p>Activated ags files</p>
+                <table class="table">
+                <thead>
+                  <tr class= "text-center">
+                    <th style="width: 50px;" >#</th>
+                    <th style="width: 50px;" >Method activated</th>
+                    <th style="width: 100px;">project</th>
+                    <th style="width: 250px;">ags name</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for file in RelativeDensity_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">both</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for file in Skempton_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">Skempton</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for file in Terzaghi_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">Terzaghi and Peck</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+<div class="row">
+  
+  <div class="col-md-6">
+    <div class="card tool-summery">
+      <div class="card-header ">
+        <h4 class="card-title">Friction Angle Tool</h4>
+      </div>
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+
+            <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#link40" role="tablist">
+                  <i class="material-icons">dashboard</i> About
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#link41" role="tablist">
+                  <i class="material-icons">schedule</i> Results
                 </a>
               </li>
               <li class="nav-item">
@@ -176,7 +191,7 @@
           </div>
           <div class="col-md-8">
             <div class="tab-content">
-              <div class="tab-pane active" id="link30">
+              <div class="tab-pane active" id="link40">
                 Friction angle together with cohesion define the shear strength parameters of soil. 
                 Its definition is derived from the Mohr-Coulomb failure criterion. It can be determined 
                 in the laboratory by direct shear test or triaxial tests or from theoretical correlations 
@@ -187,28 +202,26 @@
                 with depth. 
 
               </div>
-              <div class="tab-pane" id="link31">
+              <div class="tab-pane" id="link41">
                 <p>Activated ags files</p>
-                <div class="table-responsive">
-                  <table class="table text-center" >
-                  <thead>
-                    <tr >
-                      <th style="width: 50px;" >#</th>
-                      <th style="width: 100px;">project</th>
-                      <th style="width: 250px;">ags name</th>
+                <table class="table">
+                <thead>
+                  <tr class= "text-center">
+                    <th style="width: 50px;" >#</th>
+                    <th style="width: 100px;">project</th>
+                    <th style="width: 250px;">ags name</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    {% for file in FractionAngle_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
                     </tr>
-                  </thead>
-                    <tbody>
-                      {% for file in FractionAngle_activated %}
-                      <tr >
-                        <td >{{ forloop.counter }} </td>
-                        <td>{{ file|first }}</td>
-                        <td>{{ file|slice:'1:'|first }}</td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -216,5 +229,6 @@
       </div>
     </div>
   </div>
+  
 </div>
 {% endblock content %}

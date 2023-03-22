@@ -2,7 +2,7 @@
 $(document).ready(function () {
   
   // genericStacChart("data", 'drawSectionChart-first', "test", "Derived from ", 'Section')
-  // genericStacChart("data", 'drawSectionChart-second', "test", "Derived from ", 'Section')
+  genericStacChartMultiple("data", 'drawSectionChart-second', "test", "Derived from ", 'Section')
   
 })
 
@@ -80,7 +80,7 @@ for (var i = 0; i < hole_list.length; i++) {
 			layer.bindPopup('<div id="drawSectionChart-'+feature.properties.id+'-1" >Hole ID: <h6>'+feature.properties.id +
                       '</h6>Latitude: <h6>'+feature.properties.lat +
                       '</h6>Longitude: <h6>'+feature.properties.lon +
-                      '</h6><br /><button class="btn btn-primary" id="drawSection" onclick='+
+                      '</h6><button class="btn btn-primary" id="drawSection" onclick='+
                       'genericStacChart("data","drawSectionChart-'+feature.properties.id+'","test","Derived","Section")'+'><i class="material-icons">draw</i>Draw Section</button>'+
                       '</div><div class="hide" id="drawSectionChart-'+feature.properties.id+'-2" ><div id="drawSectionChart-'+feature.properties.id+'" style="width:100%; height: 60vh;"></div></div>',
                       {closeOnClick: false, autoClose: false}).openPopup();

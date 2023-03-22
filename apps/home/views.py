@@ -7,7 +7,9 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, View
 from django.contrib import messages
-from ajax_datatable.views import AjaxDatatableView
+from django.http import JsonResponse
+import pandas as pd
+from django_datatables_view.base_datatable_view import BaseDatatableView
 from . ags import AGS
 from . utils import util
 from . models import ProjectTable, ProjectAGS, ContactTable, Projectprofile, Projectdefaultprofilecategory, Projectdefaultprofile
@@ -177,7 +179,7 @@ class projectDetails(LoginRequiredMixin, TemplateView):
         return context
 
 class projectsection(LoginRequiredMixin, TemplateView):
-    """Project Class"""
+    """Project Section Class"""
     template_name = "pages/project/section.html"
 
     def get_context_data(self, **kwargs):
@@ -229,6 +231,64 @@ class projectsection(LoginRequiredMixin, TemplateView):
         context["nspt"] = json.dumps(nspt)
         return context
 
+class projectreport(LoginRequiredMixin, TemplateView):
+    """Project Report Class"""
+    template_name = "pages/project/report.html"
+
+    def get_context_data(self, **kwargs):
+        """"get context data"""
+        ags_list, holetable, nspt = [], [], {}
+        context = super().get_context_data(**kwargs)
+        project = get_object_or_404(
+            ProjectTable, pk=self.kwargs["id"])
+        context["project"] = project
+        context["profile"] = Projectprofile.objects.filter(project__id=self.kwargs["id"]).count()
+
+        agsfile = ProjectAGS.objects.filter(project_id=self.kwargs["id"])
+        geojson_collection = {}
+        for ags in agsfile:
+            tables = None
+            geojson = {"type": "FeatureCollection", "features": []}
+            try:
+                ags_file_path = os.path.join(
+                    settings.MEDIA_ROOT, str(ags.ags_file))
+                ags_class = AGS(ags_file=ags_file_path)
+                tables, headings = ags_class.ags_to_dataframe()
+                util_class = util(tables=tables)
+                chart_list['factual'],chart_list['interpretation']  = util_class.get_chart_list_base_on_ags(headings)
+                context["headings"] = json.dumps(chart_list)
+                region = " ".join(tables["PROJ"]["PROJ_LOC"])
+                proj_code = ags_class.get_proj_code(region=region)
+                proj_code_to_wgs = pyproj.Transformer.from_crs(proj_code, 4326)
+                if ags_class.ags_version == 'ags3':
+                    loca = tables['HOLE']
+                if ags_class.ags_version == 'ags4':
+                    # import pdb; pdb.set_trace() #breakpoint  c n s q l
+                    df_loca = tables['LOCA']
+                    df_mond = tables['MOND']
+                    loca = df_loca.merge(
+                            df_mond, on='LOCA_ID', how='left')
+                util_class.get_geojson(
+                    loca, ags, proj_code_to_wgs, holetable, geojson)
+            except Exception as exp:
+                print(str(exp))
+            if tables:
+                ags_dict = {}
+                ags_name = ags.ags_file.name.split('/')[-1].split('_')[0]
+                ags_dict['name'] = ags_name
+                ags_dict['id'] = ags.id
+                ags_dict['path'] = ags.ags_file
+                ags_dict['pid'] = self.kwargs["id"]
+                ags_list.append(ags_dict)
+                geojson_collection[ags_name] = geojson
+        context["agsfile"] = ags_list
+        context["hole"] = json.dumps(geojson_collection)
+        context["holetable"] = holetable
+        context["nspt"] = json.dumps(nspt)
+        return context
+
+
+
 class AddProjectAGS(LoginRequiredMixin, CreateView):
     """add project"""
     template_name = 'pages/project/agcform.html'
@@ -275,11 +335,22 @@ class EditProjectAGSMicro(LoginRequiredMixin, TemplateView):
         ags_class = AGS(ags_file=ags_file_path)
         tables, headings = ags_class.ags_to_dataframe()
         context["headings"] = json.dumps([*headings])
+        context["pid"] = self.kwargs["pid"]
+        context["id"] = self.kwargs["id"]
         return context
 
-class AGSMicroTable(LoginRequiredMixin, AjaxDatatableView):
-    """DataTable"""
-    pass
+def ags_table(request, pid, id):
+    # Get parameters from DataTables request
+    project = ProjectTable.objects.get(id=pid)
+    agsfile = ProjectAGS.objects.get(id=id)
+    ags_file_path = os.path.join(settings.MEDIA_ROOT, str(agsfile.ags_file))
+    ags_class = AGS(ags_file=ags_file_path)
+    # import pdb; pdb.set_trace() #breakpoint  c n s q l
+    tables, headings = ags_class.ags_to_dataframe()
+    df = tables['CDIA']
+    df_headings = headings['CDIA']
+    data = df.to_dict('records')
+    return JsonResponse({'data': data,'column':df_headings})
 
 class DeleteProjectAGS(LoginRequiredMixin, DeleteView):
     model = ProjectTable
@@ -500,40 +571,23 @@ class tools(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         """"get context data"""
-        NSPT_activated = []
-        FractionAngle_activated = []
-        Skempton_activated = []
-        Terzaghi_activated = []
-        for project in ProjectTable.objects.all().filter(owner_id = self.request.user.id):
-            for ags in ProjectAGS.objects.all().filter(nspt_activated=True,project_id=project.id):
-                ags_name = ags.ags_file.name.split("/")[-1]
-                NSPT_activated.append((project.name,ags_name))
-            
-            for ags in ProjectAGS.objects.all().filter(FractionAngle_activated=True,project_id=project.id):
-                ags_name = ags.ags_file.name.split("/")[-1]
-                FractionAngle_activated.append((project.name,ags_name))
-            
-            for ags in ProjectAGS.objects.all().filter(rdSkempton_activated=True,project_id=project.id):
-                ags_name = ags.ags_file.name.split("/")[-1]
-                Skempton_activated.append((project.name,ags_name))
-        
-            for ags in ProjectAGS.objects.all().filter(rdTerzaghi_activated=True,project_id=project.id):
-                ags_name = ags.ags_file.name.split("/")[-1]
-                Terzaghi_activated.append((project.name,ags_name))
-                
-        RelativeDensityALL = set(Skempton_activated + Terzaghi_activated)
-        RelativeDensity_activated = []
-        for i in RelativeDensityALL:
-            if i in Skempton_activated and i in Terzaghi_activated:
-                RelativeDensity_activated.append(("both",)+i)
-            elif i in Skempton_activated and i not in Terzaghi_activated:
-                RelativeDensity_activated.append(("Skempton",)+i)
-            else:
-                RelativeDensity_activated.append(("Terzaghi and Peck",)+i)
-                
+        user = self.request.user
+        # NSPT_activated = []
+        # for ags in ProjectAGS.objects.filter(nspt_activated=True):
+        #     project = ProjectTable.objects.get(id=ags.project_id).name
+        #     ags_name = ags.ags_file.name.split("/")[-1]
+        #     NSPT_activated.append((project,ags_name))
+        NSPT_activated = ProjectAGS.objects.filter(nspt_activated=True).filter(project__owner=user).order_by('id')
+        FractionAngle_activated = ProjectAGS.objects.filter(FractionAngle_activated=True).filter(project__owner=user).order_by('id')
+        RelativeDensity_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
+        Skempton_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=False).filter(project__owner=user).order_by('id')
+        Terzaghi_activated = ProjectAGS.objects.filter(rdSkempton_activated=False,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
+
         context = super().get_context_data(**kwargs)
         context["nspt_activated"] = NSPT_activated
         context["RelativeDensity_activated"] = RelativeDensity_activated
+        context["Skempton_activated"] = Skempton_activated
+        context["Terzaghi_activated"] = Terzaghi_activated
         context["FractionAngle_activated"] = FractionAngle_activated
         return context
 

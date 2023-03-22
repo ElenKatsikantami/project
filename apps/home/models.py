@@ -50,10 +50,17 @@ def pre_save_image(sender, instance, *args, **kwargs):
     except:
         pass
 
+
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    # import pdb; pdb.set_trace() #breakpoint  c n s q l
+    return 'project/ags/user_{0}/{1}'.format(instance.project_id, filename)
+
+
 class ProjectAGS(models.Model):
     """Module for project AGS"""
     project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
-    ags_file = models.FileField(upload_to='project/ags/',  validators=[FileExtensionValidator(allowed_extensions=["ags"])], blank=True, null=True)
+    ags_file = models.FileField(upload_to=user_directory_path,  validators=[FileExtensionValidator(allowed_extensions=["ags"])], blank=True, null=True)
     is_verified = models.BooleanField(default=False)
     nspt_activated = models.BooleanField(default=False)
     rdTerzaghi_activated = models.BooleanField(default=False)

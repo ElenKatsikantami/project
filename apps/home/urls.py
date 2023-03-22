@@ -21,11 +21,12 @@ urlpatterns = [
     path('project/delete/<id>', views.DeleteProject.as_view(), name="delete-project"),
     path('project/details/<id>', views.projectDetails.as_view(), name="project-details"),
     path('project/section/<id>', views.projectsection.as_view(), name="project-section"),
+    path('project/report/<id>', views.projectreport.as_view(), name="project-report"),
 
     path('project/ags/add/<id>', views.AddProjectAGS.as_view(), name="add-project-ags"),
     path('project/ags/edit/<pid>/<id>', views.EditProjectAGS.as_view(), name="edit-project-ags"),
     path('project/ags/micoredit/<pid>/<id>', views.EditProjectAGSMicro.as_view(), name="edit-project-ags-micro"),
-    path('project/ags/micoredit', views.AGSMicroTable.as_view(), name="ags-micro-table"),
+    path('project/ags/table/<pid>/<id>', views.ags_table, name="ags-table"),
     path('project/ags/delete/<pid>/<id>', views.DeleteProjectAGS.as_view(), name="delete-project-ags"),
 
     #user urls

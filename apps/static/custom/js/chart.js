@@ -282,4 +282,90 @@ function genericStacChart(data, div_id, chart_title, chart_sub_title, xAxisTitle
     
 }
 
+function genericStacChartMultiple(data, div_id, chart_title, chart_sub_title, xAxisTitle, yAxisTitle) {
+    $('#'+div_id+'-1').addClass('hide')
+    $('#'+div_id+'-2').removeClass('hide')
+    Highcharts.chart(div_id, {
+        chart: {
+            type: 'column',
+            zoomType: 'xy'
+        },
+        title: {
+            text: chart_title
+          },
+          subtitle: {
+              text: chart_sub_title
+          },
+        xAxis: {
+            categories: data.categories,
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: yAxisTitle
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: ( // theme
+                        Highcharts.defaultOptions.title.style &&
+                        Highcharts.defaultOptions.title.style.color
+                    ) || 'gray',
+                    textOutline: 'none'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: "horizontal",
+            maxHeight: 40,
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        colors: patterns,
+        series: [{
+            name: 'Norway',
+            data: [148,102],
+            stack: 'Europe'
+        }, {
+            name: 'Germany',
+            data: [102,102],
+            stack: 'Europe'
+        }, {
+            name: 'Spain',
+            data: [102,102],
+            stack: 'Europe'
+        }, {
+            name: 'Italy',
+            data: [112,102],
+            stack: 'Europe'
+        }, {
+            name: 'Greece',
+            data: [102,102],
+            stack: 'Europe'
+        }],
+        exporting: exportContextMenu
+    });
+    
+}
+
 

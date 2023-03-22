@@ -37,13 +37,13 @@
         </div>
       </li>
       <li class="nav-item {% if '/tools' in request.path %}active{% endif %}">
-        <a class="nav-link" data-toggle="collapse" href="#users">
+        <a class="nav-link" data-toggle="collapse" href="#tools">
           <i class="material-icons">widgets</i>
           <p> Tools
             <b class="caret"></b>
           </p>
         </a>
-        <div class="collapse" id="users">
+        <div class="collapse" id="tools">
           <ul class="nav">
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'tools' %}">
@@ -67,11 +67,11 @@
                 <span class="sidebar-mini"> U </span><span class="sidebar-normal"> Users </span>
               </a>
             </li>
-            <li class="nav-item ">
+            <!-- <li class="nav-item ">
               <a class="nav-link" href="{% url 'profiles' %}">
                 <span class="sidebar-mini"> R </span><span class="sidebar-normal"> Rules </span>
               </a>
-            </li>
+            </li> -->
             {% if request.user.is_superuser %}
             <li class="nav-item ">
               <a class="nav-link" href="{% url 'contact' %}">

@@ -259,10 +259,6 @@ input {
   color: #322329;
 }
 
-.leaflet-popup.leaflet-zoom-animated {
-  width: 200px;
-}
-
 @media print{
   head {
     display: None;
