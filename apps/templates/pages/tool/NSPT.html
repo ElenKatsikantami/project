@@ -15,6 +15,9 @@
     #enter_manually {
     display: none;
     }
+    #Maximum_N {
+    display: none;
+    }
 </style>
 <div class="row">
     <div class="col-md-10 ml-auto mr-auto">
@@ -97,7 +100,7 @@
                                                 <div class="form-group has-default bmd-form-group">
                                                     <select style="width: 300px; text-align:center;"
                                                         id="select-variable-second" name="select-variable-second"
-                                                        required multiple>
+                                                        onchange="getmachines()" required multiple>
                                                     </select>
                                                 </div>
                                             </div>
@@ -155,12 +158,12 @@
                                                 </h5>
                                             </div>
                                             <div class="col-md-8" id="enter_manually">
-                                                <div class="form-group has-default bmd-form-group">
-                                                    <table border ="2px" class= " text-center" id="table">
+                                                <div class="form-group has-default bmd-form-group table-responsive">
+                                                    <table class= "table text-center" id="table">
                                                         <thead>
                                                             <tr>
-                                                                <th style="width: 150px;">Hammer</th>
-                                                                <th style="width: 150px;">Efficiency(%)</th>
+                                                                <th >Hammer</th>
+                                                                <th >Efficiency(%)</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -218,7 +221,7 @@
                                             <div class="col-md-8">
                                                 <div class="form-group has-default bmd-form-group">
                                                     <select style="width: 300px; text-align:center;" id="correct" name="correct"
-                                                        required>
+                                                    onchange="showMax(this)" required>
                                                         <option hidden disabled selected value> -- Select an option --  </option>
                                                         <option value="1">YES</option>
                                                         <option value="0">NO</option>
@@ -227,13 +230,13 @@
                                             </div>
                                         </div>
                                         <div class="row ">
-                                            <div class="col-md-4 card-header text-center">
+                                            <div class="col-md-4 card-header text-center"  id="Maximum_N">
                                                 <h5 class="card-title">
                                                     Maximum limiting N value
                                                 </h5>
                                             </div>
                                             <div class="col-md-8">
-                                                <div class="form-group has-default bmd-form-group">
+                                                <div class="form-group has-default bmd-form-group"  id="Maximum_N">
                                                     
                                                     <input  style="width: 300px; text-align:center;" type="number" id="Maximum" placeholder ="enter Maximum limiting N value"
                                                     name="Maximum" min="50" max ="300" step="1" required>
@@ -323,28 +326,39 @@
         document.querySelector('#backtoproject').href = value_1;
         get_borhole_list(element.value)
     };
-    
+    var all_machines ;
     function get_borhole_list(value) {
         var project_id = parseInt(value);
-        var table = document.getElementById("table");
-        table.deleteTFoot();
-        var all_machine = [];
         var dataRequest = { project_id: project_id };
         $.get('agsfiles', dataRequest).done(function (data) {
             for (i = 0; i < data.agsfiles.length; i++) {
                 $('#select-variable-second').append($('<option>', { value: data.agsfiles[i][0], text: data.agsfiles[i][1] }));
             }
-            for (i = 0; i < data.machines.length; i++) {
-                if (!all_machine.includes(data.machines[i]) ){
-                all_machine.push(data.machines[i])
-                var footer = table.createTFoot();
-                var row = footer.insertRow(-1);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                cell1.innerHTML = data.machines[i]; 
-                cell2.innerHTML = '<input  type="number" id="calculate" name="machine" min="1" max ="100" step="1">';}
-            }
+            all_machines = data.machines;
         });
+    };
+    
+    function getmachines() {
+        var elements = $('#select-variable-second').val()
+        var machines = [];
+        var table = document.getElementById("table");
+        table.deleteTFoot();
+        var footer = table.createTFoot();
+        for (let i in elements) {
+            for (let j in all_machines[elements[i]]){
+                if (!machines.includes(all_machines[elements[i]][j]) ){
+                    machines.push(all_machines[elements[i]][j]);
+                    var row = footer.insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = '<input  type="hidden" id="'+j+'" name="names" \> ' + all_machines[elements[i]][j];
+                    document.getElementById(j).value = all_machines[elements[i]][j];
+                    cell2.innerHTML = '<input  type="number" id="calculate" name="machine" \
+                                        min="1" max ="100" step="1"> ';
+                }
+            }
+        }
+
     };
 
 </script>
@@ -372,6 +386,23 @@
             }
             
         }
+
+    function showMax(element){ 
+        var Maximum_N = document.querySelectorAll('[id=Maximum_N]'); 
+            if (element.value == "1"){
+                for(var i = 0; i < 2; i++) {
+                    Maximum_N[i].style.display = 'block';
+                };
+                document.getElementById("Maximum").setAttribute('required', '');
+            }
+            else{
+                for(var i = 0; i < 2; i++) {
+                    Maximum_N[i].style.display = 'none';
+                };
+                document.getElementById("Maximum").removeAttribute('required');
+            }
+            
+    }
 
 </script>
 

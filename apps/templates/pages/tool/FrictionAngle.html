@@ -9,7 +9,40 @@
 <link rel="stylesheet" href="/static/custom/css/style.css" />
 {% endblock stylesheets %}
 {% block content %}
-
+<style>
+    #container {
+        position: relative;
+        display: none;  
+    }
+    i.error {
+        color: red;
+    }
+    #container .errormessage{
+        position: absolute;
+        display: none;
+        background-color: red;     
+        width: 200px;    
+        right: -50px;
+        top: 20px; 
+        border-radius: 10px;
+        padding: 5px;
+        color: white;
+    }
+    
+    #container .errormessage:before {
+        position: absolute;
+        content: '';
+        border-width: 10px;
+        border-style: solid;
+        border-color: rgba(255,255,255,0) rgba(255,255,255,0) red rgba(255,255,255,0);
+        top: -20px; 
+        left: 90px;    
+    }
+    
+    #container  .error:hover + .errormessage {
+        display: block;
+    }
+</style>
 
 <div class="row">
     <div class="col-md-10 ml-auto mr-auto">
@@ -133,32 +166,6 @@
                                             <button class="btn btn-rose" type="submit"
                                                 style="margin-left:1% ;">Activate</button>
                                         </div>
-                                        <div class="row ">
-                                            
-                                            <div class="col-md-12">
-                                                <div class="form-group has-default bmd-form-group">
-                                                    <table border ="2px" class= "table  text-center" id="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th rowspan="2">Method</th>
-                                                                <th rowspan="2">N SPT Value</th>
-                                                                <th>Friction Angle</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th><sup>o</sup></th>
-                                                            </tr>
-                                                        </thead>
-        
-                                                    </table>
-                                                    <button class="btn btn-rose" type="button" style="position : absolute; right:0px;"
-                                                    onclick="myFunction()">+</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row tool-form">
-                                            <button class="btn btn-rose" type="button" onclick="Calculate()">Calculate</button>
-                                        </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="card-header">
@@ -167,6 +174,43 @@
                                 </div>
 
                             </form>
+                            <div class="row tool-form">
+                                <div class="col-md-2">
+                                    <div class="card-header">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row ">
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default bmd-form-group">
+                                                <table border ="2px" class= "table  text-center" id="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th rowspan="2">Method</th>
+                                                            <th rowspan="2">N SPT Value</th>
+                                                            <th>Friction Angle</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><sup>o</sup></th>
+                                                        </tr>
+                                                    </thead>
+    
+                                                </table>
+                                                <button class="btn btn-rose" type="button" style="position : absolute; right:0px;"
+                                                onclick="myFunction()">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row tool-form">
+                                        <button class="btn btn-rose" type="button" onclick="Calculate()">Calculate</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="card-header">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -232,36 +276,36 @@
     var y;
 
     function apply_first(x){
-        if (x <= 100 && x >0){
+        if (x <= 200 && x >=0){
             y = 27.1 + 0.3*x + 0.00054*(x**2);}
         else{
-            y = "please enter a number from 0 to 100"
+            y = ""
             }
         return y;}
 
     function apply_second(x){
-        if (x <= 100 && x >0){
+        if (x <= 200 && x >=0){
             y = -0.0014*x**2 + 0.3534*x + 26.964;}
         else{
-            y = "please enter a number from 0 to 100"
+            y = ""
             }
         return y;}
 
     function apply_third(x){
-        if (x <= 100 && x >0){
+        if (x <= 200 && x >=0){
             var Coarse = 0.00002*x**3 - 0.0056*x**2 + 0.583*x + 27.558;
             var Fine = -0.00002*x**3 - 0.0015*x**2 + 0.4089*x + 27.395;
             y = (Coarse+Fine)/2 ;}
         else{
-            y = "please enter a number from 0 to 100"
+            y = ""
             }
         return y;}
 
     function apply_sixth(x){
-        if (x <= 100 && x >0){
+        if (x <= 200 && x >=0){
             y = (12*x)**0.5 + 20;}
         else{
-            y = "please enter a number from 0 to 100"
+            y = ""
             }
         return y;}
 
@@ -270,8 +314,8 @@
     return z;}
 
     function apply_forth(x){
-        var z = get_average(100);
-        if (x <= 4 && x >0){
+        var z = get_average(200);
+        if (x <= 4 && x >=0){
             y = 25 + 3 * x / 4;}
         else if (x <= 10 && x >4){
             y = 28 + 2 * (x-4) / 6;}
@@ -279,17 +323,17 @@
             y = 30 + 6 * (x-10) / 20;}
         else if (x <= 50 && x >30){
             y = 36 + 5 * (x-30) / 20;}
-        else if (x <= 100 && x >50){
-            y = 41 + (z-41)  * (x-50) / 50;}
+        else if (x <= 200 && x >50){
+            y = 41 + (z-41)  * (x-50) / 150;}
         else{
-            y = "please enter a number from 0 to 100"
+            y = ""
             }
         return y;
         }
 
     function apply_fifth(x){
-        var z = get_average(100);
-        if (x <= 4 && x >0){
+        var z = get_average(200);
+        if (x <= 4 && x >=0){
             y = 25 + 5 * x / 4;}
         else if (x <= 10 && x >4){
             y = 30 + 5 * (x-4) / 6;}
@@ -297,10 +341,10 @@
             y = 35 + 5 * (x-10) / 20;}
         else if (x <= 50 && x >30){
             y = 40 + 5 * (x-30) / 20;}
-        else if (x <= 100 && x >50){
-            y = 45 + (z-45) * (x-50) / 50;}
+        else if (x <= 200 && x >50){
+            y = 45 + (z-45) * (x-50) / 150;}
         else{
-            y = "please enter a number from 0 to 100"
+            y = ""
             }
         return y;
         }
@@ -318,7 +362,18 @@
             <option value="4">4 Peck, Hanson and Thornburn(table)</option>\
             <option value="5">5 Meyerhof (table)</option>\
             <option value="6">6 Dunham</option></select>';
-        cell2.innerHTML = '<input  type="number" id="calculate" name="input" min="1" max ="100" step="1">';
+        cell2.innerHTML = '\
+        <div class="row">\
+            <div class="col-md-8">\
+                <input  type="number" id="calculate" name="input" min="0" max ="200" step="1" >\
+            </div>\
+                <div id="container">\
+                    <i class="material-icons error">error_outline</i>\
+                    <div class="errormessage">\
+                        Please enter a number between 0 and 200 \
+                    </div>\
+                </div>\
+        </div>';
         cell3.innerHTML = '<p  name="FrictionAngle" >';
       }
       function Calculate() {
@@ -326,38 +381,28 @@
         var methods = table.getElementsByTagName('select');
         var items = table.getElementsByTagName('input');
         var output_FrictionAngle = document.getElementsByName('FrictionAngle');
+        var rows = table.rows;
+        var nodeList = document.querySelectorAll("#container");
         for(var i=0; i<items.length; i++){
-            if(methods[i].value == "1"){
-                y = apply_first(items[i].value);
-                if (typeof y == "number"){y=y.toFixed(2);}
+            if(methods[i].value == "1"){y = apply_first(items[i].value);}
+            else if(methods[i].value == "2"){y = apply_second(items[i].value);}
+            else if(methods[i].value == "3"){y = apply_third(items[i].value);}
+            else if(methods[i].value == "4"){y = apply_forth(items[i].value);}
+            else if(methods[i].value == "5"){y = apply_fifth(items[i].value);}
+            else{y = apply_sixth(items[i].value);}
+
+            if (typeof y == "number"){
+                y = y.toFixed(2);
                 output_FrictionAngle[i].innerHTML = y;
-            }
-            else if(methods[i].value == "2"){
-                y = apply_second(items[i].value);
-                if (typeof y == "number"){y=y.toFixed(2);}
-                output_FrictionAngle[i].innerHTML = y;
-            }
-            else if(methods[i].value == "3"){
-                y = apply_third(items[i].value);
-                if (typeof y == "number"){y=y.toFixed(2);}
-                output_FrictionAngle[i].innerHTML = y;
-            }
-            else if(methods[i].value == "4"){
-                y = apply_forth(items[i].value);
-                if (typeof y == "number"){y=y.toFixed(2);}
-                output_FrictionAngle[i].innerHTML = y;
-            }
-            else if(methods[i].value == "5"){
-                y = apply_fifth(items[i].value);
-                if (typeof y == "number"){y=y.toFixed(2);}
-                output_FrictionAngle[i].innerHTML = y;
-            }
+                items[i].style.border = "thin solid black";
+                rows[i+2].style.backgroundColor = "";
+                nodeList[i].style.display = "none";}
             else{
-                y = apply_sixth(items[i].value);
-                if (typeof y == "number"){y=y.toFixed(2);}
-                output_FrictionAngle[i].innerHTML = y;
-            }
-            }
+                output_FrictionAngle[i].innerHTML = "";
+                items[i].style.border = "thick solid red";
+                rows[i+2].style.backgroundColor = "#FBBDB3";
+                nodeList[i].style.display = "block";}
+        }
     }
 </script>
 {% endblock javascripts %}

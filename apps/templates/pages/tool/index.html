@@ -127,9 +127,25 @@
                     {% for file in RelativeDensity_activated %}
                     <tr>
                       <td class="text-center">{{ forloop.counter }} </td>
-                      <td>{{ file|first }}</td>
-                      <td>{{ file|slice:'1:2'|first }}</td>
-                      <td>{{ file|slice:'2:'|first }}</td>
+                      <td class="text-center">both</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for file in Skempton_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">Skempton</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for file in Terzaghi_activated %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }} </td>
+                      <td class="text-center">Terzaghi and Peck</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -200,8 +216,8 @@
                     {% for file in FractionAngle_activated %}
                     <tr>
                       <td class="text-center">{{ forloop.counter }} </td>
-                      <td>{{ file|first }}</td>
-                      <td>{{ file|slice:'1:'|first }}</td>
+                      <td class="text-center">{{ file.project.name }}</td>
+                      <td class="text-center">{{ file.ags_file|filename }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -213,50 +229,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-6">
-    <div class="card tool-summery">
-      <div class="card-header ">
-        <h4 class="card-title">Bearing Capacity Calculator</h4>
-      </div>
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-lg-4 col-md-6">
-
-            <ul class="nav nav-pills nav-pills-rose nav-pills-icons flex-column" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#link110" role="tablist">
-                  <i class="material-icons">dashboard</i> About
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#link111" role="tablist">
-                  <i class="material-icons">schedule</i> Results
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'bearingCapacity' %}" role="tablist">
-                  <i class="material-icons">timeline</i> Activate
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-md-8">
-            <div class="tab-content">
-              <div class="tab-pane active" id="link110">
-                Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C
-                users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI. Collaboratively
-                administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after
-                installed base benefits.
-              </div>
-              <div class="tab-pane" id="link111">
-                Efficiently unleash cross-media information without cross-media value. Quickly maximize timely
-                deliverables for real-time schemas. Dramatically maintain clicks-and-mortar solutions without functional solutions.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
+  
 </div>
 {% endblock content %}

@@ -578,36 +578,16 @@ class tools(LoginRequiredMixin, TemplateView):
         #     ags_name = ags.ags_file.name.split("/")[-1]
         #     NSPT_activated.append((project,ags_name))
         NSPT_activated = ProjectAGS.objects.filter(nspt_activated=True).filter(project__owner=user).order_by('id')
-            
-        FractionAngle_activated = []
-        for ags in ProjectAGS.objects.all().filter(FractionAngle_activated=True):
-            project = ProjectTable.objects.get(id=ags.project_id).name
-            ags_name = ags.ags_file.name.split("/")[-1]
-            FractionAngle_activated.append((project,ags_name))
-            
-        Skempton_activated = []
-        for ags in ProjectAGS.objects.all().filter(rdSkempton_activated=True):
-            project = ProjectTable.objects.get(id=ags.project_id).name
-            ags_name = ags.ags_file.name.split("/")[-1]
-            Skempton_activated.append((project,ags_name))
-        
-        Terzaghi_activated = []
-        for ags in ProjectAGS.objects.all().filter(rdTerzaghi_activated=True):
-            project = ProjectTable.objects.get(id=ags.project_id).name
-            ags_name = ags.ags_file.name.split("/")[-1]
-            Terzaghi_activated.append((project,ags_name))
-        RelativeDensityALL = set(Skempton_activated + Terzaghi_activated)
-        RelativeDensity_activated = []
-        for i in RelativeDensityALL:
-            if i in Skempton_activated and i in Terzaghi_activated:
-                RelativeDensity_activated.append(("both",)+i)
-            elif i in Skempton_activated and i not in Terzaghi_activated:
-                RelativeDensity_activated.append(("Skempton",)+i)
-            else:
-                RelativeDensity_activated.append(("Terzaghi and Peck",)+i)
+        FractionAngle_activated = ProjectAGS.objects.filter(FractionAngle_activated=True).filter(project__owner=user).order_by('id')
+        RelativeDensity_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
+        Skempton_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=False).filter(project__owner=user).order_by('id')
+        Terzaghi_activated = ProjectAGS.objects.filter(rdSkempton_activated=False,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
+
         context = super().get_context_data(**kwargs)
         context["nspt_activated"] = NSPT_activated
         context["RelativeDensity_activated"] = RelativeDensity_activated
+        context["Skempton_activated"] = Skempton_activated
+        context["Terzaghi_activated"] = Terzaghi_activated
         context["FractionAngle_activated"] = FractionAngle_activated
         return context
 
@@ -794,10 +774,23 @@ class agsfiles(View):
         project_id = self.request.GET.get('project_id')
         agsfile = ProjectAGS.objects.all().filter(project_id=project_id)
         result=[]
+        machines = []
+        machines_ags = {}
         for ags in agsfile:
             if ags.ags_file.name:
                 result.append([ags.id,ags.ags_file.name.split("/")[-1]])
-        response_data = {'agsfiles': result}
+            tables, _ = AGS4.AGS4_to_dataframe(ags.ags_file.path)
+            machines_ags[str(ags.id)] = []
+            for i in tables["HDPH"][2:]["HDPH_EXC"].unique():
+                for j in i.split("&"):
+                    machine = j.upper().replace("ADDII","ADII").strip()
+                    machines_ags[str(ags.id)].append(machine)
+                    if machine not in machines:
+                        machines.append(machine)
+            
+        df = pd.DataFrame(zip(machines,[70]*len(machines)),columns=["Hammer","Efficiency(%)"])
+        df.to_excel(r"media\project\examples\Hammers Efficiencies example.xlsx",index=False)
+        response_data = {'agsfiles': result, 'machines':machines_ags}
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 class NsptCorrection(LoginRequiredMixin, CreateView):
@@ -825,13 +818,14 @@ class NsptCorrection(LoginRequiredMixin, CreateView):
             if self.request.POST["method"] == "excel":
                 try:
                     Efficiency_file = project_excel_form.excel_file.path
-                    
                 except:
                     pass
-                response = activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct)
-            elif self.request.POST["method"] == "excel":
+                response = activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct) 
+            elif self.request.POST["method"] == "manually":
                 machines = self.request.POST.getlist("machine")
-                response = activate_nspt(file_ags,machines,cs,method,maximum,correct)
+                names = self.request.POST.getlist("names")
+                Efficiency_file = list(zip(names,machines))
+                response = activate_nspt(file_ags,Efficiency_file,cs,method,maximum,correct)
             else:
                 response = activate_nspt(file_ags,70,cs,method,maximum,correct)
             messages.add_message(self.request,25,response)
