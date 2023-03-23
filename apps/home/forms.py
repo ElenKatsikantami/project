@@ -122,10 +122,10 @@ class ContactForm(forms.ModelForm):
                   "message": "Message",
                   }
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Name'}),
-            'email': forms.TextInput(attrs={'placeholder': 'Email'}),
-            'phone': forms.TextInput(attrs={'placeholder': 'Phone'}),
-            'message': forms.TextInput(attrs={'placeholder': 'Message'})
+            'name': forms.TextInput(attrs={'class': 'contactform'}),
+            'email': forms.TextInput(attrs={'class': 'contactform'}),
+            'phone': forms.TextInput(attrs={'class': 'contactform'}),
+            'message': forms.Textarea(attrs={'class': 'contactformmessage'}),
         }
 
 class ProfileForm(forms.ModelForm):

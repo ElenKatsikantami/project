@@ -1,0 +1,118 @@
+{% extends "layouts/base-landing.html" %}
+{% block title %} Landing {% endblock %}
+{% block stylesheets %}{% endblock stylesheets %}
+{% load static %}
+{% load widget_tweaks %}
+{% block css %}
+<style>
+  p {
+    color: black;
+    margin: 1rem;
+  }
+
+  label {
+    color: black;
+  }
+
+  .contact-text {
+    display: inline;
+  }
+
+  .contactform {
+    width: 70%;
+    border: none;
+    height: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #4d343f;
+    display: block;
+  }
+
+  .contactformmessage {
+    width: 70%;
+    border: none;
+    height: 8rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #4d343f;
+    display: block;
+  }
+
+  .material-icons {
+    font-size: 2.5rem;
+  }
+</style>
+{% endblock css %}
+{% block content %}
+
+{% if messages %}
+        {% for message in messages %}
+         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+<header>
+  <div class="page-header min-height-400" style="background-image: url('/static/assets-landing/img/bg.jpg');"
+    loading="lazy">
+    <span class="mask bg-gradient-dark opacity-8"></span>
+  </div>
+</header>
+<!-- -------- END HEADER 4 w/ search book a ticket form ------- -->
+<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+  <section class="py-3" style="padding: 7%;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="w3layouts-contact-form-top">
+            <h3>Get in touch</h3>
+            <P>We provide In depth analysis of geotechnical data focusing on valuable, project specific insights.
+              Interpretation made easy so that you can draw meaningful decisions and turn geotechnical risk into a
+              unique competitive advantage.</P><br>
+            <h6 style="margin-left: 15%;">Have an interesting project or want to know more?</h6>
+          </div>
+          <div class="agileits-contact-address">
+            <br>
+            <!-- <i class="material-icons">place</i><br>
+            <h5 class="contact-text">Visit Us:</h5>
+            <p>5th Avenue, London</p><br> -->
+            <div class="row">
+              <div class="col-lg-2"></div>
+              <div class="col-lg-4">
+                <i class="material-icons">phone</i><br>
+                <h5 class="contact-text">Call Us:</h5>
+                <p><a href="tel:+12 23456790">+971 544897702</a></p>
+              </div>
+              <div class="col-lg-4">
+                <i class="material-icons">mail</i><br>
+                <h5 class="contact-text">Mail Us:</h5>
+                <p><a href="mailto:info@example.com"> info@orycta.com</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{ form.media }}
+        <div class="col-lg-6">
+          <form action="" method="post">
+            {% csrf_token %}
+            {% for error in form.non_field_errors %}
+            <div class="form-group has-error">{{ error }}</div>
+            {% endfor %}
+            {% for field in form %}
+            <div class="form-group bmd-form-group">
+              <label for="exampleEmail" class="bmd-label-floating">{{ field.label_tag }}</label>
+              {% for error in field.errors %}
+              <div class="alert messages">{{ error }}</div>
+              {% endfor %}
+              {{ field }}
+            </div>
+            {% endfor %}
+            <input type="submit" value="Submit" class="btn bg-gradient-primary">
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+</div>
+{% endblock content %}

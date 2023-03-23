@@ -28,26 +28,34 @@ chart_list = {
         '(N1)60 Vs Elevation'
         ]}  
 
-class landing(CreateView):
+class landing(TemplateView):
     """landing class"""
     template_name = "pages/landing.html"
-    form_class = ContactForm
 
     def get_context_data(self, **kwargs):
         """get context data"""
         context = super().get_context_data(**kwargs)
         return context
 
+class blog(TemplateView):
+    """landing class"""
+    template_name = "pages/blog.html"
+
+    def get_context_data(self, **kwargs):
+        """get context data"""
+        context = super().get_context_data(**kwargs)
+        return context
+    
+class contactus(CreateView):
+    """landing class"""
+    template_name = "pages/contact.html"
+    form_class = ContactForm
+    
     def form_valid(self, form):
         form.save(commit=True)
         messages.success(
             self.request, 'Contact request success. Will be in touch soon')
-        return redirect(reverse("landing"))
-    
-class blog(TemplateView):
-    """landing class"""
-    template_name = "pages/blog.html"
-    form_class = ContactForm
+        return redirect(reverse("contactus"))
 
     def get_context_data(self, **kwargs):
         """get context data"""

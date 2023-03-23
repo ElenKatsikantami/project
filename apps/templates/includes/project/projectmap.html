@@ -2,14 +2,14 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-body ">
-        <div id="detail-map" style="min-height:73vh;  max-height: 73vh; z-index: 0;">
+        <div id="detail-map" style="min-height:58vh;  max-height: 58vh; z-index: 0;">
         </div>
       </div>
     </div>
   </div>
   <div class="col-md-6">
     <div class="card ">
-      <div class="table-responsive" style="min-height:22vh;  max-height: 22vh;">
+      <div class="table-responsive" style="min-height:15vh;  max-height: 15vh;">
       {% if '/project/details' in request.path %}
         <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"' style="float: right;padding: 2px;margin: 16px;"><i
             class="material-icons" >add</i> Add AGS</button>
@@ -56,7 +56,7 @@
     </div>
     <div class="card">
       <div class="card-body">
-        <div class="table-responsive" style="min-height:48vh;  max-height: 48vh;">
+        <div class="table-responsive" style="min-height:40vh;  max-height: 40vh;">
           <table class="table table-striped" id="table_borehole">
             <thead>
               <tr>

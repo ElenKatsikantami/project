@@ -10,6 +10,7 @@ urlpatterns = [
     # The landing page
     path('', views.landing.as_view(), name="landing"),
     path('blog', views.blog.as_view(), name="blog"),
+    path('contactus', views.contactus.as_view(), name="contactus"),
 
     # The home page
     # path('dashboard', views.index.as_view(), name="home"),
