@@ -1,8 +1,46 @@
 {% extends "layouts/base-landing.html" %}
-{% block title %} Landing {% endblock %}
+{% block title %}{% endblock %}
 {% block stylesheets %}{% endblock stylesheets %}
 {% load static %}
 {% load widget_tweaks %}
+{% block css %}
+<style>
+  p {
+    color: black;
+    margin: 1rem;
+  }
+
+  label {
+    color: black;
+  }
+
+  .contact-text {
+    display: inline;
+  }
+
+  .contactform {
+    width: 100%;
+    border: none;
+    height: 1.4rem;
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid #4d343f;
+    display: block;
+  }
+
+  .contactformmessage {
+    width: 100%;
+    border: none;
+    height: 6rem;
+    margin-bottom: 1.4rem;
+    border-bottom: 1px solid #4d343f;
+    display: block;
+  }
+
+  .material-icons {
+    font-size: 2.5rem;
+  }
+</style>
+{% endblock css %}
 {% block content %}
 
 <div class="page-header align-items-start min-vh-100"
@@ -97,202 +135,62 @@
       </div>
     </div>
   </section>
-  <!-- <section class="py-3">
+  <section class="py-3" id="contact-section">
     <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-        <h3 class="mb-5">Check my latest blogposts</h3>
+      <div class="row">
+        <div class="col-lg-6">
+          <h3 class="mb-5"></h3>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-3 col-md-12 col-12">
-        <div class="card card-blog card-background cursor-pointer">
-          <div class="full-background" style="background-image: url('/static/assets-landing/img/bg.jpg')"
-            loading="lazy"></div>
-          <div class="card-body">
-            <div class="content-left text-start my-auto py-4">
-              <h2 class="card-title text-white">Flexible work hours</h2>
-              <p class="card-description text-white">Rather than worrying about switching offices every couple years,
-                you stay in the same place.</p>
-              <a href="javascript:;" class="text-white text-sm icon-move-right">Read More
-                <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
-              </a>
+      <div class="row">
+        <div class="col-lg-3 col-md-12 col-12">
+          <div class="card card-blog card-background cursor-pointer">
+            <div class="full-background" style="background-image: url('/static/assets-landing/img/bg.jpg')"
+              loading="lazy"></div>
+            <div class="card-body">
+              <div class="content-left text-start my-auto py-4">
+                <h2 class="card-title text-white">Get in touch</h2>
+                <h6 class="card-description text-white">Have an interesting project or want to know more?</h6>
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-lg-3 col-sm-6">
-        <div class="card card-plain">
-          <div class="card-header p-0 position-relative">
-            <a class="d-block blur-shadow-image">
-              <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-blur-shadow"
-                class="img-fluid shadow border-radius-lg" loading="lazy">
-            </a>
-          </div>
-          <div class="card-body px-0">
-            <h5>
-              <a href="javascript:;" class="text-dark font-weight-bold">Rover raised $65 million</a>
-            </h5>
-            <p>
-              Finding temporary housing for your dog should be as easy as
-              renting an Airbnb. That’s the idea behind Rover ...
-            </p>
-            <a href="javascript:;" class="text-info text-sm icon-move-right">Read More
-              <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
-            </a>
+        <div class="col-lg-5 col-sm-6">
+          <div class="card card-plain">
+            <P>We provide In depth analysis of geotechnical data focusing on valuable, project specific insights.
+              Interpretation made easy so that you can draw meaningful decisions and turn geotechnical risk into a
+              unique competitive advantage.</P>
+            <P>Have an interesting project or want to know more? <br>
+              Mail Us:
+              <a href="mailto:info@example.com"> info@orycta.com</a>
+            </P>
           </div>
         </div>
-      </div>
-      <div class="col-lg-3 col-sm-6">
-        <div class="card card-plain">
-          <div class="card-header p-0 position-relative">
-            <a class="d-block blur-shadow-image">
-              <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-blur-shadow"
-                class="img-fluid shadow border-radius-lg" loading="lazy">
-            </a>
+      <div class="col-lg-4 col-sm-6">
+        <form action="" method="post">
+          {% csrf_token %}
+          {% for error in form.non_field_errors %}
+          <div class="form-group has-error">{{ error }}</div>
+          {% endfor %}
+          {% for field in form %}
+          <div class="form-group bmd-form-group">
+            <label for="exampleEmail" class="bmd-label-floating">{{ field.label_tag }}</label>
+            {% for error in field.errors %}
+            <div class="alert messages">{{ error }}</div>
+            {% endfor %}
+            {{ field }}
           </div>
-          <div class="card-body px-0">
-            <h5>
-              <a href="javascript:;" class="text-dark font-weight-bold">MateLabs machine learning</a>
-            </h5>
-            <p>
-              If you’ve ever wanted to train a machine learning model
-              and integrate it with IFTTT, you now can with ...
-            </p>
-            <a href="javascript:;" class="text-info text-sm icon-move-right">Read More
-              <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-sm-6">
-        <div class="card card-plain">
-          <div class="card-header p-0 position-relative">
-            <a class="d-block blur-shadow-image">
-              <img src="/static/assets-landing/img/bg-tool.jpg" alt="img-blur-shadow"
-                class="img-fluid shadow border-radius-lg" loading="lazy">
-            </a>
-          </div>
-          <div class="card-body px-0">
-            <h5>
-              <a href="javascript:;" class="text-dark font-weight-bold">MateLabs machine learning</a>
-            </h5>
-            <p>
-              If you’ve ever wanted to train a machine learning model
-              and integrate it with IFTTT, you now can with ...
-            </p>
-            <a href="javascript:;" class="text-info text-sm icon-move-right">Read More
-              <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
-            </a>
-          </div>
-        </div>
+          {% endfor %}
+          <input type="submit" value="Submit" class="btn bg-gradient-primary" style="float: right;">
+        </form>
       </div>
 
     </div>
-  </div>
-  </section> -->
+</div>
+</section>
 
 </div>
 
-<!-- <section class="py-lg-5">
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="card box-shadow-xl overflow-hidden mb-5">
-          <div class="row">
-            <div class="col-lg-5 position-relative bg-cover px-0"
-              style="background-image: url('/static/assets-landing/img/bg.jpg')" loading="lazy">
-              <div class="z-index-2 text-center d-flex h-100 w-100 d-flex m-auto justify-content-center">
-                <div class="mask bg-gradient-dark opacity-8"></div>
-                <div class="p-5 ps-sm-8 position-relative text-start my-auto z-index-2">
-                  <h3 class="text-white">Contact Information</h3>
-                  <p class="text-white opacity-8 mb-4">Fill up the form and our Team will get back to you within 24
-                    hours.</p>
-                  <div class="d-flex p-2 text-white">
-                    <div>
-                      <i class="fas fa-phone text-sm" aria-hidden="true"></i>
-                    </div>
-                    <div class="ps-3">
-                      <span class="text-sm opacity-8">(+40) 772 100 200</span>
-                    </div>
-                  </div>
-                  <div class="d-flex p-2 text-white">
-                    <div>
-                      <i class="fas fa-envelope text-sm" aria-hidden="true"></i>
-                    </div>
-                    <div class="ps-3">
-                      <span class="text-sm opacity-8">hello@creative-tim.com</span>
-                    </div>
-                  </div>
-                  <div class="d-flex p-2 text-white">
-                    <div>
-                      <i class="fas fa-map-marker-alt text-sm" aria-hidden="true"></i>
-                    </div>
-                    <div class="ps-3">
-                      <span class="text-sm opacity-8">Dyonisie Wolf Bucharest, RO 010458</span>
-                    </div>
-                  </div>
-                  <div class="mt-4">
-                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
-                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Facebook">
-                      <i class="fab fa-facebook" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
-                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Twitter">
-                      <i class="fab fa-twitter" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
-                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Dribbble">
-                      <i class="fab fa-dribbble" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn btn-icon-only btn-link text-white btn-lg mb-0"
-                      data-toggle="tooltip" data-placement="bottom" data-original-title="Log in with Instagram">
-                      <i class="fab fa-instagram" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-7">
-              <form class="p-3" id="contact-form" method="post">
-                <div class="card-header">
-                  <h2>Say Hi!</h2>
-                  <p class="lead"> We'd like to talk with you.</p>
-                </div>
-                <div class="card-body pt-1">
-                  <div class="row">
-                    <div class="col-md-12 pe-2 mb-3">
-                      <div class="input-group input-group-static mb-4">
-                        <label>My name is</label>
-                        <input type="text" class="form-control" placeholder="Full Name">
-                      </div>
-                    </div>
-                    <div class="col-md-12 pe-2 mb-3">
-                      <div class="input-group input-group-static mb-4">
-                        <label>I'm looking for</label>
-                        <input type="text" class="form-control" placeholder="What you love">
-                      </div>
-                    </div>
-                    <div class="col-md-12 pe-2 mb-3">
-                      <div class="input-group input-group-static mb-4">
-                        <label>Your message</label>
-                        <textarea name="message" class="form-control" id="message" rows="6"
-                          placeholder="I want to say that..."></textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 text-end ms-auto">
-                      <button type="submit" class="btn bg-gradient-info mb-0">Send Message</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
+
 {% endblock content %}

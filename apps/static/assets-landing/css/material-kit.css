@@ -1,9 +1,9 @@
-/*!
- * Bootstrap v5.2.0-beta1 (https://getbootstrap.com/)
- * Copyright 2011-2022 The Bootstrap Authors
- * Copyright 2011-2022 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+
+@font-face {
+  font-family: 'geomanist';
+  src: url('../../assets/font/Geomanist-Light-Webfont/geomanist-light-webfont.ttf') format('truetype');
+}
+
 :root {
   --bs-blue: #63B3ED;
   --bs-indigo: #596CFF;
@@ -49,7 +49,7 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: , 128, 154;
   --bs-body-bg-rgb: 255, 255, 255;
-  --bs-font-sans-serif: "Raleway", Helvetica, Arial, sans-serif;
+  --bs-font-sans-serif: "geomanist", Helvetica, Arial, sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -80,6 +80,8 @@
 *::after {
   box-sizing: border-box;
 }
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   :root {
@@ -20997,7 +20999,7 @@ fieldset:disabled .btn {
 }
 
 .card .card-body {
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: var(--bs-body-font-family);
   padding: 1.5rem;
 }
 
@@ -21670,7 +21672,7 @@ body.dark-version {
   }
 
   .dropdown .dropdown-menu:before {
-    font-family: "FontAwesome";
+    font-family: var(--bs-body-font-family);
     content: "\f0d8";
     position: absolute;
     top: 0;
@@ -21706,7 +21708,7 @@ body.dark-version {
   }
 
   .navbar-toggler+.navbar-collapse .dropdown:not(.nav-item) .dropdown-menu:before {
-    font-family: "FontAwesome";
+    font-family: var(--bs-body-font-family);
     content: "\f0d8";
     position: absolute;
     top: 0;
@@ -21752,7 +21754,7 @@ body.dark-version {
   }
 
   .dropdown .dropdown-menu:before {
-    font-family: "FontAwesome";
+    font-family: var(--bs-body-font-family);
     content: "\f0d8";
     position: absolute;
     top: 0;
@@ -21891,7 +21893,7 @@ body.dark-version {
 }
 
 .dropup .dropdown-menu:after {
-  font-family: "FontAwesome";
+  font-family: var(--bs-body-font-family);
   content: "\f0d7";
   position: absolute;
   z-index: -1;
@@ -22332,7 +22334,7 @@ body.dark-version {
 
 .form-check:not(.form-switch) .form-check-input[type="checkbox"]:after {
   transition: opacity 0.25s ease-in-out;
-  font-family: "FontAwesome";
+  font-family: var(--bs-body-font-family);
   content: "\f00c";
   width: 100%;
   height: 100%;
@@ -25799,7 +25801,7 @@ h3,
 .h3,
 .h3 {
   font-weight: 600;
-  font-family: "Roboto Slab", sans-serif;
+  font-family: var(--bs-body-font-family);
 }
 
 h4,
@@ -25877,11 +25879,11 @@ p {
 }
 
 .text-sans-serif {
-  font-family: "Roboto", Helvetica, Arial, sans-serif !important;
+  font-family: var(--bs-body-font-family);
 }
 
 .text-monospace {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-family: var(--bs-body-font-family);
 }
 
 .text-justify {
