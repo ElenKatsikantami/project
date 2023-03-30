@@ -220,11 +220,12 @@ class util:
                             variable_list_Interpretation.append(heading_column[2])
 
             variable_list_Factual = [x[1] for x in chart_heading_Factual if x[0] in headings]
-            variable_list_Factual.append('Water Level')
-
+            # variable_list_Factual.append('Water Level')
+            
+            Sub_categorise_variable_list_factual = self.set_sub_categories(variable_list_Factual)
         except Exception as exp:
             print(str(exp))
-        return variable_list_Factual,variable_list_Interpretation
+        return Sub_categorise_variable_list_factual,variable_list_Interpretation
 
     def get_borehole_list_base_on_ags(self):
         """Filter out the ags variable base on ags"""
@@ -320,3 +321,20 @@ class util:
             print('error')
             print(str(exp))
         return data
+    
+    def set_sub_categories(self, variable_list_Factual):
+        try:
+            variable_dict_Factual = {}
+             #breakpoint  c n s q l
+            sections = list(set([ags_reference[key]["Section"] for key in ags_reference]))
+            for section in sections:
+                section_list = []
+                for chart_variable in variable_list_Factual:
+                    if section == ags_reference[chart_variable]['Section']:
+                        
+                        section_list.append(chart_variable)
+                # import pdb; pdb.set_trace()
+                variable_dict_Factual[section]=section_list
+        except Exception as exp:
+            print(str(exp))
+        return variable_dict_Factual

@@ -4,9 +4,17 @@ $(document).ready(function () {
     var headings_interpretation = headings.interpretation
   
     $('#select-variable-first').empty();
-    for (i = 0; i < headings_factual.length; i++) {
-      $('#select-variable-first').append($('<option>', { value: headings_factual[i], text: headings_factual[i] }));
+    for (var key in headings_factual) {
+      console.log(key)
+      $('#select-variable-first').append($('<optgroup>',{label: key}));
+      $('#select-variable-first').append($('<hr>'));
+      for (i = 0; i < headings_factual[key].length; i++) {
+      $('#select-variable-first').append($('<option>', { value: headings_factual[key][i], text: headings_factual[key][i] }));
     }
+    $('#select-variable-first').append($('<optgroup>'));
+    
+  }
+
     
     $('#select-category').on('change', function (){
       $('#select-variable-first').empty();

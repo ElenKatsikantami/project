@@ -156,12 +156,12 @@
 
                                         <br>
                                         <div class="row tool-form">
-                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                            <!-- <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
                                                 type="button">Back To Tools</button></a>
                                             {%for project in projects|slice:":1"%}
                                             <a  id="backtoproject" href="{% url 'project-details' project.id %}" style="margin-left:1% ;"><button class="btn btn-rose" 
                                                 type="button">Back To Project</button></a>
-                                            {%endfor%} 
+                                            {%endfor%}  -->
                                             <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
                                             <button class="btn btn-rose" type="submit"
                                                 style="margin-left:1% ;">Activate</button>
