@@ -223,6 +223,7 @@ class util:
             # variable_list_Factual.append('Water Level')
             
             Sub_categorise_variable_list_factual = self.set_sub_categories(variable_list_Factual)
+            Sub_categorise_variable_list_factual['General'] = ['Bore hole and water level']
         except Exception as exp:
             print(str(exp))
         return Sub_categorise_variable_list_factual,variable_list_Interpretation
