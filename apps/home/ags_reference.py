@@ -1,4 +1,15 @@
 ags_reference={
+    "N SPT":{
+        "description":"Standard Penetration Test",
+        "category":"Factual",
+        "Sub_category":"Field",
+        "unit":"",
+        "column":["ISPT_NPEN","ISPT_NVAL"],
+        "heading":"ISPT",
+        "elevation":"ISPT_TOP",
+        "column_max_value":450,
+        "Section":"SPT Testing"
+    },
     "TCR":{
         "description":"Percentage of Core Recovered in Core Run",
         "category":"Factual",
@@ -28,17 +39,6 @@ ags_reference={
         "heading":"CORE",
         "elevation":"CORE_TOP",
         "Section":"Coring"
-    },
-    "N SPT":{
-        "description":"Standard Penetration Test",
-        "category":"Factual",
-        "Sub_category":"Field",
-        "unit":"",
-        "column":["ISPT_NPEN","ISPT_NVAL"],
-        "heading":"ISPT",
-        "elevation":"ISPT_TOP",
-        "column_max_value":450,
-        "Section":"SPT Testing"
     },
     "(N1)60":{
         "description":"Modefied Standard Penetration Test",
