@@ -57,17 +57,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#link8" role="tablist">
-                        <i class="material-icons">timeline</i> Activate
+                        <i class="material-icons">timeline</i>{%if not user_name == "" %} Activate {% else%} Run {%endif%}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#link9" role="tablist">
                         <i class="material-icons">gavel</i> Reference
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link10" role="tablist">
-                        <i class="material-icons">help_outline</i> Help Center
                     </a>
                 </li>
             </ul>
@@ -78,6 +73,7 @@
                 <div class="tab-pane active" id="link8">
                     <div class="card">
                         <div class="card-body">
+                            {%if not user_name == "" %}
                             <form id="TypeValidation" class="form-horizontal" method="post"
                                 enctype="multipart/form-data">
                                 {% csrf_token %}
@@ -156,12 +152,12 @@
 
                                         <br>
                                         <div class="row tool-form">
-                                            <!-- <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
                                                 type="button">Back To Tools</button></a>
                                             {%for project in projects|slice:":1"%}
                                             <a  id="backtoproject" href="{% url 'project-details' project.id %}" style="margin-left:1% ;"><button class="btn btn-rose" 
                                                 type="button">Back To Project</button></a>
-                                            {%endfor%}  -->
+                                            {%endfor%} 
                                             <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
                                             <button class="btn btn-rose" type="submit"
                                                 style="margin-left:1% ;">Activate</button>
@@ -174,6 +170,7 @@
                                 </div>
 
                             </form>
+                            {% endif %}
                             <div class="row tool-form">
                                 <div class="col-md-2">
                                     <div class="card-header">
@@ -203,7 +200,10 @@
                                     </div>
                                     <br>
                                     <div class="row tool-form">
-                                        <button class="btn btn-rose" type="button" onclick="Calculate()">Calculate</button>
+                                        <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                            type="button">Back To Tools</button></a>
+                                        <button class="btn btn-rose" type="button" 
+                                        onclick="Calculate()"style="margin-left:1% ;">Calculate</button>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -228,16 +228,6 @@
                                 <li>EPRI EL-6800, Project 1493-6, Final Report, Aug 1990, Manual on Estimating Soil Properties for Foundation Design.</li>
                                 <li>CIRIA Report 143, 1995, The Standard Penetration Test (SPT): Methods and Use.</li>
                             </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane" id="link10">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Help center</h5>
-                        </div>
-                        <div class="card-body">
-
                         </div>
                     </div>
                 </div>

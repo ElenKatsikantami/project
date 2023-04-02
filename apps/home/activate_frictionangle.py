@@ -84,17 +84,19 @@ def activate_frictionangle(file_ags,method):
     else:
         Nspt = first_correction(tables["ISPT"][2:].copy())
         
-    N_60 = pd.to_numeric(tables["ISPT"]["ISPT_(N1)60"][2:])
+    
     maximum = Nspt.max()
     if method == "1":
         if "ISPT_(N1)60" not in headings["ISPT"]:
             return "NSPT must be activated first"
+        N_60 = pd.to_numeric(tables["ISPT"]["ISPT_(N1)60"][2:])
         FractionAngle = N_60.apply(apply_first)
     elif method == "2":
         FractionAngle = Nspt.apply(apply_second)
     elif method == "3":
         if "ISPT_(N1)60" not in headings["ISPT"]:
             return "NSPT must be activated first"
+        N_60 = pd.to_numeric(tables["ISPT"]["ISPT_(N1)60"][2:])
         FractionAngle = N_60.apply(apply_third)
     elif method == "4":
         FractionAngle = Nspt.apply(apply_forth,maximum= maximum)
