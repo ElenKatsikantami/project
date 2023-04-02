@@ -1,9 +1,11 @@
 {% extends "layouts/base-landing.html" %}
 {% block meta %}
-  <title>Orycta</title>
-  <meta name="keywords" content="Orycta, Orycta Data Management, Orycta Consulting, Orycta Geotechnical, AGS geotechnical data, Geotechnical Engineering Consulting, Geotechnical Automation">
-  <meta name="description" content="Orycta Data Management and Geoconsulting. In-depth analysis of geotechnical data. Unlock the science. Decode your geo-data.">
-  {% endblock %}
+<title>Orycta</title>
+<meta name="keywords"
+  content="Orycta, Orycta Data Management, Orycta Consulting, Orycta Geotechnical, AGS geotechnical data, Geotechnical Engineering Consulting, Geotechnical Automation">
+<meta name="description"
+  content="Orycta Data Management and Geoconsulting. In-depth analysis of geotechnical data. Unlock the science. Decode your geo-data.">
+{% endblock %}
 {% block stylesheets %}{% endblock stylesheets %}
 {% load static %}
 {% load widget_tweaks %}
@@ -11,7 +13,6 @@
 <style>
   p {
     color: black;
-    margin: 1rem;
   }
 
   label {
@@ -43,6 +44,11 @@
   .material-icons {
     font-size: 2.5rem;
   }
+
+  .pe-5 {
+    padding-right: 4rem !important;
+    padding-left: 4rem;
+}
 </style>
 {% endblock css %}
 {% block content %}
@@ -96,8 +102,9 @@
               <div class="info">
                 <i class="material-icons text-3xl text-gradient text-info mb-3">save</i>
                 <h5>Store</h5>
-                <p>Store your geodata with us  in secure and centerlize cloud database. 
-                  Harvest the power of deep data analysis and turn your current geo data into knowledge. Store to use, not to forget.</p>
+                <p>Store your geodata with us in secure and centerlize cloud database.
+                  Harvest the power of deep data analysis and turn your current geo data into knowledge. Store to use,
+                  not to forget.</p>
               </div>
             </div>
             <div class="col-md-6">
@@ -137,6 +144,85 @@
       </div>
     </div>
   </section>
+  <!-- -------- START PRE-FOOTER 1 w/ SUBSCRIBE BUTTON AND IMAGE ------- -->
+  <section class="py-3 mt-1">
+    <div class="container-fluid px-0">
+      <div class="row justify-content-center text-center">
+        <div class="col-12 position-relative">
+          <div class="row bg-gray-100 bottom-0 py-7">
+            <div class="col-lg-6 my-auto">
+              <h2 class="card-title">Geo-consulting</h2>
+              <p class="pe-5">With focus on <strong>safety</strong>, <strong>sustainability</strong> and <strong>efficiency</strong>, <br>we offer tailored made geoconsulting
+                services. Our geoscientists, engineers and experts combine data analysis with deep knowledge of geotechnical
+                engineering to provide comprehensive solutions for your projects. </p>
+              <p class="pe-5">Experience geotechnical engineering of
+                the 21st century. Harvest the power of automation, parametrization and machine learning. Harvest the power of your
+                geodata.
+              </p>
+            </div>
+            <div class="col-lg-3 mt-lg-0 mt-5 ps-lg-0 ps-0">
+              <div class="p-3 info-horizontal">
+                <div class="icon icon-shape  bg-gradient-primary shadow-primary text-center">
+                  <i class="fas fa-globe opacity-10"></i>
+                </div>
+                <div class="description ps-3">
+                  <p class="mb-0">Site characterization and geohazard studies </p>
+                </div>
+              </div>
+              <div class="p-3 info-horizontal">
+                <div class="icon icon-shape  bg-gradient-primary shadow-primary text-center">
+                  <i class="fas fa-user opacity-10"></i>
+                </div>
+                <div class="description ps-3">
+                  <p class="mb-0">Advanced numerical modelling and analysis using 2D/3D finite elements.</p>
+                </div>
+              </div>
+
+              <div class="p-3 info-horizontal">
+                <div class="icon icon-shape  bg-gradient-primary shadow-primary text-center">
+                  <i class="fas fa-map opacity-10"></i>
+                </div>
+                <div class="description ps-3">
+                  <p class="mb-0">Slope stability analysis.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 mt-lg-0 mt-5 ps-lg-0 ps-0">
+              <div class="p-3 info-horizontal">
+                <div class="icon icon-shape  bg-gradient-primary shadow-primary text-center">
+                  <i class="fas fa-ship opacity-10"></i>
+                </div>
+                <div class="description ps-3">
+                  <p class="mb-0">Foundation design / shoring design.</p>
+                </div>
+              </div>
+
+
+              <div class="p-3 info-horizontal">
+                <div class="icon icon-shape  bg-gradient-primary shadow-primary text-center">
+                  <i class="fas fa-hourglass opacity-10"></i>
+                </div>
+                <div class="description ps-3">
+                  <p class="mb-0">Soil improvement recommendations and design
+                    Blackgold.</p>
+                </div>
+              </div>
+              <div class="p-3 info-horizontal">
+                <div class="icon icon-shape  bg-gradient-primary shadow-primary text-center">
+                  <i class="fas fa-handshake opacity-10"></i>
+                </div>
+                <div class="description ps-3">
+                  <p class="mb-0">Data analysis and interpretation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <section class="py-3" id="contact-section">
     <div class="container">
       <div class="row">
@@ -153,7 +239,6 @@
               <div class="content-left text-start my-auto py-4">
                 <h2 class="card-title text-white">Get in touch</h2>
                 <h6 class="card-description text-white">Have an interesting project or want to know more?</h6>
-                </a>
               </div>
             </div>
           </div>
@@ -169,28 +254,28 @@
             </P>
           </div>
         </div>
-      <div class="col-lg-4 col-sm-6">
-        <form action="" method="post">
-          {% csrf_token %}
-          {% for error in form.non_field_errors %}
-          <div class="form-group has-error">{{ error }}</div>
-          {% endfor %}
-          {% for field in form %}
-          <div class="form-group bmd-form-group">
-            <label for="exampleEmail" class="bmd-label-floating">{{ field.label_tag }}</label>
-            {% for error in field.errors %}
-            <div class="alert messages">{{ error }}</div>
+        <div class="col-lg-4 col-sm-6">
+          <form action="" method="post">
+            {% csrf_token %}
+            {% for error in form.non_field_errors %}
+            <div class="form-group has-error">{{ error }}</div>
             {% endfor %}
-            {{ field }}
-          </div>
-          {% endfor %}
-          <input type="submit" value="Submit" class="btn bg-gradient-primary" style="float: right;">
-        </form>
-      </div>
+            {% for field in form %}
+            <div class="form-group bmd-form-group">
+              <label for="exampleEmail" class="bmd-label-floating">{{ field.label_tag }}</label>
+              {% for error in field.errors %}
+              <div class="alert messages">{{ error }}</div>
+              {% endfor %}
+              {{ field }}
+            </div>
+            {% endfor %}
+            <input type="submit" value="Submit" class="btn bg-gradient-primary" style="float: right;">
+          </form>
+        </div>
 
+      </div>
     </div>
-</div>
-</section>
+  </section>
 </div>
 
 

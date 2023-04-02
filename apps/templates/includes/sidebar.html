@@ -1,6 +1,6 @@
 <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
   <div class="logo">
-    <a target="" rel="noopener noreferrer" href="{% url 'project' %}" class="simple-text logo-normal">
+    <a target="" rel="noopener noreferrer" href="{% url 'landing' %}" class="simple-text logo-normal">
       Geo Database
     </a>
   </div>
@@ -46,7 +46,7 @@
         <div class="collapse" id="tools">
           <ul class="nav">
             <li class="nav-item ">
-              <a class="nav-link" href="{% url 'tools' %}">
+              <a class="nav-link" href="{% url 'generaltools' %}">
                 <span class="sidebar-mini"> G </span><span class="sidebar-normal"> General </span>
               </a>
             </li>
@@ -88,6 +88,18 @@
         </div>
       </li>
       {% else %}
+      <li class="nav-item {% if request.path == '/accounts/login' %} active {% endif %}">
+        <a class="nav-link" href="{% url 'generaltools' %}">
+          <i class="material-icons">widgets</i>
+          <p>General Tools</p>
+        </a>
+      </li>
+      <li class="nav-item {% if request.path == '/accounts/login' %} active {% endif %}">
+        <a class="nav-link" href="{% url 'tools' %}">
+          <i class="material-icons">apps</i>
+          <p>Interpretation Tools</p>
+        </a>
+      </li>
       <li class="nav-item {% if request.path == '/accounts/login' %} active {% endif %}">
         <a class="nav-link" href="{% url 'login' %}">
           <i class="material-icons">directions_run</i>

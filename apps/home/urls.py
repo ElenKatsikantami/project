@@ -68,6 +68,7 @@ urlpatterns = [
     
     # tools
     path('tools', views.tools.as_view(), name="tools"),
+    path('generaltools', views.generaltools.as_view(), name="generaltools"),
     path('tools/bearingCapacity', views.Bearing, name="bearingCapacity"),
     path('tools/NSPT', views.NsptCorrection.as_view(), name="NSPT"),
     path('tools/RelativeDensity', views.RelativeDensity, name="RelativeDensity"),

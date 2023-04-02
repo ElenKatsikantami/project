@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 {% extends "layouts/base.html" %}
 
@@ -12,40 +11,76 @@
 <style>
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
+
     #container {
         position: relative;
-        display: none;  
+        display: none;
     }
+
     i.error {
         color: red;
     }
-    #container .errormessage{
+
+    #container .errormessage {
         position: absolute;
         display: none;
-        background-color: red;     
-        width: 200px;    
+        background-color: red;
+        width: 200px;
         right: -50px;
-        top: 20px; 
+        top: 20px;
         border-radius: 10px;
         padding: 5px;
         color: white;
     }
-    
+
     #container .errormessage:before {
         position: absolute;
         content: '';
         border-width: 10px;
         border-style: solid;
-        border-color: rgba(255,255,255,0) rgba(255,255,255,0) red rgba(255,255,255,0);
-        top: -20px; 
-        left: 90px;    
+        border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) red rgba(255, 255, 255, 0);
+        top: -20px;
+        left: 90px;
     }
-    
-    #container  .error:hover + .errormessage {
+
+    #container .error:hover+.errormessage {
         display: block;
+    }
+
+    table,
+    th,
+    td {
+        border: 1px solid #dddddd;
+        border-collapse: collapse;
+    }
+
+    td {
+        border-radius: 8px;
+    }
+
+    input#calculate {
+        border: none;
+        text-align: center;
+        border-bottom: 1px solid;
+        width: 100%;
+    }
+
+    select#method_2 {
+        border: none;
+        border-bottom: 1px solid;
+    }
+
+    table {
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    th,
+    td {
+        width: 1%;
     }
 </style>
 <div class="row">
@@ -61,7 +96,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#link8" role="tablist">
-                        <i class="material-icons">timeline</i> {%if not user_name == "" %} Activate {% else%} Run {%endif%}
+                        <i class="material-icons">timeline</i> {%if not user_name == "" %} Activate {% else%} Run
+                        {%endif%}
                     </a>
                 </li>
                 <li class="nav-item">
@@ -88,16 +124,15 @@
                                     </div>
                                     <div class="col-md-8">
                                         {% for message in messages %}
-                                                    <div class="alert alert-rose">
-                                                        <button type="button" class="close" data-dismiss="alert"
-                                                            aria-label="Close">
-                                                            <i class="material-icons">close</i>
-                                                        </button>
-                                                        <span>
-                                                            <b> info - </b> {{ message }}
-                                                        </span>
-                                                    </div>
-                                                    {% endfor %}
+                                        <div class="alert alert-rose">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                            <span>
+                                                <b> info - </b> {{ message }}
+                                            </span>
+                                        </div>
+                                        {% endfor %}
                                         <div class="row ">
                                             <div class="col-md-4 card-header text-center">
                                                 <h5 class="card-title">
@@ -108,7 +143,8 @@
                                                     <select style="width: 300px; text-align:center;"
                                                         id="select-variable-first" name="select-variable-first"
                                                         onchange="getAgs(this)">
-                                                        <option hidden disabled selected value> -- select a project -- </option>
+                                                        <option hidden disabled selected value> -- select a project --
+                                                        </option>
                                                         {% for project in projects %}
                                                         <option value={{ project.id }}>{{ project.name }}
                                                         </option>
@@ -125,9 +161,8 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="form-group has-default bmd-form-group">
-                                                    <select style="width: 300px; text-align:center;"
-                                                        id="activate" name="select-variable-second"
-                                                        required multiple>
+                                                    <select style="width: 300px; text-align:center;" id="activate"
+                                                        name="select-variable-second" required multiple>
                                                     </select>
                                                 </div>
                                             </div>
@@ -140,8 +175,10 @@
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="form-group has-default bmd-form-group">
-                                                    <select style="width: 300px; text-align:center;" id="method" name="method" required>
-                                                        <option hidden disabled selected value> -- select a method -- </option>
+                                                    <select style="width: 300px; text-align:center;" id="method"
+                                                        name="method" required>
+                                                        <option hidden disabled selected value> -- select a method --
+                                                        </option>
                                                         <option value="Terzaghi">Terzaghi and Peck </option>
                                                         <option value="Skempton">Skempton </option>
                                                         <option value="Both">Both </option>
@@ -152,13 +189,13 @@
                                         </div>
                                         <br>
                                         <div class="row tool-form">
-                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
-                                                type="button">Back To Tools</button></a>
                                             {%for project in projects|slice:":1"%}
-                                            <a  id="backtoproject" href="{% url 'project-details' project.id %}" style="margin-left:1% ;"><button class="btn btn-rose" 
-                                                type="button">Back To Project</button></a>
-                                            {%endfor%} 
-                                            <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
+                                            <a id="backtoproject" href="{% url 'project-details' project.id %}"
+                                                style="margin-left:1% ;"><button class="btn btn-rose" type="button">Back
+                                                    To Project</button></a>
+                                            {%endfor%}
+                                            <button class="btn btn-rose" type="reset"
+                                                style="margin-left:1% ;">Reset</button>
                                             <button class="btn btn-rose" type="submit"
                                                 style="margin-left:1% ;">Activate</button>
                                         </div>
@@ -175,31 +212,27 @@
                                     <div class="row ">
                                         <div class="col-md-12">
                                             <div class="form-group has-default bmd-form-group">
-                                                <table border ="2px" class= "table  text-center" id="table">
+                                                <table class="table  text-center" id="table">
                                                     <thead>
                                                         <tr>
-                                                            <th rowspan="2">Method</th>
-                                                            <th>N SPT Value</th>
-                                                            <th>Relative Density of Sand/Silty Sand</th>
-                                                            <th rowspan="2">Classification</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>N</th>
-                                                            <th>D<sub>r</sub>(%)</th>
+                                                            <th>Method</th>
+                                                            <th>N SPT Value (N)</th>
+                                                            <th>Relative Density of Sand/Silty Sand (D<sub>r</sub>(%))
+                                                            </th>
+                                                            <th>Classification</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
-                                                <button class="btn btn-rose" type="button" style="position : absolute; right:0px;"
-                                                onclick="myFunction()">+</button>
+                                                <button class="btn btn-rose" type="button"
+                                                    style="position : absolute; right:0px;"
+                                                    onclick="myFunction()">+</button>
                                             </div>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row tool-form">
-                                        <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
-                                            type="button">Back To Tools</button></a>
-                                        <button class="btn btn-rose" type="button" 
-                                        onclick="Calculate()"style="margin-left:1% ;">Calculate</button>
+                                        <button class="btn btn-rose" type="button" onclick="Calculate()"
+                                            style="margin-left:1% ;">Calculate</button>
                                     </div>
                                 </div>
                                 <div class="col-md-5">
@@ -218,15 +251,15 @@
                             <h5 class="card-title">Reference</h5>
                         </div>
                         <div class="card-body">
-                            
+
                             <ol>
-                                
-                                <li>Terzaghi, K. and Peck, R.B. (1967) Soil Mechanics in Engineering Practice. 
+
+                                <li>Terzaghi, K. and Peck, R.B. (1967) Soil Mechanics in Engineering Practice.
                                     John Wiley & Sons, New York.</li>
-                                <li>T. W. Lambe and R. V. Whitman, 1969, Soil Mechanics. John Wiley & Sons, 
+                                <li>T. W. Lambe and R. V. Whitman, 1969, Soil Mechanics. John Wiley & Sons,
                                     New York.</li>
-                                <li>Skempton, A. W., 1986, Standard Penetration Test Procedures and the Effects 
-                                    in Sands of Overburden Pressure, Relative Density, Particle Size, Ageing and 
+                                <li>Skempton, A. W., 1986, Standard Penetration Test Procedures and the Effects
+                                    in Sands of Overburden Pressure, Relative Density, Particle Size, Ageing and
                                     Over Consolidation, Geotechnique 36: 3.</li>
                             </ol>
                         </div>
@@ -246,7 +279,7 @@
 <script>
     function getAgs(element) {
         $('#select-variable-second').empty()
-        let value_1 = "/project/details/"+ element.value ;
+        let value_1 = "/project/details/" + element.value;
         document.querySelector('#backtoproject').href = value_1;
         get_borhole_list(element.value)
     };
@@ -268,56 +301,61 @@
 <script>
     var y;
     var classification;
-    function get_dr_Terzaghi(x){
-    if (x <= 4 && x >=0){
-        y = 15 * x / 4;
-        classification = "Very Loose";}
-    else if (x <= 10 && x >4){
-        y = 15 + 20 * (x-4) / 6;
-        classification = "Loose";}
-    else if (x <= 30 && x >10){
-        y = 35 + 30 * (x-10) / 20;
-        classification = "Medium";}
-    else if (x <= 50 && x >30){
-        y = 65 + 20 * (x-30) / 20;
-        classification = "Dense";}
-    else if (x <= 200 && x >50){
-        y = 85 + 15 * (x-50) / 150;
-        classification = "Very Dense";}
-    else{
-        y = ""
-        classification = ""
+    function get_dr_Terzaghi(x) {
+        if (x <= 4 && x >= 0) {
+            y = 15 * x / 4;
+            classification = "Very Loose";
         }
-    return [y,classification];
-    }
-    function get_dr_Skempton(x){
-        if (x <= 200 && x >=0){
-            classification = get_dr_Terzaghi(x)[1];
-            y = 100*(x/60)**0.5;}
-        else{
+        else if (x <= 10 && x > 4) {
+            y = 15 + 20 * (x - 4) / 6;
+            classification = "Loose";
+        }
+        else if (x <= 30 && x > 10) {
+            y = 35 + 30 * (x - 10) / 20;
+            classification = "Medium";
+        }
+        else if (x <= 50 && x > 30) {
+            y = 65 + 20 * (x - 30) / 20;
+            classification = "Dense";
+        }
+        else if (x <= 200 && x > 50) {
+            y = 85 + 15 * (x - 50) / 150;
+            classification = "Very Dense";
+        }
+        else {
             y = ""
             classification = ""
-            }
-        if (y>100){y=100;}
-        return [y,classification];}
+        }
+        return [y, classification];
+    }
+    function get_dr_Skempton(x) {
+        if (x <= 200 && x >= 0) {
+            classification = get_dr_Terzaghi(x)[1];
+            y = 100 * (x / 60) ** 0.5;
+        }
+        else {
+            y = ""
+            classification = ""
+        }
+        if (y > 100) { y = 100; }
+        return [y, classification];
+    }
 
 
     function myFunction() {
-            var table = document.getElementById("table");
-            var row = table.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            cell1.innerHTML = '<select style=" text-align:center; border = none; border-style: none;" id="method_2" name="method_2">\
-                <option hidden disabled selected value> -- select a method -- </option>\
+        var table = document.getElementById("table");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = '<select id="method_2" name="method_2">\
                 <option value="Terzaghi">Terzaghi and Peck </option>\
                 <option value="Skempton">Skempton </option></select>';
-            cell2.innerHTML = '\
+        cell2.innerHTML = '\
             <div class="row">\
                 <div class="col-md-8">\
-                    <input  type="number" style="text-align:center; border = none;border-style: none;" \
-                    id="calculate" name="NSPT" min="0" max ="200" step="1" placeholder="N">\
+                    <input  type="number" id="calculate" name="NSPT" min="0" max ="200" step="1">\
                 </div>\
                     <div id="container">\
                         <i class="material-icons error">error_outline</i>\
@@ -326,15 +364,15 @@
                         </div>\
                     </div>\
             </div>';
-            cell3.innerHTML = '<p  name="dr" >';
-            cell4.innerHTML = '<p name="classification" >';
-          }
-    var chart_y_1 =[];
-    var chart_y_2 =[];
-    for (let i=0; i < 201; i++){
+        cell3.innerHTML = '<p  name="dr" >';
+        cell4.innerHTML = '<p name="classification" >';
+    }
+    var chart_y_1 = [];
+    var chart_y_2 = [];
+    for (let i = 0; i < 201; i++) {
         chart_y_1.push(get_dr_Terzaghi(i)[0]);
         chart_y_2.push(get_dr_Skempton(i)[0]);
-    } 
+    }
     var chart = new Highcharts.chart("plot", {
         chart: {
             type: 'line',
@@ -362,27 +400,28 @@
             enabled: false
         },
         plotOptions: {
-            line: {enableMouseTracking: false
+            line: {
+                enableMouseTracking: false
             },
             scatter: {
                 marker: {
                     radius: 4,
                     symbol: 'circle',
-                    }
-                },
-                
+                }
+            },
+
         },
         series: [{
             name: 'Terzaghi and Peck',
             data: chart_y_1
-          }, {
+        }, {
             name: 'Skempton',
             data: chart_y_2
-          }, {
+        }, {
             type: 'scatter',
             name: 'Your points',
             data: []
-          }],
+        }],
 
     });
     function Calculate() {
@@ -393,46 +432,46 @@
         var output_class = document.getElementsByName('classification');
         var rows = table.rows;
         var nodeList = document.querySelectorAll("#container");
-        var plot_data = []; 
-        for(var i=0; i<items.length; i++){
-            if(methods[i].value == "Terzaghi"){
+        var plot_data = [];
+        for (var i = 0; i < items.length; i++) {
+            if (methods[i].value == "Terzaghi") {
                 result = get_dr_Terzaghi(items[i].value);
                 y = result[0];
-                if (typeof y == "number"){
-                    y=y.toFixed(2);
-                    plot_data.push([parseInt(items[i].value), parseFloat(y)]);
-                    output_dr[i].innerHTML = y;
-                    output_class[i].innerHTML = result[1];
-                    rows[i+2].style.backgroundColor = "";
-                    nodeList[i].style.display = "none";
-                }
-                else{
-                    output_dr[i].innerHTML = "";
-                    output_class[i].innerHTML = "";
-                    rows[i+2].style.backgroundColor = "#FBBDB3";
-                    nodeList[i].style.display = "block";
-                }
-            }
-            else if(methods[i].value == "Skempton"){
-                result = get_dr_Skempton(items[i].value);
-                y = result[0];
-                if (typeof y == "number"){
+                if (typeof y == "number") {
                     y = y.toFixed(2);
                     plot_data.push([parseInt(items[i].value), parseFloat(y)]);
                     output_dr[i].innerHTML = y;
                     output_class[i].innerHTML = result[1];
-                    rows[i+2].style.backgroundColor = "";
+                    // rows[i + 2].style.backgroundColor = "";
                     nodeList[i].style.display = "none";
                 }
-                else{
+                else {
                     output_dr[i].innerHTML = "";
                     output_class[i].innerHTML = "";
-                    rows[i+2].style.backgroundColor = "#FBBDB3";
+                    rows[i + 2].style.backgroundColor = "#FBBDB3";
+                    nodeList[i].style.display = "block";
+                }
+            }
+            else if (methods[i].value == "Skempton") {
+                result = get_dr_Skempton(items[i].value);
+                y = result[0];
+                if (typeof y == "number") {
+                    y = y.toFixed(2);
+                    plot_data.push([parseInt(items[i].value), parseFloat(y)]);
+                    output_dr[i].innerHTML = y;
+                    output_class[i].innerHTML = result[1];
+                    // rows[i + 2].style.backgroundColor = "";
+                    nodeList[i].style.display = "none";
+                }
+                else {
+                    output_dr[i].innerHTML = "";
+                    output_class[i].innerHTML = "";
+                    // rows[i + 2].style.backgroundColor = "#FBBDB3";
                     nodeList[i].style.display = "block";
                 }
             }
         };
         chart.series[2].setData(plot_data);
     }
-</script> 
+</script>
 {% endblock javascripts %}

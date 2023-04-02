@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     'ajax_datatable',
     'widget_tweaks',
     'apps.home',
-    'apps.authentication'
+    'apps.authentication',
+    'apps.tools',
+    'apps.consulting'
 ]
 
 MIDDLEWARE = [

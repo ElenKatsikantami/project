@@ -582,7 +582,7 @@ class profileDetails(LoginRequiredMixin, TemplateView):
         context["nspt"] = json.dumps(nspt)
         return context
 
-class tools( TemplateView):
+class tools(TemplateView):
     """tools Class"""
     template_name = "pages/tool/index.html"
 
@@ -602,6 +602,15 @@ class tools( TemplateView):
             context["Skempton_activated"] = Skempton_activated
             context["Terzaghi_activated"] = Terzaghi_activated
             context["FractionAngle_activated"] = FractionAngle_activated
+        return context
+
+class generaltools(TemplateView):
+    """tools Class"""
+    template_name = "pages/tool/generalindex.html"
+
+    def get_context_data(self, **kwargs):
+        """"get context data"""
+        context = super().get_context_data(**kwargs)
         return context
 
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
