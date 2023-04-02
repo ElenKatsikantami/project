@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+{% block title %} Download your file {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="card ">
+            <div class="card-body text-center">
+                <h3 class="title text-center">Download your file</h3>
+                <br>
+                <div class="row tool-form">
+                    <a  href="{% url 'AGSToExcel' %}" ><button class="btn btn-rose" 
+                        type="button">Convert another file</button></a>
+                    {% if file_path %}
+                    <a href="/{{file_path}}" download>
+                        <button type="button" rel="tooltip" 
+                        class="btn btn-rose" style="margin-left:5%;">
+                        <i class="material-icons">download</i>Download your file
+                        </button>
+                    </a>
+                    
+                    {% else %}
+                    <a href="/{{error_path}}" download>
+                        <button type="button" rel="tooltip" 
+                        class="btn btn-rose" style="margin-left:5%;">
+                        <i class="material-icons">download</i>Download errors file
+                        </button>
+                    </a>
+                    <a href="/{{summary_path}}" download>
+                        <button type="button" rel="tooltip" 
+                        class="btn btn-rose" style="margin-left:10%;">
+                        <i class="material-icons">download</i>Download summary file
+                        </button>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

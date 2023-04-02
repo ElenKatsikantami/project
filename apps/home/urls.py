@@ -72,5 +72,7 @@ urlpatterns = [
     path('tools/NSPT', views.NsptCorrection.as_view(), name="NSPT"),
     path('tools/RelativeDensity', views.RelativeDensity, name="RelativeDensity"),
     path('tools/FrictionAngle', views.FrictionAngle, name="FrictionAngle"),
+    path('tools/AGSToExcel', views.AGSToExcel.as_view(), name="AGSToExcel"),
+    path('tools/AGSValidator', views.AGSValidator.as_view(), name="AGSValidator"),
     path('tools/agsfiles', views.agsfiles.as_view(), name='ajax-tools-agsfiles'),
 ]

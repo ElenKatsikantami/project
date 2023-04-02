@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+
+{% block title %} AGS Validator {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+{% block stylesheets %}
+<link rel="stylesheet" href="/static/custom/css/style.css" />
+{% endblock stylesheets %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-10 ml-auto mr-auto">
+        <div class="page-categories">
+            <h3 class="title text-center">AGS Validator</h3>
+            <br>
+            <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist">
+                        <i class="material-icons">info</i> Description
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#link8" role="tablist">
+                        <i class="material-icons">timeline</i> Validate
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#link9" role="tablist">
+                        <i class="material-icons">gavel</i> Reference
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content tab-space tab-subcategories">
+                <div class="tab-pane" id="link7">  
+                </div>
+                <div class="tab-pane active" id="link8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="TypeValidation" class="form-horizontal" method="post"
+                                enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row tool-form">
+                                    <div class="col-md-2">
+                                        <div class="card-header">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% for message in messages %}
+                                            <div class="alert alert-rose">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <i class="material-icons">close</i>
+                                                </button>
+                                                <span>
+                                                    <b> Warning - </b> {{ message }}</span>
+                                            </div>
+                                        {% endfor %}
+
+                                        {% for error in form.non_field_errors %}
+                                            <div class="form-group has-error">{{ error }}</div>
+                                        {% endfor %}
+
+                                        {% for field in form %}
+                                            <div class="row">
+                                                {% for error in field.errors %}
+                                                <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
+                                                {% endfor %}
+                                                <label class="col-sm-4 col-form-label">Please upload your AGS file:</label>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group bmd-form-group">
+                                                        {{ field | add_class:"form-control" }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <br>
+                                        <div class="row tool-form">
+                                            <a  href="{% url 'tools' %}" ><button class="btn btn-rose" 
+                                                type="button">Back To Tools</button></a>
+                                            <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>
+                                            <button class="btn btn-rose" type="submit"
+                                                style="margin-left:1% ;">Upload</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="card-header">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="link9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Reference</h5>
+                        </div>
+                        <div class="card-body">
+                            
+                            <ol>
+                                <li>AGS.org.uk/data-format, Association of Geotechnical & Geoenviornmental Specialists, 2015-23.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

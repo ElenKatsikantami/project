@@ -20,6 +20,7 @@ from . Bearing_Capacity_for_Shallow_Foundation import *
 from . activate_nspt import activate_nspt
 from . activate_relativeDensity import *
 from . activate_frictionangle import *
+from . ags_to_excel import *
 from django.shortcuts import render
 
 chart_list = {
@@ -581,30 +582,26 @@ class profileDetails(LoginRequiredMixin, TemplateView):
         context["nspt"] = json.dumps(nspt)
         return context
 
-class tools(LoginRequiredMixin, TemplateView):
+class tools( TemplateView):
     """tools Class"""
     template_name = "pages/tool/index.html"
 
     def get_context_data(self, **kwargs):
         """"get context data"""
         user = self.request.user
-        # NSPT_activated = []
-        # for ags in ProjectAGS.objects.filter(nspt_activated=True):
-        #     project = ProjectTable.objects.get(id=ags.project_id).name
-        #     ags_name = ags.ags_file.name.split("/")[-1]
-        #     NSPT_activated.append((project,ags_name))
-        NSPT_activated = ProjectAGS.objects.filter(nspt_activated=True).filter(project__owner=user).order_by('id')
-        FractionAngle_activated = ProjectAGS.objects.filter(FractionAngle_activated=True).filter(project__owner=user).order_by('id')
-        RelativeDensity_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
-        Skempton_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=False).filter(project__owner=user).order_by('id')
-        Terzaghi_activated = ProjectAGS.objects.filter(rdSkempton_activated=False,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
-
         context = super().get_context_data(**kwargs)
-        context["nspt_activated"] = NSPT_activated
-        context["RelativeDensity_activated"] = RelativeDensity_activated
-        context["Skempton_activated"] = Skempton_activated
-        context["Terzaghi_activated"] = Terzaghi_activated
-        context["FractionAngle_activated"] = FractionAngle_activated
+        context["user_name"] = self.request.user.username
+        if user.username != "":
+            NSPT_activated = ProjectAGS.objects.filter(nspt_activated=True).filter(project__owner=user).order_by('id')
+            FractionAngle_activated = ProjectAGS.objects.filter(FractionAngle_activated=True).filter(project__owner=user).order_by('id')
+            RelativeDensity_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
+            Skempton_activated = ProjectAGS.objects.filter(rdSkempton_activated=True,rdTerzaghi_activated=False).filter(project__owner=user).order_by('id')
+            Terzaghi_activated = ProjectAGS.objects.filter(rdSkempton_activated=False,rdTerzaghi_activated=True).filter(project__owner=user).order_by('id')
+            context["nspt_activated"] = NSPT_activated
+            context["RelativeDensity_activated"] = RelativeDensity_activated
+            context["Skempton_activated"] = Skempton_activated
+            context["Terzaghi_activated"] = Terzaghi_activated
+            context["FractionAngle_activated"] = FractionAngle_activated
         return context
 
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
@@ -856,6 +853,7 @@ class NsptCorrection(LoginRequiredMixin, CreateView):
 def RelativeDensity(request):
     """Relative Density"""
     context={}
+    context["user_name"] = request.user.username
     context["projects"] = ProjectTable.objects.all().filter(owner_id = request.user.id)
     
     for ags_id in request.POST.getlist("select-variable-second"):
@@ -885,6 +883,7 @@ def RelativeDensity(request):
 
 def FrictionAngle(request):
     context ={}
+    context["user_name"] = request.user.username
     context["projects"] = ProjectTable.objects.all().filter(owner_id = request.user.id)
     for ags_id in request.POST.getlist("select-variable-second"):
         ags = ProjectAGS.objects.get(
@@ -898,6 +897,45 @@ def FrictionAngle(request):
         response = activate_frictionangle(file_ags,method)
         messages.add_message(request,25,response)
     return render(request,'pages/tool/FrictionAngle.html', context)
+
+class AGSToExcel(CreateView):
+    """add project"""
+    template_name = 'pages/tool/AGSToExcel.html'
+    form_class = ProjectAGSForm
+    error_message = "Invalid AGS File. Standard file is AGS4 format"
+
+    def form_valid(self, form):
+        info = False
+        summary = False
+        if "info" in self.request.POST:
+            info = True
+        if "summary" in self.request.POST:
+            summary = True
+        project_ags_form = form.save()
+        format = self.request.POST["format"]
+        file_path = ags_to_excel(project_ags_form, summary,info,format)
+        context ={"file_path":file_path}
+        return render(self.request,'pages/tool/download.html', context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+    
+class AGSValidator(CreateView):
+    """add project"""
+    template_name = 'pages/tool/AGSValidator.html'
+    form_class = ProjectAGSForm
+    error_message = "Invalid AGS File. Standard file is AGS4 format"
+
+    def form_valid(self, form):
+        project_ags_form = form.save()
+        error_path,summary_path = check_ags(project_ags_form)
+        context ={"error_path":error_path,"summary_path":summary_path}
+        return render(self.request,'pages/tool/download.html', context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 class ProjectDefaultProfile(LoginRequiredMixin, TemplateView):
     """Project Default profile Class"""
