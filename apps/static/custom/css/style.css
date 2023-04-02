@@ -186,14 +186,14 @@ label#name-error {
 
 /* Style the DataTable pagination buttons */
 .dataTables_paginate {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   float: right;
   display: inline;
 }
 
 /* Style the DataTable info area */
 .dataTables_info {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   display: inline;
 }
 
@@ -216,14 +216,13 @@ label#name-error {
 
 /* Style the DataTable pagination buttons */
 .dataTables_paginate {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   float: right;
   display: inline;
 }
 
 /* Style the DataTable info area */
 .dataTables_info {
-  margin-top: 10px;
   display: inline;
 }
 
@@ -257,6 +256,13 @@ input {
   margin: 8px 15px 0;
   font-weight: 700;
   color: #322329;
+}
+select {
+  text-align: center;
+}
+
+.dataTables_length label{
+  margin-top: 10px;
 }
 
 @media print{

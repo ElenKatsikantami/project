@@ -1,63 +1,84 @@
+
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8">
     <div class="card">
       <div class="card-body ">
-        <div id="detail-map" style="min-height:58vh;  max-height: 58vh; z-index: 0;">
+        <div id="detail-map" style="min-height:66.6vh;  max-height: 66.6vh; z-index: 0;">
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="card ">
-      <div class="table-responsive" style="min-height:15vh;  max-height: 15vh;">
-      {% if '/project/details' in request.path %}
-        <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"' style="float: right;padding: 2px;margin: 16px;"><i
-            class="material-icons" >add</i> Add AGS</button>
-        {% endif %}
-        <table class="table" id="table_ags">
-          <thead>
-            <tr>
-              <th class="text-center">#</th>
-              <th class="text-center">AGS File</th>
-              <th class="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for ags in agsfile %}
-            <tr>
-              <td class="text-center">{{ forloop.counter }} </td>
-              <td class="text-center">{{ ags.name }}</td>
-              </td>
-              <td class="td-actions text-center">
-                {% if '/profile' not in request.path %}
-                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                  onclick='window.location.href="{% url 'edit-project-ags' ags.pid ags.id %}"'>
-                  <i class="material-icons">edit</i>
-                </button>
-                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                  onclick='window.location.href="{% url 'delete-project-ags' ags.pid ags.id %}"'>
-                  <i class="material-icons">close</i>
-                </button>
-                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                  onclick='window.location.href="{% url 'edit-project-ags-micro' ags.pid ags.id %}"'>
-                  <i class="material-icons">art_track</i>
-                </button>
-                {% endif %}
-                <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
-                  onclick='window.location.href="/media/{{ ags.path }}"'>
-                  <i class="material-icons">download</i>
-                </button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body ">
+        <div class="card ">
+          <h4 class="title text-center">{{ project.name }}</h4>
+          <div class="card-header card-header-image" data-header-animation="false">
+            <a href="{% url 'project-details' project.id %}">
+              {% if project.thumnail %}
+              <img class="img" src= "{{ project.thumnail.url }}" >
+              {% else %}
+              <img class="img" src= "/static/assets/img/city.jpg" >
+              {% endif %}
+            </a>
+          </div>
+          <div class="table-responsive" style="min-height:34vh;  max-height: 34vh; text-align: center;">
+          {% if '/project/details' in request.path %}
+            <button id="defaultprofile" class="btn btn-primary" style="padding: .25rem;margin: 10px;"><i class="material-icons">save</i> Generate DP</button>
+            <button id="myBtn" class="btn btn-primary" style="padding: .25rem;margin: 10px;"><i class="material-icons">save</i> Save CP</button>
+            <button class="btn btn-primary" onclick='window.location.href="{% url 'add-project-ags' project.id %}"' style="padding: .25rem;margin: 10px;"><i
+                class="material-icons" >add</i> Add AGS</button>
+            {% endif %}
+            <table class="table" id="table_ags">
+              <thead>
+                <tr>
+                  <th class="text-center">#</th>
+                  <th class="text-center">AGS File</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for ags in agsfile %}
+                <tr>
+                  <td class="text-center">{{ forloop.counter }} </td>
+                  <td class="text-center">{{ ags.name }}</td>
+                  </td>
+                  <td class="td-actions text-center">
+                    {% if '/profile' not in request.path %}
+                    <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                      onclick='window.location.href="{% url 'edit-project-ags' ags.pid ags.id %}"'>
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                      onclick='window.location.href="{% url 'delete-project-ags' ags.pid ags.id %}"'>
+                      <i class="material-icons">close</i>
+                    </button>
+                    <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                      onclick='window.location.href="{% url 'edit-project-ags-micro' ags.pid ags.id %}"'>
+                      <i class="material-icons">art_track</i>
+                    </button>
+                    {% endif %}
+                    <button type="button" rel="tooltip" class="btn" data-original-title="" title=""
+                      onclick='window.location.href="/media/{{ ags.path }}"'>
+                      <i class="material-icons">download</i>
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+  </div>
+  <div class="row">
+  <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <div class="table-responsive" style="min-height:40vh;  max-height: 40vh;">
-          <table class="table table-striped" id="table_borehole">
+        <div class="table-responsive" style="min-height:40vh;  max-height: 60vh;">
+          <table class="table table-striped text-center" id="table_borehole">
             <thead>
               <tr>
                 <th class="text-center">#</th>
@@ -67,6 +88,8 @@
                 <th>Latitude</th>
                 <th>Existing GL</th>
                 <th>Water Level</th>
+                <th>Max Excavation Depth</th>
+                <th>Machine Type</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +101,8 @@
                 <td>{{ hole.longitude }}</td>
                 <td>{{ hole.latitude }}</td>
                 <td>{{ hole.LOCA_GL }}</td>
+                <td>{{ hole.MOND_RDNG }}</td>
+                <td>{{ hole.MOND_RDNG }}</td>
                 <td>{{ hole.MOND_RDNG }}</td>
               </tr>
               {% endfor %}

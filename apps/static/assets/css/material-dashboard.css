@@ -767,11 +767,18 @@ pre {
   margin-right: auto;
   margin-left: auto; }
 
-.row {
+/* .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px; }
+  margin-right: -30px;
+  margin-left: -30px;
+  margin-bottom: -2rem; } */
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15;
+    margin-left: -15;}
 
 .no-gutters {
   margin-right: 0;
