@@ -265,7 +265,7 @@
 <!-- MathJax version 3 snippet -->
 <script>
     function getAgs(element) {
-        $('#select-variable-second').empty()
+        $('[name=select-variable-second]').empty()
         let value_1 = "/project/details/" + element.value;
         document.querySelector('#backtoproject').href = value_1;
         get_borhole_list(element.value)

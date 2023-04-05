@@ -33,7 +33,24 @@
                 </li>
             </ul>
             <div class="tab-content tab-space tab-subcategories">
-                <div class="tab-pane" id="link7">  
+                <div class="tab-pane" id="link7"> 
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 ml-auto mr-auto">
+                                    <p>This is an easy-to-use AGS to excel online file convertor. 
+                                        Transform your . ags files to .xlsx files so you can review 
+                                        your data with ease. The tool gives you the option to generate 
+                                        and include on the output file useful summary tables for your 
+                                        field and laboratory data. <br><br>
+
+                                        The AGS to excel convertor works with AGS 3.0, 4.0 or 4.1 
+                                        formats                                        
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
                 </div>
                 <div class="tab-pane active" id="link8">
                     <div class="card">
@@ -64,7 +81,7 @@
                                         {% for field in form %}
                                             <div class="row">
                                                 {% for error in field.errors %}
-                                                <div class="alert alert-danger col-12" role="alert">{{ error }}</div>
+                                                <div class="alert alert-danger col-12 text-center" role="alert">{{ error }}</div>
                                                 {% endfor %}
                                                 <label class="col-sm-4 col-form-label">Please upload your AGS file:</label>
                                                 <div class="col-sm-8">
@@ -74,9 +91,11 @@
                                                 </div>
                                             </div>
                                         {% endfor %}
-
-                                        <label>The following information can be added as additional 
-                                            tabs to the generated file (as new tabs):</label>
+                                        <div class="row">
+                                            <label class="col-sm-12 col-form-label">
+                                                The following information can be added as additional 
+                                                tabs to the generated file:</label>
+                                        </div>
                                         <div class="row">
                                             <label class="col-sm-6 col-form-label">Basic information for your .ags file</label>
                                             <div class="col-sm-6 col-form-label">
@@ -89,7 +108,7 @@
                                                 <input  type="checkbox" id="summary" name="summary" >
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        {% comment %} <div class="row"> 
                                             <label class="col-sm-5 col-form-label">Select format</label>
                                             <div class="col-sm-7 col-form-label">
                                                 <select style="text-align:center;" id="format" name="format"
@@ -98,7 +117,7 @@
                                                         <option value="Excel">Excel</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div>{% endcomment %}
                                         <br>
                                         <div class="row tool-form">
                                             <button class="btn btn-rose" type="reset" style="margin-left:1% ;">Reset</button>

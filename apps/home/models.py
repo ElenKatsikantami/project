@@ -60,7 +60,7 @@ def user_directory_path(instance, filename):
 class ProjectAGS(models.Model):
     """Module for project AGS"""
     project = models.ForeignKey(ProjectTable, on_delete = models.CASCADE, null=True)
-    ags_file = models.FileField(upload_to=user_directory_path,  validators=[FileExtensionValidator(allowed_extensions=["ags"])], blank=False, null=False)
+    ags_file = models.FileField(upload_to=user_directory_path,  validators=[FileExtensionValidator(allowed_extensions=["ags"],message="Please upload only .ags format files")], blank=False, null=False)
     is_verified = models.BooleanField(default=False)
     nspt_activated = models.BooleanField(default=False)
     rdTerzaghi_activated = models.BooleanField(default=False)

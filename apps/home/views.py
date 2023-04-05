@@ -809,9 +809,12 @@ class agsfiles(View):
                     machines_ags[str(ags.id)].append(machine)
                     if machine not in machines:
                         machines.append(machine)
-            
+        isExist = os.path.exists(os.path.join("media","project","examples"))
+        if not isExist:
+            os.makedirs(os.path.join("media","project","examples"))   
         df = pd.DataFrame(zip(machines,[70]*len(machines)),columns=["Hammer","Efficiency(%)"])
         df.to_excel(r"media\project\examples\Hammers Efficiencies example.xlsx",index=False)
+        print(result)
         response_data = {'agsfiles': result, 'machines':machines_ags}
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
@@ -921,7 +924,7 @@ class AGSToExcel(CreateView):
         if "summary" in self.request.POST:
             summary = True
         project_ags_form = form.save()
-        format = self.request.POST["format"]
+        format = "Excel"
         file_path = ags_to_excel(project_ags_form, summary,info,format)
         context ={"file_path":file_path}
         return render(self.request,'pages/tool/download.html', context)
