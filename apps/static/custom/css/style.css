@@ -265,6 +265,8 @@ select {
   margin-top: 10px;
 }
 
+
+
 @media print{
   head {
     display: None;
