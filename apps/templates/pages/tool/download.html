@@ -12,13 +12,53 @@
 <div class="row">
     <div class="col-md-10 ml-auto mr-auto">
         <div class="card ">
-            <div class="card-body text-center">
+            <div class="card-body">
                 <h3 class="title text-center">Download your file</h3>
+                {% if file_path %}
+                <div class="row">
+                    <div class="col-md-12 ml-auto mr-auto">
+                        <p>General Information: <br>
+                            Project ID: {{Project_ID}}<br>
+                            Project Name: {{Project_Name}}<br>
+                            Project Location: {{Project_Location}}<br>
+                            Client: {{Client}}<br>
+                            Originator: {{Originator}}<br>
+                            The file contains a total of  {{N_Borehole}} boreholes 
+                            with an average ground level of {{Average_Ground_Level}} m, an average 
+                            water level of {{Average_Water_Level}} m and a maximum drilling depth of 
+                            {{Max_Borehole_depth}} m. The total drilled depth for all boreholes was {{total_drilled}} m.
+
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-md-12 ml-auto mr-auto">
+                        <p>General Information: <br>
+                            Ags File Name: {{name}}<br>
+                            File Size: {{size}}<br>
+                            AGD Version: {{version}}<br>
+                            Project ID: {{Project_ID}}<br>
+                            Project Name: {{Project_Name}}<br>
+                            Project Location: {{Project_Location}}<br>
+                            Client: {{Client}}<br>
+                            Originator: {{Originator}}<br>
+                            The file contains a total of  {{N_Borehole}} boreholes 
+                            with an average ground level of {{Average_Ground_Level}} m, an average 
+                            water level of {{Average_Water_Level}} m and a maximum drilling depth of 
+                            {{Max_Borehole_depth}} m.<br>
+                            A total of {{total_errors}} notifications or errors were found on the uploaded file.<br>
+                            A complete error log and a summary of all field, laboratory and chemical 
+                            test data is included at the download links below.
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
                 <br>
                 <div class="row tool-form">
+                    {% if file_path %}
                     <a  href="{% url 'AGSToExcel' %}" ><button class="btn btn-rose" 
                         type="button">Convert another file</button></a>
-                    {% if file_path %}
                     <a href="/{{file_path}}" download>
                         <button type="button" rel="tooltip" 
                         class="btn btn-rose" style="margin-left:5%;">
@@ -27,6 +67,8 @@
                     </a>
                     
                     {% else %}
+                    <a  href="{% url 'AGSValidator' %}" ><button class="btn btn-rose" 
+                        type="button">Validate another file</button></a>
                     <a href="/{{error_path}}" download>
                         <button type="button" rel="tooltip" 
                         class="btn btn-rose" style="margin-left:5%;">

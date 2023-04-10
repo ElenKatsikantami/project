@@ -809,9 +809,12 @@ class agsfiles(View):
                     machines_ags[str(ags.id)].append(machine)
                     if machine not in machines:
                         machines.append(machine)
-            
+        isExist = os.path.exists(os.path.join("media","project","examples"))
+        if not isExist:
+            os.makedirs(os.path.join("media","project","examples"))   
         df = pd.DataFrame(zip(machines,[70]*len(machines)),columns=["Hammer","Efficiency(%)"])
         df.to_excel(r"media\project\examples\Hammers Efficiencies example.xlsx",index=False)
+        print(result)
         response_data = {'agsfiles': result, 'machines':machines_ags}
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
@@ -921,9 +924,15 @@ class AGSToExcel(CreateView):
         if "summary" in self.request.POST:
             summary = True
         project_ags_form = form.save()
-        format = self.request.POST["format"]
-        file_path = ags_to_excel(project_ags_form, summary,info,format)
-        context ={"file_path":file_path}
+        format = "Excel"
+        file_path ,project_info ,basic_info= ags_to_excel(project_ags_form, summary,info,format)
+        Project_ID,Project_Name,Project_Location,Client,Originator = project_info
+        N_Borehole,Average_Ground_Level,Average_Water_Level,Max_Borehole_depth,total_drilled = basic_info
+        context = {"file_path":file_path, "Project_ID":Project_ID,"Project_Name":Project_Name,
+                   "Project_Location":Project_Location,"Client":Client,"Originator":Originator,
+                   "N_Borehole":N_Borehole,"Average_Ground_Level":Average_Ground_Level,
+                   "Average_Water_Level":Average_Water_Level,"Max_Borehole_depth":Max_Borehole_depth,
+                   "total_drilled":total_drilled}
         return render(self.request,'pages/tool/download.html', context)
 
     def get_context_data(self, **kwargs):
@@ -938,8 +947,13 @@ class AGSValidator(CreateView):
 
     def form_valid(self, form):
         project_ags_form = form.save()
-        error_path,summary_path = check_ags(project_ags_form)
-        context ={"error_path":error_path,"summary_path":summary_path}
+        error_path,summary_path ,project_info,basic_info = check_ags(project_ags_form)
+        name, size ,version ,Project_ID,Project_Name,Project_Location,Client,Originator = project_info
+        N_Borehole,Average_Ground_Level,Average_Water_Level,Max_Borehole_depth,total_errors = basic_info
+        context ={"error_path":error_path,"summary_path":summary_path,"name":name,"size":size,"version": version,
+                  "Project_ID":Project_ID,"Project_Name":Project_Name,"Project_Location":Project_Location,"Client":Client,
+                  "Originator":Originator,"N_Borehole":N_Borehole,"Average_Ground_Level":Average_Ground_Level,
+                  "Average_Water_Level":Average_Water_Level,"Max_Borehole_depth":Max_Borehole_depth,"total_errors":total_errors}
         return render(self.request,'pages/tool/download.html', context)
 
     def get_context_data(self, **kwargs):
