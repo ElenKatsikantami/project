@@ -9,6 +9,9 @@ import pyproj
 import io
 from sqlalchemy import create_engine
 from django.conf import settings
+import datetime
+import openpyxl
+from openpyxl.styles import PatternFill ,Font , Alignment
 
 def get_rock_level(df_GEOL,id_name,areas):
     rock_level = {}
@@ -27,7 +30,7 @@ def get_rock_level(df_GEOL,id_name,areas):
 
 def get_summery(ags_edited_path,id_name):
     tables, _ = AGS4.AGS4_to_dataframe(ags_edited_path)
-    tables_delete=["FILE","MONG","PTIM","TRAN"]
+    tables_delete=["FILE","MONG","PTIM"]
     # combine some sheets in one (which have criteria of the boreholes)
     tables_sum = []
     for table in tables.keys():
@@ -192,8 +195,33 @@ def ags_to_excel(ags_file, summery,info,format,record=False):
     isExist = os.path.exists(os.path.join("media","project","excel"))
     if not isExist:
         os.makedirs(os.path.join("media","project","excel"))
+    
+    sheets,coordinates_columns = get_summery(ags_edited_path,id_name)
+    Project_ID = sheets["PROJ"]["PROJ_ID"].iloc[-1]
+    Project_Name = sheets["PROJ"]["PROJ_NAME"].iloc[-1]
+    Project_Location = sheets["PROJ"]["PROJ_LOC"].iloc[-1]
+    Client = sheets["PROJ"]["PROJ_CLNT"].iloc[-1]
+    try:
+        Originator = sheets["PROJ"]["PROJ_CONT"].iloc[-1]
+    except:
+        Originator = sheets["PROJ"]["PROJ_ENG"].iloc[-1]
+    
+    df = sheets["BH SUM"]
+    elevations = re.findall("\w+_GL|\w+_LOCZ"," ".join(df.columns))
+    groundWater = ["WSTG_DPTH","MOND_RDNG","WSTK_DEP"]
+    groundWater_column = [i for i in df.columns if i in groundWater]
+    N_Borehole = df[id_name].count()
+    Average_Ground_Level = np.round(max([np.average(df[elevation]) for elevation in elevations]),2)
+    Average_Water_Level = np.round(np.average(df[groundWater_column]),2)
+    if id_name != 'LOCA_ID':
+        Max_Borehole_depth_cols = ["HOLE_FDEP","DOBS_BASE","HORN_BASE"]
+    else:
+        Max_Borehole_depth_cols = ["LOCA_FDEP","DOBS_BASE","HORN_BASE"]
+    Max_Borehole_depth_col = [i for i in df.columns if i in Max_Borehole_depth_cols][0]
+    Max_Borehole_depth= df[Max_Borehole_depth_col].max()
+    total_drilled = df[Max_Borehole_depth_col].sum()
+    
     if summery:
-        sheets,coordinates_columns = get_summery(ags_edited_path,id_name)
         if format == "Excel":
             excel_path_edited = os.path.join("media","project","excel",f"{name[:-4]}_edited.xlsx")
             file_path = excel_path_edited
@@ -201,11 +229,166 @@ def ags_to_excel(ags_file, summery,info,format,record=False):
             for sheet_name,dataframe in sheets.items():
                 dataframe.to_excel(writer, sheet_name = sheet_name,index =False,encoding="utf-8")
             writer.close()
+            wb = openpyxl.load_workbook(file_path)
+            sheet = wb.create_sheet(title="Statical Summery", index=1)
+            row = 1
+            fill_cell = PatternFill(patternType='solid', fgColor='FFFF00')
+            sheet.cell(row = row, column = 1).value = "Field Test Data"
+            sheet.cell(row = row, column = 2).value = "Value"
+            sheet.cell(row = row, column = 3).value = "Units"
+            sheet.cell(row = row, column = 1).font = Font(bold = True )
+            for col in range(1, 10):
+                    cell_header = sheet.cell(row, col)
+                    cell_header.fill = fill_cell  
+            row +=1
+
+            Field_Test_Data = [("CORE_PREC" , sheets["CORE"]["CORE_PREC"].count()-1-int(id_name == 'LOCA_ID'),"Number")
+            ,("CORE_SREC" , sheets["CORE"]["CORE_SREC"].count()-1-int(id_name == 'LOCA_ID'),"Number")
+            ,("CORE_RQD" , sheets["CORE"]["CORE_RQD"].count()-1-int(id_name == 'LOCA_ID'),"Number")
+            ,("N SPT Data" , sheets["ISPT"]["ISPT_NVAL"].count()-1-int(id_name == 'LOCA_ID'),"Number")]
+            for i in range(len(Field_Test_Data)):
+                sheet.cell(row = row, column = 1).value = Field_Test_Data[i][0]
+                sheet.cell(row = row, column = 2).value = Field_Test_Data[i][1]
+                sheet.cell(row = row, column = 3).value = Field_Test_Data[i][2]
+                row +=1
+            Laboratory = ['GRAG','LLPL','LNMC','LPDN','RDEN','RELD','TREG','RPLT','RUCS','SHBG',"CLSS"]
+            test_names = {'GRAG':"Gradation Tests",'LLPL':"Aterrberg Tests",'CLSS':"Aterrberg Tests",
+            'LNMC':"Water/Moisture Content",'LPDN':"Specific Gravity",
+            'RDEN':"Bulk Density",'RELD':"Relative Density",
+            'TREG':"Triaxial Tests (Effective Stress)",'RPLT':"Point Load Testing",
+            'RUCS':"UCS Tests",'SHBG':"Shear Box Testing"}
+            test_sheets = [i for i in sheets.keys() if i in Laboratory]
+            Laboratory_Test_Data =[]
+            
+            if id_name == 'LOCA_ID':
+                for i in test_sheets:
+                    Laboratory_Test_Data.append([test_names[i], sheets[i]["SAMP_TOP"].count()-2,
+                                                "Number",sheets[i][f"{i}_METH"].iloc[-1]])
+            else:
+                for i in test_sheets:
+                    Laboratory_Test_Data.append([test_names[i], sheets[i]["SAMP_TOP"].count()-1,"Number",""])
+                if "ROCK" in sheets.keys():
+                    Laboratory_Test_Data.append(["Water/Moisture Content", sheets['ROCK']["ROCK_MC"].replace("",np.nan).count()-1,
+                                                "Number",""])
+                    Laboratory_Test_Data.append(["UCS Tests", sheets['ROCK']["ROCK_UCS"].replace("",np.nan).count()-1,
+                                                "Number",""])
+                    Laboratory_Test_Data.append(["Bulk Density", sheets['ROCK']["ROCK_BDEN"].replace("",np.nan).count()-1,
+                                                "Number",""])
+                    
+
+            chemical_tests = {"CL" : "Chloride Content","CO2": "Carbonate Content" ,"PH":"PH Value", "WS" : "Sulphate Content"
+                            ,"PHS":"PH Value",'CACO3': "Carbonate Content", "SO4" : "Sulphate Content"}
+            Chemical_Test_Data = []
+            if 'GCHM' in sheets.keys():
+                for i in ["CL"  , "WS" , "CO2", "PH"]:
+                    Chemical_Test_Data.append([chemical_tests[i] , sheets['GCHM'][sheets['GCHM']["GCHM_CODE"]==i]["GCHM_CODE"].count()
+                                            ,"Number",sheets['GCHM']["GCHM_METH"].iloc[-1]])
+            if 'CNMT' in sheets.keys():
+                for i in ['CACO3', 'CL', 'PHS', 'SO4']:
+                    Chemical_Test_Data.append([chemical_tests[i] , sheets['CNMT'][sheets['CNMT']["CNMT_TYPE"]==i]["CNMT_TYPE"].count()
+                                            ,"Number",""])
+            sheet.cell(row = row, column = 1).value = "Laboratory Test Data"
+            sheet.cell(row = row, column = 1).font = Font(bold = True )
+            sheet.cell(row = row, column = 2).value = "Value"
+            sheet.cell(row = row, column = 2).font = Font(bold = True )
+            sheet.cell(row = row, column = 3).value = "Units"
+            sheet.cell(row = row, column = 3).font = Font(bold = True )
+            sheet.cell(row = row, column = 4).value = "Test reference"
+            sheet.cell(row = row, column = 4).font = Font(bold = True )
+
+            for col in range(1, 10):
+                    cell_header = sheet.cell(row, col)
+                    cell_header.fill = fill_cell  
+            row +=1
+            for i in range(len(Laboratory_Test_Data)):
+                sheet.cell(row = row, column = 1).value = Laboratory_Test_Data[i][0]
+                sheet.cell(row = row, column = 2).value = Laboratory_Test_Data[i][1]
+                sheet.cell(row = row, column = 3).value = Laboratory_Test_Data[i][2]
+                sheet.cell(row = row, column = 4).value = Laboratory_Test_Data[i][3]
+                row +=1
+
+            sheet.cell(row = row, column = 1).value = "Chemical Test Data"
+            sheet.cell(row = row, column = 1).font = Font(bold = True )
+            sheet.cell(row = row, column = 2).value = "Value"
+            sheet.cell(row = row, column = 2).font = Font(bold = True )
+            sheet.cell(row = row, column = 3).value = "Units"
+            sheet.cell(row = row, column = 3).font = Font(bold = True )
+            sheet.cell(row = row, column = 4).value = "Test reference"
+            sheet.cell(row = row, column = 4).font = Font(bold = True )
+
+            for col in range(1, 10):
+                    cell_header = sheet.cell(row, col)
+                    cell_header.fill = fill_cell  
+            row +=1
+            for i in range(len(Chemical_Test_Data)):
+                sheet.cell(row = row, column = 1).value = Chemical_Test_Data[i][0]
+                sheet.cell(row = row, column = 2).value = Chemical_Test_Data[i][1]
+                sheet.cell(row = row, column = 3).value = Chemical_Test_Data[i][2]
+                sheet.cell(row = row, column = 4).value = Chemical_Test_Data[i][3]
+                row +=1
+            sheet.column_dimensions['A'].width = 37
+            sheet.column_dimensions['B'].width = 40
+            for row in range(1, 20):
+                    cell_header = sheet.cell(row, 2)
+                    cell_header.alignment = Alignment(horizontal="center")
+            sheet.column_dimensions['C'].width = 7
+            sheet.column_dimensions['D'].width = 31
+            wb.save(file_path)
     else:
         if format == "Excel":
             excel_path = os.path.join("media","project","excel",f"{name[:-4]}.xlsx")
             file_path = excel_path
             AGS4.AGS4_to_excel(ags_file.ags_file.path,excel_path)
+    if info:
+        wb = openpyxl.load_workbook(file_path)
+        sheet = wb.create_sheet(title="Basic information", index=0)
+        # create fill color
+        fill_cell = PatternFill(patternType='solid', fgColor='FFFF00') 
+        # writing to the specified cell
+        sheet.cell(row = 1, column = 1).value = 'This AGS file contains the following data:'
+        sheet.cell(row = 1, column = 1).font = Font(bold = True )
+
+        row = 2
+        size = str(np.round(os.stat(ags_file.ags_file.path).st_size/1024,2)) + " kB"
+        now = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
+        try:
+            version = sheets["TRAN"]["TRAN_AGS"][2]
+        except:
+            version = sheets["PROJ"]["PROJ_AGS"][1]
+        basic_info = [("AGS File Name",name),("File Size",f"{size}"),("Time (UTC)",now),("AGS Version",f"{version}")
+        ,("Project ID",Project_ID),("Project Name",Project_Name),("Project Location",Project_Location)
+        ,("Client",Client),("Originator",Originator)]
+
+        for i in range(len(basic_info)):
+            sheet.cell(row = row, column = 1).value = basic_info[i][0]
+            sheet.cell(row = row, column = 2).value = basic_info[i][1]
+            row +=1
+
+        sheet.cell(row = row, column = 2).value = "Value"
+        sheet.cell(row = row, column = 2).font = Font(bold = True )
+        sheet.cell(row = row, column = 3).value = "Units"
+        sheet.cell(row = row, column = 3).font = Font(bold = True )
+
+        for col in range(1, 10):
+                cell_header = sheet.cell(row, col)
+                cell_header.fill = fill_cell  
+        row +=1
+        basic_info_2 =[("No. of Borehole" ,N_Borehole ,"Number")
+                    ,("Average Ground Level" ,Average_Ground_Level ,"m"),
+        ("Average Water Level" , Average_Water_Level,"m"),("Max Borehole depth",Max_Borehole_depth,"m")]
+        for i in range(len(basic_info_2)):
+            sheet.cell(row = row, column = 1).value = basic_info_2[i][0]
+            sheet.cell(row = row, column = 2).value = basic_info_2[i][1]
+            sheet.cell(row = row, column = 3).value = basic_info_2[i][2]
+            row +=1
+        sheet.column_dimensions['A'].width = 37
+        sheet.column_dimensions['B'].width = 40
+        for row in range(11, 16):
+                cell_header = sheet.cell(row, 2)
+                cell_header.alignment = Alignment(horizontal="center")
+        sheet.column_dimensions['C'].width = 7
+        sheet.column_dimensions['D'].width = 31
+        wb.save(file_path)
 
     if record:
         df,elevation = get_main_df(sheets,id_name,coordinates_columns)
@@ -316,12 +499,10 @@ def ags_to_excel(ags_file, summery,info,format,record=False):
         cur.close()
         conn.close()
     
-    return file_path
+    project_info = (Project_ID,Project_Name,Project_Location,Client,Originator)
+    basic_info = (N_Borehole,Average_Ground_Level,Average_Water_Level,Max_Borehole_depth,total_drilled)
+    return file_path , project_info ,basic_info
     
-
-import datetime
-import openpyxl
-from openpyxl.styles import PatternFill ,Font , Alignment
 
 
 def check_ags (ags_file):
@@ -368,10 +549,10 @@ def check_ags (ags_file):
     
     if id_name != 'LOCA_ID':
         common_sheet = "HOLE"
-        Max_Borehole_depth = "HOLE_FDEP"
+        Max_Borehole_depth_col = "HOLE_FDEP"
     else:
         common_sheet = "LOCA"
-        Max_Borehole_depth = "LOCA_FDEP"
+        Max_Borehole_depth_col = "LOCA_FDEP"
         
     df = pd.merge(tables[common_sheet],tables[groundWater_sheet], on=[id_name] ,how="outer")
     df = df.replace(["X","DATA"],np.nan)
@@ -386,7 +567,7 @@ def check_ags (ags_file):
     elevation_column = re.findall("\w+_GL|\w+_LOCZ"," ".join(df.columns))[0]
     
     # basic  information
-    size = os.stat(ags_file.ags_file.path).st_size/1024
+    size = str(np.round(os.stat(ags_file.ags_file.path).st_size/1024,2)) + " kB"
     now = datetime.datetime.now().strftime('%d/%m/%Y %H:%M')
     try:
         version = tables["TRAN"]["TRAN_AGS"][2]
@@ -446,6 +627,14 @@ def check_ags (ags_file):
     wb = openpyxl.Workbook()
     sheet = wb.active
     row =1
+    meta = error.pop("Metadata")
+    sheet.cell(row = row, column = 1).value = "Metadata"
+    row +=1
+    for line in meta:
+        sheet.cell(row = row, column = 1).value = line["line"]
+        sheet.cell(row = row, column = 2).value = line['desc']
+        row +=1
+    total_errors = 0
     for rule in error.keys():
         sheet.cell(row = row, column = 1).value = rule
         row +=1
@@ -454,11 +643,14 @@ def check_ags (ags_file):
         sheet.cell(row = row, column = 3).value = 'desc'
         row +=1
         for line in error[rule]:
+            total_errors += 1
             sheet.cell(row = row, column = 1).value = line["line"]
             sheet.cell(row = row, column = 2).value = line['group']
             sheet.cell(row = row, column = 3).value = line['desc']
             row +=1
-
+    
+    sheet.cell(row=row+1, column=1).value =  "AGS file converter:"
+    sheet.cell(row=row+1, column=2).value = '=HYPERLINK("{}", "{}")'.format(f"https://orycta.com/tools/AGSValidator", "AGS Validator")
     sheet.column_dimensions['A'].width = 20
     sheet.column_dimensions['C'].width = 140
     
@@ -483,7 +675,7 @@ def check_ags (ags_file):
     row = 2
 
 
-    basic_info = [("AGS File Name",name),("File Size",f"{size:0.2f} kB"),("Time (UTC)",now),("AGS Version",version)
+    basic_info = [("AGS File Name",name),("File Size",f"{size}"),("Time (UTC)",now),("AGS Version",version)
      ,("Project ID",Project_ID),("Project Name",Project_Name),("Project Location",Project_Location)
      ,("Client",Client),("Originator",Originator)]
 
@@ -501,10 +693,13 @@ def check_ags (ags_file):
             cell_header = sheet.cell(row, col)
             cell_header.fill = fill_cell  
     row +=1
-
-    basic_info_2 =[("No. of Borehole" , df[id_name].count(),"Number")
-                   ,("Average Ground Level" , np.average(df[elevation_column]),"m"),
-    ("Average Water Level" , np.average(df[groundWater]),"m"),("Max Borehole depth",df[Max_Borehole_depth].max(),"m")]
+    N_Borehole = df[id_name].count()
+    Average_Ground_Level = np.round(np.average(df[elevation_column]),2)
+    Average_Water_Level = np.round(np.average(df[groundWater]),2)
+    Max_Borehole_depth = df[Max_Borehole_depth_col].max()
+    basic_info_2 =[("No. of Borehole" ,N_Borehole ,"Number")
+                   ,("Average Ground Level" ,Average_Ground_Level ,"m"),
+    ("Average Water Level" , Average_Water_Level,"m"),("Max Borehole depth",Max_Borehole_depth,"m")]
     for i in range(len(basic_info_2)):
         sheet.cell(row = row, column = 1).value = basic_info_2[i][0]
         sheet.cell(row = row, column = 2).value = basic_info_2[i][1]
@@ -573,9 +768,11 @@ def check_ags (ags_file):
     # Add a hyperlink
     sheet.cell(row=row, column=1).value = '=HYPERLINK("{}", "{}")'.format(f"{name[:-4]}_error.xlsx", "Error file")
     
+    sheet.cell(row=row+1, column=1).value =  "AGS file converter:"
+    sheet.cell(row=row+1, column=2).value = '=HYPERLINK("{}", "{}")'.format(f"https://orycta.com/tools/AGSValidator", "AGS Validator")
     
     sheet.column_dimensions['A'].width = 37
-    sheet.column_dimensions['B'].width = 8
+    sheet.column_dimensions['B'].width = 40
     for row in range(11, 40):
             cell_header = sheet.cell(row, 2)
             cell_header.alignment = Alignment(horizontal="center")
@@ -587,7 +784,9 @@ def check_ags (ags_file):
     # save the file
     excel_path_summary = os.path.join("media","project","excel",f"{name[:-4]}_summary.xlsx")
     wb.save(excel_path_summary)
-    return excel_path_error,excel_path_summary
+    project_info = (name, size ,version ,Project_ID,Project_Name,Project_Location,Client,Originator)
+    basic_info = (N_Borehole,Average_Ground_Level,Average_Water_Level,Max_Borehole_depth,total_errors)
+    return excel_path_error,excel_path_summary ,project_info,basic_info
 
 
 

@@ -9,8 +9,60 @@
     .hidden{
         display:None;
     }
+    .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 30px;
+      height: 15px;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #737373;
+      transition: .3s;
+      border-radius: 15px;
+    }
+    
+    .slider:after {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      border-radius : 20px;
+      left: -10px;
+      top: -2.5px;
+      border: solid 1px #737373;
+      box-shadow: #737373 0px 1px 3px 1px;
+      background-color: white;
+      transition: .3s;
+    }
+    
+    input:checked + .slider {
+      background-color: #372129;
+    }
+
+    input:checked + .slider:after {
+      transform: translateX(30px);
+    }
+
+    .slider:active:after {
+        box-shadow: 0px  0px 15px 2px #372129;
+      }
+
 </style>
 <link rel="stylesheet" href="/static/custom/css/style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock stylesheets %}
 
 {% block content %}
@@ -62,7 +114,7 @@
                     <div class="card">
                         <div class="card-body">
                             <form id="TypeValidation" class="form-horizontal" method="post"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" onsubmit="return checkform(this);">
                                 {% csrf_token %}
                                 <div class="row tool-form">
                                     <div class="col-md-2">
@@ -70,16 +122,6 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        {% for message in messages %}
-                                        <div class="alert alert-rose">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                <i class="material-icons">close</i>
-                                            </button>
-                                            <span>
-                                                <b> Warning - </b> {{ message }}</span>
-                                        </div>
-                                        {% endfor %}
-
                                         {% for error in form.non_field_errors %}
                                         <div class="form-group has-error">{{ error }}</div>
                                         {% endfor %}
@@ -87,12 +129,12 @@
                                         {% for field in form %}
                                         <div class="row">
                                             {% for error in field.errors %}
-                                            <div class="alert alert-danger col-12 text-center" role="alert">{{ error }}</div>
+                                            <div class="alert alert-danger col-12 text-center"id="alert" role="alert">{{ error }}</div>
                                             {% endfor %}
                                             <label class="col-sm-4 col-form-label">Please upload your AGS file:</label>
                                             <div class="col-sm-8">
                                                 <div class="form-group bmd-form-group">
-                                                    {{ field | add_class:"form-control" }}
+                                                    {{ field | add_class:"form-control" |attr:"onchange : removeAlerts()" }}
                                                 </div>
                                             </div>
                                         </div>
@@ -104,14 +146,20 @@
                                             <label class="col-sm-6 col-form-label">Basic information for your .ags
                                                 file</label>
                                             <div class="col-sm-6 col-form-label">
-                                                <input type="checkbox" id="info" name="info">
+                                                <label class="switch">
+                                                    <input type="checkbox" id="info" name="info">
+                                                    <span class="slider round"></span>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label class="col-sm-6 col-form-label">Summary of field and laboratory
                                                 data</label>
                                             <div class="col-sm-6 col-form-label">
-                                                <input type="checkbox" id="summary" name="summary">
+                                                <label class="switch">
+                                                    <input type="checkbox" id="summary" name="summary">
+                                                    <span class="slider round"></span>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="row hidden">
@@ -128,8 +176,9 @@
                                         <div class="row tool-form">
                                             <button class="btn btn-rose" type="reset"
                                                 style="margin-left:1% ;">Reset</button>
-                                            <button class="btn btn-rose" type="submit"
-                                                style="margin-left:1% ;">Convert</button>
+                                            <button class="btn btn-rose" type="submit" id="convertbutton"
+                                                style="margin-left:1% ;" onclick="myFunction()">
+                                                Convert</button>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -165,3 +214,15 @@
 
 
 {% endblock %}
+{% block javascripts %}
+<script>
+    
+    function myFunction() {
+        document.getElementById("TypeValidation").submit();
+        document.querySelector('#convertbutton').innerHTML = '<i class = "fa fa-spinner fa-spin"></i> Please wait...';
+    }
+    function removeAlerts(){
+        document.getElementById("alert").style.display = 'none';
+    }
+</script>
+{% endblock javascripts %}
