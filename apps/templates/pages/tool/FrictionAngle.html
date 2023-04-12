@@ -9,6 +9,11 @@
 {% endblock stylesheets %}
 {% block content %}
 <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
     #container {
         position: relative;
         display: none;
@@ -55,7 +60,6 @@
         border: none;
         text-align: center;
         border-bottom: 1px solid;
-        width: 100%;
     }
 
     select#method_2 {
@@ -193,11 +197,7 @@
                             </form>
                             {% endif %}
                             <div class="row tool-form">
-                                <div class="col-md-2">
-                                    <div class="card-header">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="row ">
                                         <div class="col-md-12">
                                             <div class="form-group has-default bmd-form-group">
@@ -223,8 +223,10 @@
                                             style="margin-left:1% ;">Calculate</button>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-5">
                                     <div class="card-header">
+                                        <div id="plot">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -256,9 +258,6 @@
         </div>
     </div>
 </div>
-
-
-
 {% endblock %}
 
 {% block javascripts %}
@@ -282,12 +281,18 @@
 
 </script>
 
-
+<script src="/static/assets/js/core/highchart/highcharts.js"></script>
+<script src="/static/assets/js/core/highchart/exporting.js"></script>
+<script src="/static/assets/js/core/highchart/export-data.js"></script>
+<script src="/static/assets/js/core/highchart/accessibility.js"></script>
 <script>
     var y;
 
     function apply_first(x) {
-        if (x <= 200 && x >= 0) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 200 && x >= 0) {
             y = 27.1 + 0.3 * x + 0.00054 * (x ** 2);
         }
         else {
@@ -297,7 +302,10 @@
     }
 
     function apply_second(x) {
-        if (x <= 200 && x >= 0) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 200 && x >= 0) {
             y = -0.0014 * x ** 2 + 0.3534 * x + 26.964;
         }
         else {
@@ -307,7 +315,10 @@
     }
 
     function apply_third(x) {
-        if (x <= 200 && x >= 0) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 200 && x >= 0) {
             var Coarse = 0.00002 * x ** 3 - 0.0056 * x ** 2 + 0.583 * x + 27.558;
             var Fine = -0.00002 * x ** 3 - 0.0015 * x ** 2 + 0.4089 * x + 27.395;
             y = (Coarse + Fine) / 2;
@@ -319,7 +330,10 @@
     }
 
     function apply_sixth(x) {
-        if (x <= 200 && x >= 0) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 200 && x >= 0) {
             y = (12 * x) ** 0.5 + 20;
         }
         else {
@@ -335,7 +349,10 @@
 
     function apply_forth(x) {
         var z = get_average(200);
-        if (x <= 4 && x >= 0) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 4 && x >= 0) {
             y = 25 + 3 * x / 4;
         }
         else if (x <= 10 && x > 4) {
@@ -358,7 +375,10 @@
 
     function apply_fifth(x) {
         var z = get_average(200);
-        if (x <= 4 && x >= 0) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 4 && x >= 0) {
             y = 25 + 5 * x / 4;
         }
         else if (x <= 10 && x > 4) {
@@ -378,7 +398,90 @@
         }
         return y;
     }
+    var chart_y_1 = [];
+    var chart_y_2 = [];
+    var chart_y_3 = [];
+    var chart_y_4 = [];
+    var chart_y_5 = [];
+    var chart_y_6 = [];
+    for (let i = 0; i < 201; i++) {
+        chart_y_1.push(apply_first(i));
+        chart_y_2.push(apply_second(i));
+        chart_y_3.push(apply_third(i));
+        chart_y_4.push(apply_forth(i));
+        chart_y_5.push(apply_fifth(i));
+        chart_y_6.push(apply_sixth(i));
+    }
+    var chart = new Highcharts.chart("plot", {
+        chart: {
+            type: 'line',
+            zoomType: 'xy'
+        },
+        title: {
+            text: "Friction Angle"
+        },
+        xAxis: {
+            title: {
+                text: "N SPT",
+                enabled: true
+            }
+        },
+        yAxis: {
+            tickInterval:10,
+            title: {
+                enabled: true,
+                text: "Friction Angle"
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        plotOptions: {
+            line: {
+                connectNulls : true,
+                marker:{enabled: false,},
+                enableMouseTracking: false
+            },
+            scatter: {
+                marker: {
+                    radius: 4,
+                    symbol: 'circle',
+                }
+            },
 
+        },
+        series: [{
+            name: 'Peck, Hanson and Thornburn',
+            data: chart_y_1
+        }, {
+            name: 'Peck et al',
+            data: chart_y_2
+        },
+        {
+            name: 'Curve fitting Terzaghi, Peck & Mersi',
+            data: chart_y_3
+        },
+        {
+            name: 'Peck, Hanson and Thornburn(table)',
+            data: chart_y_4
+        },
+        {
+            name: 'Meyerhof(table)',
+            data: chart_y_5
+        },
+        {
+            name: 'Dunham',
+            data: chart_y_6
+        }, {
+            type: 'scatter',
+            name: 'Your points',
+            data: []
+        }],
+
+    });
     function myFunction() {
         var table = document.getElementById("table");
         var row = table.insertRow(-1);
@@ -404,7 +507,7 @@
                     </div>\
                 </div>\
         </div>';
-        cell3.innerHTML = '<p  name="FrictionAngle" >';
+        cell3.innerHTML = '<div  name="FrictionAngle" >';
     }
     function Calculate() {
         var table = document.getElementById('table');
@@ -413,6 +516,7 @@
         var output_FrictionAngle = document.getElementsByName('FrictionAngle');
         var rows = table.rows;
         var nodeList = document.querySelectorAll("#container");
+        var plot_data = [];
         for (var i = 0; i < items.length; i++) {
             if (methods[i].value == "1") { y = apply_first(items[i].value); }
             else if (methods[i].value == "2") { y = apply_second(items[i].value); }
@@ -420,21 +524,18 @@
             else if (methods[i].value == "4") { y = apply_forth(items[i].value); }
             else if (methods[i].value == "5") { y = apply_fifth(items[i].value); }
             else { y = apply_sixth(items[i].value); }
-
             if (typeof y == "number") {
                 y = y.toFixed(2);
+                plot_data.push([parseInt(items[i].value), parseFloat(y)]);
                 output_FrictionAngle[i].innerHTML = y;
-                items[i].style.border = "thin solid black";
-                rows[i + 2].style.backgroundColor = "";
                 nodeList[i].style.display = "none";
             }
             else {
                 output_FrictionAngle[i].innerHTML = "";
-                items[i].style.border = "thick solid red";
-                rows[i + 2].style.backgroundColor = "#FBBDB3";
                 nodeList[i].style.display = "block";
             }
         }
+        chart.series[2].setData(plot_data);
     }
 </script>
 {% endblock javascripts %}

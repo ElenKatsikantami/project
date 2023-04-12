@@ -230,7 +230,7 @@ def ags_to_excel(ags_file, summery,info,format,record=False):
                 dataframe.to_excel(writer, sheet_name = sheet_name,index =False,encoding="utf-8")
             writer.close()
             wb = openpyxl.load_workbook(file_path)
-            sheet = wb.create_sheet(title="Statical Summery", index=1)
+            sheet = wb.create_sheet(title="Test summary", index=1)
             row = 1
             fill_cell = PatternFill(patternType='solid', fgColor='FFFF00')
             sheet.cell(row = row, column = 1).value = "Field Test Data"
@@ -341,7 +341,7 @@ def ags_to_excel(ags_file, summery,info,format,record=False):
             AGS4.AGS4_to_excel(ags_file.ags_file.path,excel_path)
     if info:
         wb = openpyxl.load_workbook(file_path)
-        sheet = wb.create_sheet(title="Basic information", index=0)
+        sheet = wb.create_sheet(title="Basic info", index=0)
         # create fill color
         fill_cell = PatternFill(patternType='solid', fgColor='FFFF00') 
         # writing to the specified cell
