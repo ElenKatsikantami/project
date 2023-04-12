@@ -65,7 +65,6 @@
         border: none;
         text-align: center;
         border-bottom: 1px solid;
-        width: 100%;
     }
 
     select#method_2 {
@@ -269,9 +268,6 @@
         </div>
     </div>
 </div>
-
-
-
 {% endblock %}
 
 {% block javascripts %}
@@ -302,7 +298,11 @@
     var y;
     var classification;
     function get_dr_Terzaghi(x) {
-        if (x <= 4 && x >= 0) {
+        if (x == ""){
+            y = ""
+            classification = ""
+        }
+        else if (x <= 4 && x >= 0) {
             y = 15 * x / 4;
             classification = "Very Loose";
         }
@@ -318,8 +318,12 @@
             y = 65 + 20 * (x - 30) / 20;
             classification = "Dense";
         }
-        else if (x <= 200 && x > 50) {
-            y = 85 + 15 * (x - 50) / 150;
+        else if (x <= 70 && x > 50) {
+            y = 85 + 15 * (x - 50) / 20;
+            classification = "Very Dense";
+        }
+        else if (x <= 200 && x > 70) {
+            y = 100;
             classification = "Very Dense";
         }
         else {
@@ -329,7 +333,11 @@
         return [y, classification];
     }
     function get_dr_Skempton(x) {
-        if (x <= 200 && x >= 0) {
+        if (x == ""){
+            y = ""
+            classification = ""
+        }
+        else if (x <= 200 && x >= 0) {
             classification = get_dr_Terzaghi(x)[1];
             y = 100 * (x / 60) ** 0.5;
         }
@@ -364,11 +372,11 @@
                         </div>\
                     </div>\
             </div>';
-        cell3.innerHTML = '<p  name="dr" >';
-        cell4.innerHTML = '<p name="classification" >';
+        cell3.innerHTML = '<div  id="dr" name="dr" >';
+        cell4.innerHTML = '<div id="classification" name="classification" >';
     }
-    var chart_y_1 = [];
-    var chart_y_2 = [];
+    var chart_y_1 = [0];
+    var chart_y_2 = [0];
     for (let i = 0; i < 201; i++) {
         chart_y_1.push(get_dr_Terzaghi(i)[0]);
         chart_y_2.push(get_dr_Skempton(i)[0]);
@@ -403,7 +411,9 @@
         },
         plotOptions: {
             line: {
-                enableMouseTracking: false
+                enableMouseTracking: false,
+                connectNulls : true,
+                marker:{enabled: false,}
             },
             scatter: {
                 marker: {
@@ -443,14 +453,15 @@
                     y = y.toFixed(2);
                     plot_data.push([parseInt(items[i].value), parseFloat(y)]);
                     output_dr[i].innerHTML = y;
+                    //output_dr[i].style.fontWeight = "normal";
                     output_class[i].innerHTML = result[1];
-                    // rows[i + 2].style.backgroundColor = "";
+                    //rows[i + 1].style.backgroundColor = "";
                     nodeList[i].style.display = "none";
                 }
                 else {
                     output_dr[i].innerHTML = "";
                     output_class[i].innerHTML = "";
-                    rows[i + 2].style.backgroundColor = "#FBBDB3";
+                    //rows[i + 1].style.backgroundColor = "#FBBDB3";
                     nodeList[i].style.display = "block";
                 }
             }
@@ -462,13 +473,13 @@
                     plot_data.push([parseInt(items[i].value), parseFloat(y)]);
                     output_dr[i].innerHTML = y;
                     output_class[i].innerHTML = result[1];
-                    // rows[i + 2].style.backgroundColor = "";
+                    //rows[i + 1].style.backgroundColor = "";
                     nodeList[i].style.display = "none";
                 }
                 else {
                     output_dr[i].innerHTML = "";
                     output_class[i].innerHTML = "";
-                    // rows[i + 2].style.backgroundColor = "#FBBDB3";
+                    //rows[i + 1].style.backgroundColor = "#FBBDB3";
                     nodeList[i].style.display = "block";
                 }
             }
