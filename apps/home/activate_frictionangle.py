@@ -7,62 +7,39 @@ def round_up(n, decimals=0):
     return np.ceil(n * multiplier) / multiplier
 
 def apply_first(x):
-    return  (27.1 + 0.3*x + 0.00054*(x**2))//0.1/10
+    if 0<=x<60:
+        return  (27.1 + 0.3*x + 0.00054*(x**2))//0.1/10
+    elif x>=60:
+        return  (20*(x**0.18)+5.2)//0.1/10
 
 def apply_second(x):
-    return (-0.0014*x**2 + 0.3534*x + 26.964)//0.1/10
+    if 0<=x<60:
+        return (-0.0014*x**2 + 0.3534*x + 26.964)//0.1/10
+    elif x>=60:
+        return  (10.687*np.log(x)-0.6255)//0.1/10
 
 def apply_third(x):
-    Coarse = 0.00002*x**3 - 0.0056*x**2 + 0.583*x + 27.558
-    Fine = -0.00002*x**3 - 0.0015*x**2 + 0.4089*x + 27.395
+    if 0<=x<60:
+        Coarse = 0.00002*x**3 - 0.0056*x**2 + 0.583*x + 27.558
+    elif x>=60:
+        Coarse = 9.3873*np.log(x)+8.2633
+    if 0<=x<60:
+        Fine = -0.00002*x**3 - 0.0015*x**2 + 0.4089*x + 27.395
+    elif x>=60:
+        Fine = 4*np.log(x)+25.83
+
     y = round_up(( Coarse + Fine)/2,1)
     return y
 
-def apply_sixth(x):
-    return ((12*x)**0.5 + 20)//0.1/10
 
-def get_average(x):
-    return (apply_first(x) + apply_second(x) + apply_third(x) + apply_sixth(x))/4
+def apply_forth(x):
+    if 0  <= x <= 1:
+        return (25+x)//0.1/10
+    elif x > 1 :
+        return (24.22573*(x**0.1547204))//0.1/10
     
-def apply_forth(x,maximum):
-    z= get_average(maximum)
-    if x <= 4 :
-        y = 25 + 3 * x / 4
-
-    elif x <= 10:
-        y = 28 + 2 * (x-4) / 6
-
-    elif x <= 30:
-        y = 30 + 6 * (x-10) / 20
-
-    elif x <= 50:
-        y = 36 + 5 * (x-30) / 20
-
-    else:
-        y = 41 + (z-41)  * (x-50) / (maximum-50)
-
-    return y//0.1/10
-
-def apply_fifth(x,maximum):
-    z= get_average(maximum)
-    if x <= 4 :
-        y = 25 + 5 * x / 4
-
-    elif x <= 10:
-        y = 30 + 5 * (x-4) / 6
-
-    elif x <= 30:
-        y = 35 + 5 * (x-10) / 20
-
-    elif x <= 50:
-        y = 40 + 5 * (x-30) / 20
-
-    else:
-        y = 45 + (z-45) * (x-50) / (maximum-50)
-
-    return y//0.1/10
-
-
+def apply_fifth(x):
+    return ((12*x)**0.5 + 20)//0.1/10
 
 def first_correction(ispt_sheet):
     df_ispt = ispt_sheet
@@ -75,17 +52,13 @@ def first_correction(ispt_sheet):
 
 
 def activate_frictionangle(file_ags,method):
-    file_ags_name = file_ags.split("\\")[-1]
     tables, headings = AGS4.AGS4_to_dataframe(file_ags)
-    if "ISPT_FractionAngle" in headings["ISPT"] :
-        return f"Fraction Angle is already activated for {file_ags_name}"
+    
     if "ISPT_correctedN" in headings["ISPT"] :
         Nspt = pd.to_numeric(tables["ISPT"]["ISPT_correctedN"][2:])
     else:
         Nspt = first_correction(tables["ISPT"][2:].copy())
         
-    
-    maximum = Nspt.max()
     if method == "1":
         if "ISPT_(N1)60" not in headings["ISPT"]:
             return "NSPT must be activated first"
@@ -99,14 +72,19 @@ def activate_frictionangle(file_ags,method):
         N_60 = pd.to_numeric(tables["ISPT"]["ISPT_(N1)60"][2:])
         FractionAngle = N_60.apply(apply_third)
     elif method == "4":
-        FractionAngle = Nspt.apply(apply_forth,maximum= maximum)
+        FractionAngle = Nspt.apply(apply_forth)
     elif method == "5":
-        FractionAngle = Nspt.apply(apply_fifth,maximum= maximum)
-    elif method == "6":
-        FractionAngle = Nspt.apply(apply_sixth)
+        FractionAngle = Nspt.apply(apply_fifth)
         
     
-    tables["ISPT"]["ISPT_FractionAngle"] = pd.Series(["",""]).append(FractionAngle)  
-    headings["ISPT"].append("ISPT_FractionAngle")
+    tables["ISPT"]["ISPT_FractionAngle"] = pd.Series(["",""]).append(FractionAngle) 
+    if "ISPT_FractionAngle" not in headings["ISPT"] :
+        case = 1
+        headings["ISPT"].append("ISPT_FractionAngle")
+    else:
+        case = 0
     AGS4.dataframe_to_AGS4(tables, headings,file_ags)
-    return f"Fraction Angle activated for {file_ags_name}"
+    if case:
+        return f"Fraction Angle is activated successfully"
+    else:
+        return f"Fraction Angle is reactivated successfully"
