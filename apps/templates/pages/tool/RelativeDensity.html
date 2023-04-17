@@ -206,42 +206,47 @@
                                 </div>
                             </form>
                             {% endif %}
-                            <div class="row tool-form">
-                                <div class="col-md-7">
-                                    <div class="row ">
-                                        <div class="col-md-12">
-                                            <div class="form-group has-default bmd-form-group">
-                                                <table class="table  text-center" id="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Method</th>
-                                                            <th>N SPT Value (N)</th>
-                                                            <th>Relative Density of Sand/Silty Sand (D<sub>r</sub>(%))
-                                                            </th>
-                                                            <th>Classification</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                                <button class="btn btn-rose" type="button"
-                                                    style="position : absolute; right:0px;"
-                                                    onclick="myFunction()">+</button>
-                                            </div>
+                        </div>
+                        <div class="row tool-form">
+                            <div class="col-md-6">
+                                <div class="row ">
+                                    <div class="col-md-12">
+                                        <div class="form-group has-default bmd-form-group">
+                                            <table class="table  text-center" id="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>id</th>
+                                                        <th>Method</th>
+                                                        <th>N SPT Value (N)</th>
+                                                        <th>Relative Density of Sand/Silty Sand (D<sub>r</sub>(%))
+                                                        </th>
+                                                        <th>Classification</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <button class="btn btn-rose" type="button"
+                                                style="position : absolute; right:0px;"
+                                                onclick="addRow()">+</button>
+                                            <button class="btn btn-rose" type="button"
+                                                style="position : absolute; right:50px;"
+                                                onclick="deleteRow()">-</button>
                                         </div>
-                                    </div>
-                                    <br>
-                                    <div class="row tool-form">
-                                        <button class="btn btn-rose" type="button" onclick="Calculate()"
-                                            style="margin-left:1% ;">Calculate</button>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="card-header">
-                                        <div id="plot">
-                                        </div>
+                                <br>
+                                <div class="row tool-form">
+                                    <button class="btn btn-rose" type="button" onclick="Calculate()"
+                                        style="margin-left:1% ;">Calculate</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-header">
+                                    <div id="plot"  style="min-width: 450px; height: 600px;">
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="tab-pane" id="link9">
@@ -322,7 +327,7 @@
             y = 85 + 15 * (x - 50) / 20;
             classification = "Very Dense";
         }
-        else if (x <= 200 && x > 70) {
+        else if (x <= 100 && x > 70) {
             y = 100;
             classification = "Very Dense";
         }
@@ -337,7 +342,7 @@
             y = ""
             classification = ""
         }
-        else if (x <= 200 && x >= 0) {
+        else if (x <= 100 && x >= 0) {
             classification = get_dr_Terzaghi(x)[1];
             y = 100 * (x / 60) ** 0.5;
         }
@@ -350,34 +355,41 @@
     }
 
 
-    function myFunction() {
+    function addRow() {
         var table = document.getElementById("table");
         var row = table.insertRow(-1);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
-        cell1.innerHTML = '<select id="method_2" name="method_2">\
+        var cell5 = row.insertCell(4);
+        cell1.innerHTML = table.rows.length-1;
+        cell1.style.fontWeight = "normal";
+        cell2.innerHTML = '<select id="method_2" name="method_2">\
                 <option value="Terzaghi">Terzaghi and Peck </option>\
                 <option value="Skempton">Skempton </option></select>';
-        cell2.innerHTML = '\
+        cell3.innerHTML = '\
             <div class="row">\
                 <div class="col-md-8">\
-                    <input  type="number" id="calculate" name="NSPT" min="0" max ="200" step="1">\
+                    <input  type="number" id="calculate" name="NSPT" min="0" max ="100" step="1">\
                 </div>\
                     <div id="container">\
                         <i class="material-icons error">error_outline</i>\
                         <div class="errormessage">\
-                            Please enter a number between 0 and 200 \
+                            Please enter a number between 0 and 100 \
                         </div>\
                     </div>\
             </div>';
-        cell3.innerHTML = '<div  id="dr" name="dr" >';
-        cell4.innerHTML = '<div id="classification" name="classification" >';
+        cell4.innerHTML = '<div  id="dr" name="dr" >';
+        cell5.innerHTML = '<div id="classification" name="classification" >';
     }
-    var chart_y_1 = [0];
-    var chart_y_2 = [0];
-    for (let i = 0; i < 201; i++) {
+    function deleteRow() {
+        var table = document.getElementById("table");
+        table.deleteRow(-1);
+    }
+    var chart_y_1 = [];
+    var chart_y_2 = [];
+    for (let i = 0; i < 101; i++) {
         chart_y_1.push(get_dr_Terzaghi(i)[0]);
         chart_y_2.push(get_dr_Skempton(i)[0]);
     }
@@ -390,6 +402,7 @@
             text: "Relative Density"
         },
         xAxis: {
+            tickInterval:20,
             title: {
                 text: "N SPT",
                 enabled: true
@@ -421,7 +434,11 @@
                     symbol: 'circle',
                 }
             },
-
+        },
+        tooltip: {
+            formatter: function() {
+                return 'ID : ' + this.point.name +'<br>NSPT :  '+ this.x + '<br>Relative Density :  ' + this.y;  
+            },
         },
         series: [{
             name: 'Terzaghi and Peck',
@@ -447,41 +464,26 @@
         var plot_data = [];
         for (var i = 0; i < items.length; i++) {
             if (methods[i].value == "Terzaghi") {
-                result = get_dr_Terzaghi(items[i].value);
-                y = result[0];
-                if (typeof y == "number") {
-                    y = y.toFixed(2);
-                    plot_data.push([parseInt(items[i].value), parseFloat(y)]);
-                    output_dr[i].innerHTML = y;
-                    //output_dr[i].style.fontWeight = "normal";
-                    output_class[i].innerHTML = result[1];
-                    //rows[i + 1].style.backgroundColor = "";
-                    nodeList[i].style.display = "none";
-                }
-                else {
-                    output_dr[i].innerHTML = "";
-                    output_class[i].innerHTML = "";
-                    //rows[i + 1].style.backgroundColor = "#FBBDB3";
-                    nodeList[i].style.display = "block";
-                }
-            }
+                result = get_dr_Terzaghi(items[i].value);}
             else if (methods[i].value == "Skempton") {
-                result = get_dr_Skempton(items[i].value);
-                y = result[0];
-                if (typeof y == "number") {
-                    y = y.toFixed(2);
-                    plot_data.push([parseInt(items[i].value), parseFloat(y)]);
-                    output_dr[i].innerHTML = y;
-                    output_class[i].innerHTML = result[1];
-                    //rows[i + 1].style.backgroundColor = "";
-                    nodeList[i].style.display = "none";
-                }
-                else {
-                    output_dr[i].innerHTML = "";
-                    output_class[i].innerHTML = "";
-                    //rows[i + 1].style.backgroundColor = "#FBBDB3";
-                    nodeList[i].style.display = "block";
-                }
+                    result = get_dr_Skempton(items[i].value);}
+            y = result[0];
+            if (typeof y == "number") {
+                y = y.toFixed(2);
+                plot_data.push({"name":i+1,"x":parseInt(items[i].value),"y" :parseFloat(y)});
+                
+                output_dr[i].innerHTML = y;
+                output_dr[i].style.fontWeight = "normal";
+                output_class[i].innerHTML = result[1];
+                output_class[i].style.fontWeight = "normal";
+                //rows[i + 1].style.backgroundColor = "";
+                nodeList[i].style.display = "none";
+            }
+            else {
+                output_dr[i].innerHTML = "";
+                output_class[i].innerHTML = "";
+                //rows[i + 1].style.backgroundColor = "#FBBDB3";
+                nodeList[i].style.display = "block";
             }
         };
         chart.series[2].setData(plot_data);

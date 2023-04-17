@@ -165,7 +165,9 @@
                                                         </option>
                                                         <option value="1">Peck, Hanson and Thornburn (1974)</option>
                                                         <option value="2">CIRIA 143 Report (1995)</option>
-                                                        <option value="3">Terzaghi, Peck & Mersi (1996)</option>
+                                                        <option value="30">Terzaghi, Peck & Mersi (1996) Coarse</option>
+                                                        <option value="31">Terzaghi, Peck & Mersi (1996) Fine</option>
+                                                        <option value="32">Terzaghi, Peck & Mersi (1996) Average</option>
                                                         <option value="4">Meyerhof (1956)</option>
                                                         <option value="5">Dunham (1954)</option>
 
@@ -195,44 +197,46 @@
 
                             </form>
                             {% endif %}
-                            <div class="row tool-form">
-                                <div class="col-md-7">
-                                    <div class="row ">
-                                        <div class="col-md-12">
-                                            <div class="form-group has-default bmd-form-group">
-                                                <table class="table  text-center" id="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Method</th>
-                                                            <th>N SPT Value</th>
-                                                            <th>Friction Angle <sup>o</sup></th>
-                                                        </tr>
-                                                    </thead>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <div class="row ">
+                                    <div class="col-md-12">
+                                        <div class="form-group has-default bmd-form-group">
+                                            <table class="table text-center" id="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>id</th>
+                                                        <th>Method</th>
+                                                        <th>N SPT Value</th>
+                                                        <th>Friction Angle<sup>o</sup></th>
+                                                    </tr>
+                                                </thead>
 
-                                                </table>
-                                                <button class="btn btn-rose" type="button"
-                                                    style="position : absolute; right:0px;"
-                                                    onclick="addRow()">+</button>
-                                                <button class="btn btn-rose" type="button"
-                                                    style="position : absolute; right:50px;"
-                                                    onclick="deleteRow()">-</button>
-                                            </div>
+                                            </table>
+                                            <button class="btn btn-rose" type="button"
+                                                style="position : absolute; right:0px;"
+                                                onclick="addRow()">+</button>
+                                            <button class="btn btn-rose" type="button"
+                                                style="position : absolute; right:50px;"
+                                                onclick="deleteRow()">-</button>
                                         </div>
-                                    </div>
-                                    <br>
-                                    <div class="row tool-form">
-                                        <button class="btn btn-rose" type="button" onclick="Calculate()"
-                                            style="margin-left:1% ;">Calculate</button>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="card-header">
-                                        <div id="plot">
-                                        </div>
+                                <br>
+                                <div class="row tool-form">
+                                    <button class="btn btn-rose" type="button" onclick="Calculate()"
+                                        style="margin-left:1% ;">Calculate</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-header">
+                                    <div id="plot"  style="min-width: 450px; height: 600px;">
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="tab-pane" id="link9">
@@ -321,8 +325,37 @@
         }
         return y;
     }
-
-    function apply_third(x) {
+    function apply_third_fine(x) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 60 && x >= 0) {
+            y = -0.00002 * x ** 3 - 0.0015 * x ** 2 + 0.4089 * x + 27.395;
+        }
+        else if (x <= 100 && x >= 60) {
+            y =  4 * Math.log(x) + 25.83;
+        }
+        else {
+            y = ""
+        }
+        return y;
+    }
+    function apply_third_course(x) {
+        if (x == ""){
+            y = ""
+        }
+        else if (x <= 60 && x >= 0) {
+            y = 0.00002 * x ** 3 - 0.0056 * x ** 2 + 0.583 * x + 27.558;
+        }
+        else if (x <= 100 && x >= 60) {
+            y = 9.3873 * Math.log(x) + 8.2633;
+        }
+        else {
+            y = ""
+        }
+        return y;
+    }
+    function apply_third_average(x) {
         if (x == ""){
             y = ""
         }
@@ -372,14 +405,18 @@
 
     var chart_y_1 = [];
     var chart_y_2 = [];
-    var chart_y_3 = [];
+    var chart_y_30 = [];
+    var chart_y_31 = [];
+    var chart_y_32 = [];
     var chart_y_4 = [];
     var chart_y_5 = [];
 
     for (let i = 0; i < 101; i++) {
         chart_y_1.push(apply_first(i));
         chart_y_2.push(apply_second(i));
-        chart_y_3.push(apply_third(i));
+        chart_y_30.push(apply_third_average(i));
+        chart_y_31.push(apply_third_fine(i));
+        chart_y_32.push(apply_third_course(i));
         chart_y_4.push(apply_forth(i));
         chart_y_5.push(apply_fifth(i));
     }
@@ -424,7 +461,11 @@
                 }
             },
 
-        },
+        },tooltip: {
+            formatter: function() {
+                return 'ID : ' + this.point.name +'<br>NSPT :  '+ this.x + '<br>FrictionAngle :  ' + this.y;  
+            },
+          },
         series: [{
             name: 'Peck, Hanson and Thornburn (1974)',
             data: chart_y_1
@@ -433,8 +474,16 @@
             data: chart_y_2
         },
         {
-            name: 'Terzaghi, Peck & Mersi (1996)',
-            data: chart_y_3
+            name: 'Terzaghi, Peck & Mersi (1996) Coarse',
+            data: chart_y_32
+        },
+        {
+            name: 'Terzaghi, Peck & Mersi (1996) Fine',
+            data: chart_y_31
+        },
+        {
+            name: 'Terzaghi, Peck & Mersi (1996) Average',
+            data: chart_y_30
         },
         {
             name: 'Meyerhof (1956)',
@@ -457,25 +506,26 @@
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
-        cell1.innerHTML = '<select id="method_2" name="method_2">\
+        var cell4 = row.insertCell(3);
+        cell1.innerHTML = table.rows.length-1;
+        cell1.style.fontWeight = "normal";
+        cell2.innerHTML = '<select id="method_2" name="method_2">\
             <option value="1">Peck, Hanson and Thornburn (1974)</option>\
             <option value="2">CIRIA 143 Report (1995)</option>\
-            <option value="3">Terzaghi, Peck & Mersi (1996)</option>\
+            <option value="30">Terzaghi, Peck & Mersi (1996) Coarse</option>\
+            <option value="31">Terzaghi, Peck & Mersi (1996) Fine</option>\
+            <option value="32">Terzaghi, Peck & Mersi (1996) Average</option>\
             <option value="4">Meyerhof (1956)</option>\
             <option value="5">Dunham (1954)</option></select>';
-        cell2.innerHTML = '\
-        <div class="row">\
-            <div class="col-md-8">\
-                <input  type="number" id="calculate" name="input" min="0" max ="100" step="1" >\
+        cell3.innerHTML = '\
+        <input  style="width:75%" type="number" id="calculate" name="input" min="0" max ="100" step="1" >\
+        <div id="container">\
+            <i class="material-icons error">error_outline</i>\
+            <div class="errormessage">\
+                Please enter a number between 0 and 100 \
             </div>\
-                <div id="container">\
-                    <i class="material-icons error">error_outline</i>\
-                    <div class="errormessage">\
-                        Please enter a number between 0 and 100 \
-                    </div>\
-                </div>\
         </div>';
-        cell3.innerHTML = '<div  name="FrictionAngle" >';
+        cell4.innerHTML = '<div  name="FrictionAngle" >';
     }
 
     function deleteRow() {
@@ -494,13 +544,16 @@
         for (var i = 0; i < items.length; i++) {
             if (methods[i].value == "1") { y = apply_first(items[i].value); }
             else if (methods[i].value == "2") { y = apply_second(items[i].value); }
-            else if (methods[i].value == "3") { y = apply_third(items[i].value); }
+            else if (methods[i].value == "30") { y = apply_third_course(items[i].value); }
+            else if (methods[i].value == "31") { y = apply_third_fine(items[i].value); }
+            else if (methods[i].value == "32") { y = apply_third_average(items[i].value); }
             else if (methods[i].value == "4") { y = apply_forth(items[i].value); }
             else { y = apply_fifth(items[i].value); }
             if (typeof y == "number") {
                 y = y.toFixed(2);
-                plot_data.push([parseInt(items[i].value), parseFloat(y)]);
+                plot_data.push({"name":i+1,"x":parseInt(items[i].value),"y" :parseFloat(y)});
                 output_FrictionAngle[i].innerHTML = y;
+                output_FrictionAngle[i].style.fontWeight = "normal";
                 nodeList[i].style.display = "none";
             }
             else {
@@ -508,7 +561,7 @@
                 nodeList[i].style.display = "block";
             }
         }
-        chart.series[5].setData(plot_data);
+        chart.series[7].setData(plot_data);
     }
 </script>
 {% endblock javascripts %}
