@@ -24,25 +24,32 @@ table,
                     For granular / cohesionless soil (c = 0) friction angle is mainly estimated either from 
                     laboratory tests or from correlations with N SPT number. <br>
                     There are many correlations to estimate friction angle for granular material from N SPT 
-                    values . Their are based on the uncorrected N SPT (field measurements) or based on 
-                    the corrected (N1)60  value.<br>
+                    values . They are based on the uncorrected N SPT (field measurements) or based on
+                    the corrected (N1)<sub>60</sub>  value.<br>
                 </h4><br><br>
 
                 <h4>Method 1 : Peck, Hanson and Thornburn (1974)</h4>
-                <h4>\(\phi' = 27.1+0.3N'+0.00054N'^2\)</h4><br>
+                <h4>&emsp;\(\phi' = 27.1+0.3N'+0.00054N'^2\)</h4>
+                <h4> Note: Above an N SPT of 60 values are reduced to a more conservative estimate of <br> friction
+                    angles.
+                </h4><br/>
 
-                <h4>Method 2 : defines friction angle from curve fitting of plot from 
-                    Peck, Hanson and Thornburn as presented in CIRIA Report 143 (1995)</h4><br>
+                <h4>Method 2 : Defines friction angle from CIRIA Report 143 (1995) after
+                    Peck, Hanson and Thornburn.</h4><br>
                     
-                <h4>Method 3 :  calculated as the average between two curve fitted curves 
-                    from Terzaghi, Peck & Mersi (1996)</h4>
-                <h4>Method 4 and 5 : assume linear interpolation to the values defined as 
-                    approximation from two different sources: Peck, Hanson and Thornburn and Meyerhof.</h4><br>
+                <h4>Method 3 :  Defines friction angle as per Terzaghi, Peck & Mersi (1996).
+                    Three curves are presented for fine, coarse <br> and average soil particles.</h4><br>
+                <h4>Method 4 : Defines friction angle as per Meyerhof (1986).</h4><br>
+                <h4>Method 5 : Defines friction angle as per Dunham (1954).</h4><br>
+                <h4>&emsp;\(\phi' = \sqrt{ 12N} + 20\)</h4></br>
+                <h4>Method 6 : Defines friction angle as per Osaki et al. (1959)</h4><br>
+                <h4>&emsp;\(\phi' = (20 &#183; N)^{0.5} + 15\) </h4><br>
+
+                <h4>Typical friction angle values and density versus N SPT number are presented
+                    in a tabulated format at table below:</h4>
 
                 <div class="card-header">
                     <table class= "table table-hover table-sm text-center">
-                        <caption>a - Source : Peck, Hanson and Thornburn (12) p. 310</caption>
-                        <caption>b - Source : Meyerhof (13) p. 17</caption>
                         <thead>
                             <tr>
                                 <th rowspan="2">N value<br>(blows/ft or 305 mm)</th>
@@ -50,8 +57,8 @@ table,
                                 <th colspan="2">Approximate \(\phi'_{tc}\) (degrees)</th>
                             </tr>
                             <tr>
-                                <th>(a)</th>
-                                <th>(b)</th>
+                                <th>Method 1</th>
+                                <th>Method 4</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,15 +96,13 @@ table,
                         
                     </table>
                 </div>
-                <h4>Method 6 : from Dunham (1954) can be used only to define an 
-                    upper bound of friction angle</h4>
-                <h4>\(\phi' = \sqrt{ 12N} + 20\)</h4>
+
             </div>
             <div class="col-md-5 ml-auto mr-auto">
+                <h5>&emsp;&emsp;Method 2: CIRIA 143 (1995)</h5>
                 <img class="img" src="{% static "assets/img/FractionAngle_2.png" %}"><br><br>
-                <h4 class ="text-center">method 2</h4>
+                <h5>&emsp;&emsp;&emsp;Method 3: Terzaghi, Peck & Mersi (1996)</h5>
                 <img class="img" src="{% static "assets/img/FractionAngle_3.png" %}"><br><br>
-                <h4 class ="text-center">method 3</h4>
             </div>
         </div>
     </div>

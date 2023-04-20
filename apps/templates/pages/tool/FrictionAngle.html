@@ -120,7 +120,7 @@
                                         {% endfor %}
                                         <div class="row ">
                                             <div class="col-md-4 card-header text-center">
-                                                <h5 class="card-title">
+                                                <h5 class="card-title"/>
                                                     Select Project
                                             </div>
                                             <div class="col-md-8">
@@ -170,6 +170,7 @@
                                                         <option value="32">Terzaghi, Peck & Mersi (1996) Average</option>
                                                         <option value="4">Meyerhof (1956)</option>
                                                         <option value="5">Dunham (1954)</option>
+                                                        <option value="6">Osaki (1959)</option>
 
                                                     </select>
                                                 </div>
@@ -256,6 +257,7 @@
                                 <li>EPRI EL-6800, Project 1493-6, Final Report, Aug 1990, Manual on Estimating Soil
                                     Properties for Foundation Design.</li>
                                 <li>CIRIA Report 143, 1995, The Standard Penetration Test (SPT): Methods and Use.</li>
+                                <!--<li> !!!Need text!!!!!</li>-->
                             </ol>
                         </div>
                     </div>
@@ -402,6 +404,18 @@
         }
         return y;
     }
+    function apply_sixth(x) {
+    if (x == ""){
+            y = ""
+        }
+        else if (x <= 100 && x >= 0) {
+            y = (20 * x) ** 0.5 + 15;
+        }
+        else {
+            y = ""
+        }
+        return y;
+    }
 
     var chart_y_1 = [];
     var chart_y_2 = [];
@@ -410,6 +424,7 @@
     var chart_y_32 = [];
     var chart_y_4 = [];
     var chart_y_5 = [];
+    var chart_y_6 = [];
 
     for (let i = 0; i < 101; i++) {
         chart_y_1.push(apply_first(i));
@@ -419,6 +434,7 @@
         chart_y_32.push(apply_third_course(i));
         chart_y_4.push(apply_forth(i));
         chart_y_5.push(apply_fifth(i));
+        chart_y_6.push(apply_sixth(i));
     }
     var chart = new Highcharts.chart("plot", {
         chart: {
@@ -494,6 +510,10 @@
             data: chart_y_5
         },
         {
+            name: 'Osaki (1959)',
+            data: chart_y_6
+        },
+        {
             type: 'scatter',
             name: 'Your points',
             data: []
@@ -516,7 +536,8 @@
             <option value="31">Terzaghi, Peck & Mersi (1996) Fine</option>\
             <option value="32">Terzaghi, Peck & Mersi (1996) Average</option>\
             <option value="4">Meyerhof (1956)</option>\
-            <option value="5">Dunham (1954)</option></select>';
+            <option value="5">Dunham (1954)</option>\
+            <option value="6">Osaki (1959)</option></select>';
         cell3.innerHTML = '\
         <input  style="width:75%" type="number" id="calculate" name="input" min="0" max ="100" step="1" >\
         <div id="container">\
@@ -548,7 +569,8 @@
             else if (methods[i].value == "31") { y = apply_third_fine(items[i].value); }
             else if (methods[i].value == "32") { y = apply_third_average(items[i].value); }
             else if (methods[i].value == "4") { y = apply_forth(items[i].value); }
-            else { y = apply_fifth(items[i].value); }
+            else if (methods[i].value == "5") { y = apply_fifth(items[i].value); }
+            else { y = apply_sixth(items[i].value); }
             if (typeof y == "number") {
                 y = y.toFixed(2);
                 plot_data.push({"name":i+1,"x":parseInt(items[i].value),"y" :parseFloat(y)});

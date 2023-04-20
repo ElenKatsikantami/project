@@ -41,6 +41,9 @@ def apply_forth(x):
 def apply_fifth(x):
     return ((12*x)**0.5 + 20)//0.1/10
 
+def apply_sixth(x):
+    return ((20*x)**0.5 + 15)//0.1/10
+
 def first_correction(ispt_sheet):
     df_ispt = ispt_sheet
     if df_ispt["ISPT_NVAL"].dtype == "O":
@@ -75,6 +78,8 @@ def activate_frictionangle(file_ags,method):
         FractionAngle = Nspt.apply(apply_forth)
     elif method == "5":
         FractionAngle = Nspt.apply(apply_fifth)
+    elif method == "6":
+        FractionAngle = Nspt.apply(apply_sixth)
         
     
     tables["ISPT"]["ISPT_FractionAngle"] = pd.Series(["",""]).append(FractionAngle) 
